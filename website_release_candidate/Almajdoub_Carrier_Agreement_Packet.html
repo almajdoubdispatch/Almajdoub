@@ -1,0 +1,536 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Almajdoub Dispatch — Master Carrier Service Agreement & Founding Partner Packet</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Manrope:wght@600;700;800&family=JetBrains+Mono:wght@500;700&display=swap');
+
+  :root {
+    --primary: #0B2432;
+    --primary-dark: #06151E;
+    --accent: #00D2B4;
+    --text-dark: #1E293B;
+    --text-muted: #64748B;
+    --border-color: #CBD5E1;
+    --bg-light: #F8FAFC;
+    --gold: #D97706;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    color: var(--text-dark);
+    background: #E2E8F0;
+    line-height: 1.55;
+    font-size: 13px;
+  }
+
+  .paper {
+    background: #FFFFFF;
+    width: 8.5in;
+    min-height: 11in;
+    margin: 20px auto;
+    padding: 0.65in 0.75in;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+    position: relative;
+  }
+
+  @media print {
+    body { background: transparent; }
+    .paper {
+      width: 100%;
+      min-height: auto;
+      margin: 0;
+      padding: 0.45in 0.55in;
+      box-shadow: none;
+    }
+    .no-print { display: none !important; }
+    .page-break { page-break-before: always; }
+  }
+
+  .header-block {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 3px solid var(--primary);
+    padding-bottom: 15px;
+    margin-bottom: 20px;
+  }
+
+  .brand-logo {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .brand-logo img {
+    height: 48px;
+    width: 48px;
+    object-fit: contain;
+  }
+
+  .brand-title {
+    font-family: 'Manrope', sans-serif;
+    font-weight: 800;
+    font-size: 18px;
+    letter-spacing: 0.08em;
+    color: var(--primary);
+    text-transform: uppercase;
+  }
+
+  .brand-sub {
+    font-size: 11px;
+    color: var(--text-muted);
+    font-weight: 600;
+    letter-spacing: 0.04em;
+  }
+
+  .contact-meta {
+    text-align: right;
+    font-size: 10.5px;
+    color: var(--text-muted);
+    line-height: 1.4;
+  }
+
+  .doc-title {
+    font-family: 'Manrope', sans-serif;
+    font-size: 16px;
+    font-weight: 800;
+    color: var(--primary);
+    text-align: center;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 6px;
+  }
+
+  .doc-subtitle {
+    text-align: center;
+    font-size: 11px;
+    color: #0284C7;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    margin-bottom: 18px;
+    padding-bottom: 10px;
+    border-bottom: 1px dashed var(--border-color);
+  }
+
+  .callout-box {
+    background: var(--bg-light);
+    border: 1px solid var(--border-color);
+    border-left: 4px solid var(--primary);
+    padding: 10px 14px;
+    border-radius: 4px;
+    font-size: 11.5px;
+    margin-bottom: 16px;
+  }
+
+  .callout-gold {
+    background: #FFFBEB;
+    border-color: #FDE68A;
+    border-left: 4px solid var(--gold);
+    color: #92400E;
+  }
+
+  h2 {
+    font-family: 'Manrope', sans-serif;
+    font-size: 12.5px;
+    font-weight: 800;
+    color: var(--primary);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    margin: 16px 0 8px 0;
+    padding-bottom: 3px;
+    border-bottom: 1px solid #E2E8F0;
+  }
+
+  p { margin-bottom: 8px; text-align: justify; }
+
+  ol, ul { margin-left: 18px; margin-bottom: 10px; }
+  li { margin-bottom: 4px; }
+
+  .fillable-line {
+    border-bottom: 1px solid #000;
+    display: inline-block;
+    min-width: 150px;
+    height: 15px;
+  }
+
+  .party-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 15px;
+    font-size: 11.5px;
+  }
+
+  .party-table td {
+    padding: 6px 10px;
+    vertical-align: top;
+    border: 1px solid var(--border-color);
+  }
+
+  .party-table td.header-td {
+    background: var(--bg-light);
+    font-weight: 700;
+    width: 25%;
+    color: var(--primary);
+  }
+
+  .sig-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 30px;
+    margin-top: 25px;
+    padding-top: 15px;
+    border-top: 2px solid var(--primary);
+  }
+
+  .sig-block {
+    background: var(--bg-light);
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    padding: 15px;
+  }
+
+  .sig-title {
+    font-family: 'Manrope', sans-serif;
+    font-weight: 800;
+    font-size: 12px;
+    color: var(--primary);
+    text-transform: uppercase;
+    margin-bottom: 12px;
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 4px;
+  }
+
+  .sig-field {
+    margin-bottom: 10px;
+  }
+
+  .sig-label {
+    font-size: 10px;
+    font-weight: 700;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    display: block;
+    margin-bottom: 2px;
+  }
+
+  .sig-line {
+    border-bottom: 1px solid #475569;
+    height: 24px;
+  }
+
+  .badge-tag {
+    display: inline-block;
+    font-size: 9.5px;
+    font-weight: 800;
+    padding: 2px 6px;
+    border-radius: 3px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  .badge-primary { background: #0B2432; color: #FFFFFF; }
+  .badge-accent { background: #D1FAE5; color: #065F46; border: 1px solid #A7F3D0; }
+
+  .print-bar {
+    position: fixed;
+    top: 15px;
+    right: 15px;
+    z-index: 10000;
+    display: flex;
+    gap: 10px;
+  }
+
+  .btn-print {
+    background: #00D2B4;
+    color: #06151E;
+    font-family: 'Manrope', sans-serif;
+    font-weight: 800;
+    font-size: 12px;
+    padding: 10px 18px;
+    border-radius: 20px;
+    border: none;
+    cursor: pointer;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    transition: transform 0.2s, background 0.2s;
+  }
+  .btn-print:hover { background: #00BFA5; transform: translateY(-1px); }
+</style>
+</head>
+<body>
+
+<div class="print-bar no-print">
+  <button class="btn-print" onclick="window.print()">
+    🖨️ Print / Save as PDF
+  </button>
+  <button class="btn-print" style="background:#0B2432; color:#FFFFFF;" onclick="window.close()">
+    ✖ Close
+  </button>
+</div>
+
+<!-- ==================== PAGE 1 ==================== -->
+<div class="paper">
+  <div class="header-block">
+    <div class="brand-logo">
+      <img src="assets/img/Almajdoub_Logo_Full_Color.png" alt="Almajdoub Dispatch — Dedicated Carrier Back-Office Support Brand Logo" onerror="this.style.display='none'">
+      <div>
+        <div class="brand-title">ALMAJDOUB DISPATCH</div>
+        <div class="brand-sub">Carrier Back-Office Dispatch & Operations Management</div>
+      </div>
+    </div>
+    <div class="contact-meta">
+      <div><b>Operating Desk:</b> Texas Virtual Operations Line</div>
+      <div><b>Direct Dispatch Cell:</b> +1 (409) 941-7180</div>
+      <div><b>Official Inquiries:</b> ops@almajdoubdispatch.com</div>
+      <div><b>Regulatory Status:</b> 49 CFR § 371.2 Bona Fide Agent</div>
+    </div>
+  </div>
+
+  <div class="doc-title">DISPATCHER - CARRIER SERVICE AGREEMENT & LIMITED POWER OF ATTORNEY</div>
+  <div class="doc-subtitle">Incorporating Founding Carrier Partner Promotional Grandfathered Terms</div>
+
+  <div class="callout-box">
+    <b>LEGAL NATURE OF RELATIONSHIP (49 CFR § 371.2 BONA FIDE AGENT):</b>  
+    This Agreement is entered into by and between an independent motor carrier operating under its own active USDOT/MC authority and <b>Ahmed Almajdoub d/b/a Almajdoub Dispatch</b>. Dispatcher functions strictly as a fiduciary administrative back-office support agent acting solely under the direct control and instruction of Carrier. <b>Dispatcher is NOT a freight broker or freight forwarder, does NOT take custody of freight, and does NOT touch, hold, or disburse shipper or broker freight charges.</b>
+  </div>
+
+  <table class="party-table">
+    <tr>
+      <td class="header-td">DISPATCHER:</td>
+      <td>
+        <b>Ahmed Almajdoub</b> (Doing business as <i>Almajdoub Dispatch</i>)<br>
+        Address: Tripoli, Libya (Remote US Logistics Support Desk)<br>
+        Phone: +1 (409) 941-7180 | Email: ops@almajdoubdispatch.com
+      </td>
+    </tr>
+    <tr>
+      <td class="header-td">MOTOR CARRIER:</td>
+      <td>
+        Legal Company Name: <span class="fillable-line" style="min-width: 250px;"></span><br>
+        DBA (if applicable): <span class="fillable-line" style="min-width: 200px;"></span><br>
+        USDOT #: <span class="fillable-line" style="min-width: 100px;"></span> | MC / FF #: <span class="fillable-line" style="min-width: 100px;"></span><br>
+        Principal Place of Business: <span class="fillable-line" style="min-width: 320px;"></span><br>
+        Owner / Primary Contact: <span class="fillable-line" style="min-width: 180px;"></span> | Mobile: <span class="fillable-line" style="min-width: 140px;"></span>
+      </td>
+    </tr>
+  </table>
+
+  <h2>1. Scope of Dedicated Back-Office Services</h2>
+  <p>Dispatcher agrees to provide Carrier with dedicated, high-touch administrative dispatch services:</p>
+  <ol>
+    <li><b>Freight Sourcing & Board Ingestion:</b> Searching electronic freight boards (DAT One, Truckstop, Direct Freight, 123Loadboard) and private broker networks matching Carrier's equipment (strictly 53′ Dry Van or 53′ Refrigerated Reefer) and preferred corridors.</li>
+    <li><b>Aggressive Broker Negotiations:</b> Contacting freight brokers, verifying commodity details, piece counts, pickup/delivery windows, and negotiating maximum rates per mile (RPM) and linehaul gross.</li>
+    <li><b>Broker Setup & Packet Execution:</b> Submitting Carrier's pre-approved onboarding packets (W-9, COI, Authority certificate, Factoring NOA) to prospective brokers.</li>
+    <li><b>Facility Detention Tracking ($65.00/Hour):</b> Monitoring dock milestone timestamps, issuing pre-warnings to brokers at minute 105, and actively pursuing detention billing claims after the standard 2-hour facility grace period.</li>
+    <li><b>Telemetry, Geolocation & Weather Safety (Voluntary Consent):</b> To eliminate unpaid deadhead (&lt; 8%), automate detention arrival/departure clocking, calculate home-time proximity, and broadcast live severe weather warnings (I-80 Wyoming high-wind blowovers and mountain chain mandates), Carrier and drivers may voluntarily enable GPS location telemetry via Dispatcher’s carrier application. Tracking is active strictly during on-duty transit, with zero off-duty surveillance.</li>
+    <li><b>Electronic Load Board Sub-Seat Authorization:</b> Carrier authorizes Dispatcher (Bona Fide Agent) to access Carrier’s existing freight board subscriptions (including DAT One and Truckstop) via an authorized secondary dispatcher sub-seat under Carrier’s account, or utilize authorized agent credentials strictly for booking Carrier's equipment.</li>
+  </ol>
+
+  <h2>2. Absolute Carrier Approval Gatekeeper (FMCSA Compliance)</h2>
+  <ol>
+    <li><b>100% Exclusive Veto Power:</b> Carrier retains sole, unalterable authority to accept or reject any load presented. Dispatcher shall NEVER book, confirm, or execute any freight tender without first receiving <b>express written or documented verbal confirmation</b> (via SMS, Driver App, or email) from Carrier's designated representative.</li>
+    <li><b>Name on Contracts:</b> All Rate Confirmations, Bills of Lading (BOL), and transportation contracts shall be issued strictly in the legal name and operating authority of the <b>Carrier</b>.</li>
+    <li><b>Zero Forced Dispatch & Zero Double-Brokering:</b> Dispatcher operates with strict anti-coercion standards and covenants that freight will never be re-brokered, transferred, or assigned to third-party motor carriers.</li>
+  </ol>
+</div>
+
+<!-- ==================== PAGE 2 ==================== -->
+<div class="paper page-break">
+  <div class="header-block">
+    <div class="brand-logo">
+      <div class="brand-title">ALMAJDOUB DISPATCH</div>
+      <div class="brand-sub">Carrier Service Agreement & LPOA (Page 2 of 3)</div>
+    </div>
+    <div class="contact-meta">
+      <div><b>Carrier MC #:</b> ___________________</div>
+      <div><b>Designated Unit #:</b> ___________________</div>
+    </div>
+  </div>
+
+  <h2>3. Transparent Financial Separation & Pricing Structure</h2>
+  <ol>
+    <li><b>Zero Touch of Freight Proceeds:</b> All gross transportation payments flow directly from licensed freight brokers or shippers to Carrier’s designated banking account or factoring company pursuant to Carrier’s Notice of Assignment (NOA). Dispatcher shall never invoice shippers, receive freight checks, or deduct service fees directly from freight revenues.</li>
+    <li><b>Approved Dispatch Compensation Models:</b>
+      <ul>
+        <li><b>Model A — Linehaul Percentage Fee (Solo Owner-Operators 1–2 Trucks):</b>
+          <ul>
+            <li><b>Founding Carrier Partner Rate:</b> <b>5.0% (53′ Dry Van) / 5.5% (53′ Reefer)</b> of gross freight linehaul (grandfathered for continuous active service).</li>
+            <li><b>Standard Published Rate:</b> <b>7.0% (53′ Dry Van) / 8.0% (53′ Reefer)</b> of gross freight linehaul.</li>
+            <li><b>Settlement Schedule:</b> Invoiced weekly on Friday afternoon; strictly due Friday evening (Same-day EOD).</li>
+          </ul>
+        </li>
+        <li><b>Model B — Dedicated Small Fleet Retainer (Multi-Truck Fleets — Subject to Desk Capacity Review):</b>
+          <ul>
+            <li><b>Standard Fleet Retainer:</b> <b>$299.00 USD per active truck / week</b> (Minimum 3 trucks = $897.00 USD/week baseline).</li>
+            <li><b>Founding Waitlist Fleet Offer:</b> Fleets with 2+ trucks that register on the waiting list and are granted a founding seat pay <b>$245.00 USD per active truck / week</b> (Minimum 2 trucks = $490.00 USD/week baseline). The founding seat and rate continue for the life of that seat, subject to the forfeiture terms below.</li>
+            <li><b>Advance Payment Terms:</b> Invoiced & prepaid in advance each Monday prior to 07:00 CST before dispatch services commence.</li>
+            <li><b>Fair Downtime & Breakdown Protection:</b> To qualify for a downtime fee waiver for a non-operating truck, Carrier must provide written notice by Sunday 18:00 CST prior to the Monday billing cycle, accompanied by a certified repair shop work order or tow invoice if downtime exceeds three (3) business days. Minimum fleet floor (2 trucks active) applies to maintain desk reservation.</li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+    <li><b>Excluded Revenues (0.0% Fee):</b> Dispatcher’s fee is calculated strictly on base freight linehaul. Zero service fee (0.0%) applies to fuel surcharges, facility detention reimbursements ($65/hr), layover compensation, or Truck Ordered Not Used (TONU) fees.</li>
+    <li><b>Founding Seat Forfeiture:</b> A founding seat remains reserved for its registered waiting-list holder while the account satisfies the applicable payment, minimum-fleet, and active-service requirements. A lapse in continuous service exceeding thirty (30) consecutive days, non-payment, or failure to maintain the minimum fleet floor without mutual written agreement forfeits the founding seat and its $245 rate; the account then returns to the applicable standard terms and the seat may be reassigned.</li>
+    <li><b>Grandfathered Founding Rate Protection:</b> Dispatcher covenants that the preferred Founding Partner fee (5.0% Dry Van / 5.5% Reefer) is <b>locked in</b> during continuous active service. A lapse in continuous service exceeding thirty (30) consecutive days without mutual written agreement forfeits founding status, returning Carrier to prevailing standard rates.</li>
+    <li><b>Pay-to-Play Weekly Settlement Covenant:</b>
+      <ul>
+        <li>Service fee invoices are generated every <b>Friday at 16:00 CST</b> covering completed, clean delivered loads.</li>
+        <li>Invoices are due upon receipt on <b>Friday evening (23:59 CST)</b> with an operational grace period extended to <b>Sunday 23:59 CST</b>.</li>
+        <li>Settlement in full is an express condition precedent to dispatch continuation. Unsettled accounts incur automatic administrative suspension on Monday at 07:00 CST to prevent debt accumulation.</li>
+      </ul>
+    </li>
+  </ol>
+
+  <h2>4. Fourteen-Day Free Operational Trial & Rolling 14 Referrals</h2>
+  <ol>
+    <li><b>14-Day Zero-Fee Promotional Period:</b> Commencing on the pickup date of Carrier’s first load, Dispatcher waives 100% of its dispatch fees ($0.00 service fee) for fourteen (14) consecutive calendar days covering one (1) designated truck unit. Carrier retains 100% of gross freight.</li>
+    <li><b>Affirmative Day-14 Transition (Zero Forced Auto-Debit):</b> Upon conclusion of Day 14 at 23:59 CST, Dispatcher delivers the Trial Scorecard. Transition to active paid service occurs solely upon Carrier's express written approval (via SMS text or signed conversion form). Invoices are billed via secure electronic payment link (Payoneer / ACH Wire); zero automatic pulls occur without consent. If Carrier declines, service terminates with zero exit fees.</li>
+    <li><b>Zero-Penalty Cancellation:</b> Carrier retains the absolute right to cancel service with zero penalty or exit fees by providing simple written notice (SMS or email) prior to 17:00 CST on Day 14.</li>
+    <li><b>Rolling 14 Referral Rewards:</b> For every unique Motor Carrier (MC authority) referred by Carrier who executes an agreement, enters direct active service (bypassing promotional trial in exchange for priority onboarding), and successfully clears settlement of their first paid service invoice, Referring Carrier earns an additional <b>fourteen (14) calendar days of 100% free dispatch service</b>. Referral credits are cumulative, non-cash redeemable, applying to one power unit per active referral.</li>
+  </ol>
+
+  <h2>5. Limited Power of Attorney (LPOA)</h2>
+  <p>Carrier hereby constitutes and appoints Ahmed Almajdoub d/b/a Almajdoub Dispatch as Carrier’s administrative Attorney-in-Fact, granting limited, non-exclusive authority solely for the following business functions:</p>
+  <ul>
+    <li>Contacting licensed property brokers and shippers on Carrier's behalf to identify and negotiate available freight.</li>
+    <li>Executing and transmitting Carrier's pre-approved broker onboarding packets, W-9, and Certificates of Insurance.</li>
+    <li>Posting equipment availability and sourcing freight across electronic load boards (DAT One, Truckstop, Direct Freight).</li>
+    <li>Signing and transmitting Broker Rate Confirmations <b>strictly and exclusively after receiving express written or verbal approval from Carrier for that specific individual shipment</b>.</li>
+  </ul>
+  <p><i>Express Limitations: This Limited Power of Attorney explicitly excludes any right or power to endorse checks, access bank accounts, alter insurance policies, execute long-term leases, or bind Carrier to financial obligations outside individual approved shipment contracts.</i></p>
+
+    <h2>6. Corporate Successorship & Universal Assignment Clause</h2>
+  <div class="callout-box">
+    <b>CORPORATE SUCCESSORSHIP & UNIVERSAL JURISDICTION ASSIGNMENT:</b><br>
+    Carrier acknowledges that Dispatcher currently provides services as an independent sole proprietorship (d/b/a Almajdoub Dispatch). Dispatcher expressly reserves the absolute right to assign, convey, and transfer this Agreement, together with all rights, covenants, and responsibilities herein, to any successor corporate entity (including a US Limited Liability Company — LLC, a United Kingdom Private Limited Company — UK LTD, a United Arab Emirates / Dubai Free Zone Company, or other recognized corporate jurisdiction) established, owned, or controlled by Ahmed Almajdoub. Such assignment shall take effect upon simple written or electronic notice to Carrier and shall maintain all existing fee caps, grandfathered rate guarantees (5.0% Dry Van / 5.5% Reefer), and contractual terms in full force and effect without requiring the re-execution of this Agreement.
+  </div>
+</div>
+
+<!-- ==================== PAGE 3 ==================== -->
+<div class="paper page-break">
+  <div class="header-block">
+    <div class="brand-logo">
+      <div class="brand-title">ALMAJDOUB DISPATCH</div>
+      <div class="brand-sub">Carrier Service Agreement & LPOA (Page 3 of 3)</div>
+    </div>
+    <div class="contact-meta">
+      <div><b>Carrier MC #:</b> ___________________</div>
+      <div><b>Document Version:</b> V2.1 PROD</div>
+    </div>
+  </div>
+
+  <h2>7. Equipment Specification & Operational Requirements</h2>
+  <p>Carrier covenants that designated power units meet the following baseline operational and compliance standards:</p>
+  <ul>
+    <li>Equipment is strictly <b>53′ Dry Van (Air-Ride)</b> or <b>53′ Refrigerated Trailer (Clean, Pre-Cooled)</b>.</li>
+    <li><b>Reefer Compliance & Zero Cargo Spoilage Liability:</b> For refrigerated shipments, Carrier and its drivers bear sole responsibility for trailer pre-cooling, monitoring reefer fuel levels, maintaining continuous set-point temperatures, and documenting pulp temperatures on the Bill of Lading. Dispatcher bears zero cargo liability for unit mechanical breakdowns, fuel exhaustion, or thermal spoilage.</li>
+    <li>Carrier maintains active, verified Commercial Auto Liability insurance ($1,000,000 minimum) and Motor Truck Cargo insurance ($100,000 minimum) with reputable US underwriters.</li>
+    <li>Driver maintains necessary regional compliance equipment (e.g., approved tire chains for mountain passes, functional load-securing locks, and CARB emissions compliance when accepting California-bound freight).</li>
+  </ul>
+
+  <h2>8. Termination, Economic Adjustments, Liability & Governing Law</h2>
+  <ol>
+    <li><b>Termination for Convenience:</b> Either party may terminate this Agreement at any time, with or without cause, upon delivering <b>forty-eight (48) hours prior written notice</b> (via email or SMS). Upon termination, all pending paperwork for completed loads shall be delivered immediately, and outstanding dispatch fees for clean delivered loads shall become immediately payable.</li>
+    <li><b>Right of Termination Without Cause & Zero Legal Liability:</b> Almajdoub Dispatch expressly reserves the unrestricted right to suspend, discontinue, or terminate dispatch services at its sole discretion, with or without cause, upon written notice. Dispatcher shall bear zero legal, financial, or consequential liability, damages, or claims arising from or related to the cessation or discontinuation of dispatch services.</li>
+    <li><b>Economic Rate Adjustment Clause:</b> Dispatcher commits to maintaining agreed rates under standard operating conditions. However, rates and retainers are subject to future economic adjustment based on verifiable inflation, taxation shifts, or market factors upon thirty (30) days prior written notice. If Carrier declines such adjustment, Carrier may terminate with zero penalty.</li>
+    <li><b>Limitation of Liability:</b> In no event shall Dispatcher's total cumulative liability arising out of or related to this Agreement exceed the total dispatch service fees actually paid by Carrier to Dispatcher during the three (3) months immediately preceding the event giving rise to liability, or $1,000.00, whichever is less. In no event shall Dispatcher be liable for any lost profits, lost freight revenue, or indirect/consequential damages.</li>
+    <li><b>Indemnification & Hold Harmless:</b> Carrier agrees to indemnify, defend, and hold harmless Ahmed Almajdoub d/b/a Almajdoub Dispatch from and against any and all claims, liabilities, losses, damages, fines, and legal expenses arising out of Carrier's vehicle operations, driver conduct, highway collisions, cargo loss/damage, or regulatory violations.</li>
+    <li><b>Governing Law & Mandatory AAA Arbitration:</b> This Agreement is governed by the laws of the State of Texas. Any commercial dispute shall be resolved through binding individual arbitration administered by the American Arbitration Association (AAA) in Galveston/Harris County, Texas. Both parties expressly waive rights to jury trials or class action participation.</li>
+    <li><b>Proprietary Confidentiality:</b> Both parties agree to maintain strict confidentiality regarding customer lists, shipper contacts, broker agreements, and financial arrangements.</li>
+  </ol>
+
+  <!-- SIGNATURE BLOCKS -->
+  <div class="sig-grid">
+    <div class="sig-block">
+      <div class="sig-title">MOTOR CARRIER ACCEPTANCE & AUTHORIZATION</div>
+      
+      <div class="sig-field">
+        <span class="sig-label">Company Legal Name:</span>
+        <div class="sig-line"></div>
+      </div>
+
+      <div class="sig-field">
+        <span class="sig-label">Authorized Representative Name:</span>
+        <div class="sig-line"></div>
+      </div>
+
+      <div class="sig-field">
+        <span class="sig-label">Title (Owner / Managing Member / Safety Director):</span>
+        <div class="sig-line"></div>
+      </div>
+
+      <div class="sig-field">
+        <span class="sig-label">Authorized Signature:</span>
+        <div class="sig-line" style="height: 40px;"></div>
+      </div>
+
+      <div class="sig-field">
+        <span class="sig-label">Execution Date:</span>
+        <div class="sig-line"></div>
+      </div>
+
+      <div class="sig-field" style="margin-top: 10px;">
+        <span class="sig-label">Designated Power Unit VIN / Unit #:</span>
+        <div class="sig-line"></div>
+      </div>
+    </div>
+
+    <div class="sig-block">
+      <div class="sig-title">DISPATCHER (BONA FIDE AGENT) ACCEPTANCE</div>
+
+      <div class="sig-field">
+        <span class="sig-label">Dispatcher Legal Persona:</span>
+        <div style="font-weight: 700; font-size: 11px; padding-top: 4px; color: var(--primary);">
+          Ahmed Almajdoub (d/b/a Almajdoub Dispatch)
+        </div>
+      </div>
+
+      <div class="sig-field">
+        <span class="sig-label">Representative Name & Title:</span>
+        <div style="font-size: 11px; padding-top: 4px; color: var(--text-dark);">
+          Ahmed Almajdoub — Founder & Principal Dispatcher
+        </div>
+      </div>
+
+      <div class="sig-field">
+        <span class="sig-label">Operations Desk & Contact:</span>
+        <div style="font-size: 10.5px; padding-top: 4px; color: var(--text-muted);">
+          Texas Virtual Line: +1 (409) 941-7180<br>
+          Direct Email: ops@almajdoubdispatch.com
+        </div>
+      </div>
+
+      <div class="sig-field">
+        <span class="sig-label">Authorized Dispatcher Signature:</span>
+        <div class="sig-line" style="height: 40px; font-family:'Manrope',sans-serif; font-weight:800; font-size:16px; color:#0B2432; display:flex; align-items:flex-end; padding-bottom:4px;">
+          Ahmed Almajdoub
+        </div>
+      </div>
+
+      <div class="sig-field">
+        <span class="sig-label">Execution Date:</span>
+        <div style="font-size: 11px; padding-top: 4px; color: var(--text-dark);">
+          October 29, 2026
+        </div>
+      </div>
+
+      <div style="margin-top: 15px; background: #E6FFFA; border: 1px solid #B2F5EA; padding: 6px 10px; border-radius: 4px; font-size: 10px; color: #234E52;">
+        ✓ <b>COHORT CERTIFICATION:</b> Founding Carrier Partner Rate (5.0% Dry Van / 5.5% Reefer) locked in and grandfathered.
+      </div>
+    </div>
+  </div>
+
+  <div style="margin-top: 25px; text-align: center; font-size: 10px; color: var(--text-muted);">
+    Almajdoub Dispatch • Master Carrier Service Agreement (V2.1 PROD) • Transmitted via Secure Document Vault
+  </div>
+</div>
+
+</body>
+</html>

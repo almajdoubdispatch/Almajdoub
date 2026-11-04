@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="800" height="500" viewBox="0 0 800 500" xmlns="http://www.w3.org/2000/svg">
+  <rect width="800" height="500" fill="#172B4D"/>
+  <!-- Simplified US map outline (very abstract) -->
+  <path d="M100,100 L200,80 L300,120 L350,200 L400,180 L500,250 L550,300 L600,260 L700,340" stroke="#76D2E0" stroke-width="4" fill="none"/>
+  <!-- City markers -->
+  <circle cx="100" cy="100" r="6" fill="#FFFFFF"/>
+  <text x="108" y="105" font-family="Arial" font-size="14" fill="#FFFFFF">NY</text>
+  <circle cx="700" cy="340" r="6" fill="#FFFFFF"/>
+  <text x="708" y="345" font-family="Arial" font-size="14" fill="#FFFFFF">LA</text>
+  <text x="400" y="450" font-family="Arial" font-size="24" fill="#76D2E0" text-anchor="middle">Nationwide Coverage</text>
+</svg>

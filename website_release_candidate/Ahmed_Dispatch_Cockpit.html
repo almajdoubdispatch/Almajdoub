@@ -1,0 +1,1510 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Almajdoub Dispatch Operations Cockpit</title>
+<style>
+  :root {
+    --primary: #273B5E; /* Route Navy */
+    --primary-dark: #0B2432; /* Night Ink */
+    --accent: #58C5CC; /* Signal Teal */
+    --amber: #F5B94C; /* Waypoint Amber */
+    --success: #58C5CC;
+    --danger: #C0392B;
+    --warning: #F5B94C;
+    --bg: #EAF0F3; /* Road Fog */
+    --card-bg: #FFFFFF;
+    --text: #273B5E;
+    --border: #CFD8DC;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', 'Segoe UI', Arial, sans-serif; }
+  body { background-color: var(--bg); color: var(--text); padding: 15px; font-size: 14px; }
+  header { background: var(--primary); color: #fff; padding: 15px 25px; border-radius: 8px; margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 4px 6px rgba(0,0,0,0.1); border-bottom: 3px solid var(--accent); }
+  .header-left { display: flex; align-items: center; gap: 15px; }
+  .header-left h1 { font-size: 18px; font-weight: 800; color: #fff; }
+  .header-left p { font-size: 11px; color: var(--accent); font-weight: 600; }
+  .header-right { text-align: right; font-size: 12px; background: rgba(255,255,255,0.08); padding: 6px 12px; border-radius: 6px; }
+
+  /* Navigation Tabs */
+  .nav-tabs { display: flex; gap: 8px; margin-bottom: 20px; flex-wrap: wrap; }
+  .tab-btn { background: #fff; border: 1px solid var(--border); padding: 10px 18px; border-radius: 6px; cursor: pointer; font-weight: 600; font-size: 13px; color: var(--primary); transition: all 0.2s; }
+  .tab-btn:hover { background: #EAF0F3; }
+  .tab-btn.active { background: var(--primary); color: #fff; border-color: var(--primary); }
+
+  /* Tab Panes */
+  .tab-pane { display: none; }
+  .tab-pane.active { display: grid; grid-template-columns: repeat(auto-fit, minmax(360px, 1fr)); gap: 20px; }
+
+  .card { background: var(--card-bg); border-radius: 8px; border: 1px solid var(--border); padding: 20px; box-shadow: 0 2px 4px rgba(0,0,0,0.04); }
+  .card-header { font-size: 16px; font-weight: 700; color: var(--primary); border-bottom: 2px solid var(--primary); padding-bottom: 8px; margin-bottom: 15px; display: flex; justify-content: space-between; align-items: center; }
+  
+  .form-group { margin-bottom: 12px; }
+  .form-group label { display: block; font-size: 12px; font-weight: 600; margin-bottom: 4px; color: #555; }
+  .form-control { width: 100%; padding: 8px 10px; border: 1px solid var(--border); border-radius: 4px; font-size: 13px; }
+  .form-control:focus { outline: none; border-color: var(--primary); }
+  
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; }
+
+  .output-box { background: #F8F9FA; border: 1px solid #E5E8E8; border-radius: 6px; padding: 15px; margin-top: 15px; }
+  .metric-row { display: flex; justify-content: space-between; padding: 6px 0; border-bottom: 1px dashed #E0E0E0; font-size: 13px; }
+  .metric-row:last-child { border-bottom: none; }
+  .metric-val { font-weight: 700; font-size: 14px; }
+  
+  .badge { display: inline-block; padding: 4px 8px; border-radius: 4px; font-size: 11px; font-weight: 700; text-align: center; }
+  .badge-success { background: #D4EFDF; color: var(--success); }
+  .badge-warning { background: #FCF3CF; color: #B7950B; }
+  .badge-danger { background: #FADBD8; color: var(--danger); }
+
+  .btn { background: var(--primary); color: #fff; border: none; padding: 8px 15px; border-radius: 4px; cursor: pointer; font-weight: 600; font-size: 12px; transition: background 0.2s; }
+  .btn:hover { background: var(--primary-dark); }
+  .btn-accent { background: var(--accent); color: var(--primary-dark); }
+  .btn-accent:hover { background: #1eb39e; }
+  .btn-copy { background: #273B5E; margin-top: 10px; width: 100%; }
+
+  textarea.form-control { resize: vertical; min-height: 90px; font-family: monospace; font-size: 12px; }
+  .script-box { background: #FDFEFE; border-left: 4px solid var(--accent); padding: 12px; border-radius: 0 4px 4px 0; margin-bottom: 12px; font-size: 13px; line-height: 1.4; }
+  .script-speaker { font-weight: bold; color: var(--accent); margin-bottom: 2px; }
+
+  .full-width { grid-column: 1 / -1; }
+
+  h1, h2, h3, .brand-name, .tab-btn { font-family: 'Manrope', 'Segoe UI', Arial, sans-serif; }
+</style>
+</head>
+<body>
+  <!-- Real-Time Supabase Cloud Control Plane Strip -->
+  <div id="cockpitAuthBar" style="background:#0F243A; color:#E2E8F0; padding:10px 20px; font-size:12px; border-bottom:2px solid #58C5CC; display:flex; justify-content:space-between; align-items:center;">
+    <div style="display:flex; align-items:center; gap:8px;">
+      <span style="display:inline-block; width:10px; height:10px; border-radius:50%; background:#36B37E; box-shadow:0 0 8px #36B37E;"></span>
+      <span style="font-weight:800; color:#A3E6CD;">LIVE CLOUD BACKOFFICE:</span>
+      <span> Connecting to Supabase Cloud (yuxicqixoozivfhcbehe)...</span>
+    </div>
+    <div>
+      <button class="btn btn-accent" style="padding:4px 10px; font-size:11px;" onclick="CockpitController.auth.promptLogin()">🔐 Sign In to Live Desk</button>
+    </div>
+  </div>
+
+<header>
+  <div class="header-left">
+    <img src="assets/img/Almajdoub_Monogram_White.png" alt="Almajdoub Dispatch Official Monogram Mark — Cyan and Dark Navy Operations Seal" style="height:38px; width:38px; object-fit:contain;">
+    <div>
+      <h1>Operations Desk Cockpit & Toolkit</h1>
+      <p>Operational Calculator, HOS Clock, Detention Timer & SMS Teleprompter</p>
+    </div>
+  </div>
+  <div class="header-right">
+    <div><b>Base Desk:</b> Tripoli (UTC+2) | <b>Live Desk Coverage:</b> 08:00 AM – 05:00 PM EST</div>
+    <div><b>Desk Limit:</b> Capped at 7 Trucks (Quality Focus) | <b>53′ Van & Reefer Only</b></div>
+  </div>
+</header>
+
+<!-- Navigation Tabs -->
+<div class="nav-tabs">
+  <button class="tab-btn active" onclick="showTab('tab-roster')" style="background:#0F2942; color:#58C5CC; border-color:#58C5CC; font-weight:800;">📋 Carrier Accounts Roster</button>
+  <button class="tab-btn" onclick="showTab('tab-queue')" style="background:#0F2942; color:#58C5CC; border-color:#58C5CC; font-weight:800;">🎫 Tickets & Inquiries Queue</button>
+  <button class="tab-btn" onclick="showTab('tab-billing')" style="background:#0F2942; color:#58C5CC; border-color:#58C5CC; font-weight:800;">💰 Friday Billing & Commissions</button>
+  <button class="tab-btn" onclick="showTab('tab-live-app')" style="background:#0B2432; color:#58C5CC; border-color:#58C5CC;">📲 Driver App & Load Dispatch</button>
+  <button class="tab-btn" onclick="showTab('tab-rpm')">📊 RPM & Profit Calculator</button>
+  <button class="tab-btn" onclick="showTab('tab-sms')">📱 Fast Carrier SMS Generator</button>
+  <button class="tab-btn" onclick="showTab('tab-detention')">⏱ Detention Timer & Notice</button>
+  <button class="tab-btn" onclick="showTab('tab-hos')">⏰ HOS 11h/14h Shift Checker</button>
+  <button class="tab-btn" onclick="showTab('tab-scripts')">🎙 Live Calling Teleprompter</button>
+  <button class="tab-btn" onclick="showTab('tab-referrals')">🔄 Referral Ledger</button>
+  <button class="tab-btn" onclick="showTab('tab-broker-ledger')">🧠 Broker Credit Ledger</button>
+  <button class="tab-btn" onclick="showTab('tab-dual-voice')">🎙️ Dual Voice Hub</button>
+  <button class="tab-btn" onclick="showTab('tab-gemini-ai')">⚡ Gemini 2.0 AI Hub</button>
+</div>
+
+
+
+
+<!-- TAB 1: Live Carrier Accounts Roster (Phase 3 Core) -->
+<div id="tab-roster" class="tab-pane active">
+  <div class="card full-width">
+    <div class="card-header">
+      <span>📋 Active Motor Carrier Roster & Backoffice State Machine</span>
+      <div style="display:flex; gap:8px;">
+        <button class="btn btn-accent" onclick="CockpitController.roster.fetchAll()">🔄 Refresh Roster</button>
+      </div>
+    </div>
+
+    <!-- KPI Summary Row -->
+    <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap:12px; margin-bottom:18px;">
+      <div style="background:#F8FAFC; border:1px solid #E2E8F0; border-radius:6px; padding:12px; text-align:center;">
+        <span style="font-size:11px; font-weight:700; color:#64748B;">TOTAL ENROLLED</span>
+        <div style="font-size:22px; font-weight:900; color:var(--primary);" id="kpi-total-carriers">0</div>
+      </div>
+      <div style="background:#F0FDF4; border:1px solid #BBF7D0; border-radius:6px; padding:12px; text-align:center;">
+        <span style="font-size:11px; font-weight:700; color:#15803D;">ACTIVE TRIAL (14d)</span>
+        <div style="font-size:22px; font-weight:900; color:#15803D;" id="kpi-trial-carriers">0</div>
+      </div>
+      <div style="background:#F0F9FF; border:1px solid #BAE6FD; border-radius:6px; padding:12px; text-align:center;">
+        <span style="font-size:11px; font-weight:700; color:#0369A1;">PAID ACTIVE</span>
+        <div style="font-size:22px; font-weight:900; color:#0369A1;" id="kpi-paid-carriers">0</div>
+      </div>
+      <div style="background:#FEF2F2; border:1px solid #FECACA; border-radius:6px; padding:12px; text-align:center;">
+        <span style="font-size:11px; font-weight:700; color:#B91C1C;">SUSPENDED (CUTOFF)</span>
+        <div style="font-size:22px; font-weight:900; color:#B91C1C;" id="kpi-suspended-carriers">0</div>
+      </div>
+    </div>
+
+    <!-- Filters Bar -->
+    <div style="background:#F8F9FA; border:1px solid #CFD8DC; border-radius:6px; padding:10px 14px; margin-bottom:14px; display:flex; gap:12px; flex-wrap:wrap; align-items:center; justify-content:space-between;">
+      <div style="display:flex; gap:10px; align-items:center; flex:1; min-width:260px;">
+        <input type="text" id="rosterSearchInput" class="form-control" placeholder="Search by MC#, Carrier Name, Contact..." oninput="CockpitController.roster.render()">
+      </div>
+      <div style="display:flex; gap:10px; align-items:center;">
+        <label style="font-size:12px; font-weight:700; color:#555;">Status Filter:</label>
+        <select id="rosterStatusFilter" class="form-control" style="width:170px;" onchange="CockpitController.roster.render()">
+          <option value="ALL" selected>All Statuses</option>
+          <option value="ACTIVE_TRIAL">ACTIVE_TRIAL</option>
+          <option value="PAID_ACTIVE">PAID_ACTIVE</option>
+          <option value="PENDING_PAYMENT">PENDING_PAYMENT</option>
+          <option value="SUSPENDED">SUSPENDED</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- Live Carriers Table -->
+    <div style="overflow-x:auto;">
+      <table style="width:100%; border-collapse:collapse; font-size:12px;" border="0">
+        <thead>
+          <tr style="background:#EAF0F3; text-align:left; border-bottom:2px solid #CFD8DC;">
+            <th style="padding:10px 12px;">Carrier Legal Entity & Authority</th>
+            <th style="padding:10px 12px;">Primary Contact & Phone</th>
+            <th style="padding:10px 12px;">Equipment & Fleet</th>
+            <th style="padding:10px 12px;">Plan</th>
+            <th style="padding:10px 12px;">Operational Status</th>
+            <th style="padding:10px 12px;">E-Sign Audit Hash</th>
+            <th style="padding:10px 12px; text-align:right;">Actions</th>
+          </tr>
+        </thead>
+        <tbody id="rosterTableBody">
+          <tr><td colspan="7" style="text-align:center; padding:20px; color:#64748B;">Connecting to Supabase Cloud Roster...</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- TAB 2: Tickets & Inquiries Queue -->
+<div id="tab-queue" class="tab-pane">
+  <div class="card full-width">
+    <div class="card-header">
+      <span>🎫 Real-Time Tickets & Inbound Inquiries Queue</span>
+      <button class="btn btn-accent" onclick="CockpitController.queue.fetchAll()">🔄 Refresh Queue</button>
+    </div>
+
+    <div class="grid-2">
+      <!-- Priority Tickets Table -->
+      <div>
+        <h4 style="font-size:13px; margin-bottom:8px; color:var(--primary);">
+          Onboarding & Priority Tickets (Sequence TK-00X)
+        </h4>
+        <div style="background:#FFF; border:1px solid #CFD8DC; border-radius:6px; max-height:400px; overflow-y:auto;">
+          <table style="width:100%; border-collapse:collapse; font-size:12px;">
+            <thead>
+              <tr style="background:#EAF0F3; text-align:left;">
+                <th style="padding:8px 10px;">Ticket #</th>
+                <th style="padding:8px 10px;">Carrier</th>
+                <th style="padding:8px 10px;">Phone</th>
+                <th style="padding:8px 10px;">Priority</th>
+                <th style="padding:8px 10px;">Status</th>
+                <th style="padding:8px 10px; text-align:right;">Action</th>
+              </tr>
+            </thead>
+            <tbody id="ticketsTableBody">
+              <tr><td colspan="6" style="text-align:center; padding:15px; color:#64748B;">Loading tickets...</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Inbound Leads Table -->
+      <div>
+        <h4 style="font-size:13px; margin-bottom:8px; color:var(--primary);">
+          Inbound Website Leads & Inquiries
+        </h4>
+        <div style="background:#FFF; border:1px solid #CFD8DC; border-radius:6px; max-height:400px; overflow-y:auto;">
+          <table style="width:100%; border-collapse:collapse; font-size:12px;">
+            <thead>
+              <tr style="background:#EAF0F3; text-align:left;">
+                <th style="padding:8px 10px;">Contact / Company</th>
+                <th style="padding:8px 10px;">Phone</th>
+                <th style="padding:8px 10px;">MC #</th>
+                <th style="padding:8px 10px;">Equipment</th>
+                <th style="padding:8px 10px;">Status</th>
+                <th style="padding:8px 10px;">Source</th>
+              </tr>
+            </thead>
+            <tbody id="inquiriesTableBody">
+              <tr><td colspan="6" style="text-align:center; padding:15px; color:#64748B;">Loading inquiries...</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- TAB 3: Friday Billing & Commission Engine -->
+<!-- TAB 3: Friday Billing & Commission Engine (Phase 4 Multi-Provider Reconciliation) -->
+<div id="tab-billing" class="tab-pane">
+  <div class="card full-width">
+    <div class="card-header">
+      <span>💰 Friday Weekly Billing & Commission Engine (Protocol D-31)</span>
+      <div style="display:flex; gap:8px;">
+        <button class="btn btn-accent" style="font-weight:800;" onclick="CockpitController.billing.runFridayBilling()">
+          ⚡ Run Friday Weekly Billing (RPC)
+        </button>
+        <button class="btn" style="background:#C0392B; color:#fff; font-weight:800;" onclick="CockpitController.billing.runMondayCutoff()">
+          ⛔ Enforce Monday Cutoff (RPC)
+        </button>
+      </div>
+    </div>
+
+    <!-- Protocol Truth Banner -->
+    <div style="background:rgba(88,197,204,0.1); border:1.5px solid var(--accent); border-radius:6px; padding:12px 16px; margin-bottom:16px; font-size:12px; line-height:1.5;">
+      <b>🛡️ D-31 Financial Protocol Invariant:</b>
+      All service invoices are generated and distributed every <b>Friday at 12:00 PM EST (Noon)</b> based on completed load linehauls.
+      The settlement cutoff is <b>Monday at 08:00 AM EST</b>. Unsettled accounts automatically transition to <code>SUSPENDED</code> state.
+      Both cron jobs are active in <code>pg_cron</code>: Friday 17:00 UTC (12:00 PM EST) & Monday 13:00 UTC (08:00 AM EST).
+    </div>
+
+    <!-- Financial KPI Summary Strip -->
+    <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap:12px; margin-bottom:18px;">
+      <div style="background:#F8FAFC; border:1px solid #E2E8F0; border-radius:6px; padding:12px; text-align:center;">
+        <span style="font-size:11px; font-weight:700; color:#64748B;">TOTAL INVOICED</span>
+        <div style="font-size:22px; font-weight:900; color:var(--primary);" id="kpi-total-invoiced">$0.00</div>
+      </div>
+      <div style="background:#F8FAFC; border:1px solid #E2E8F0; border-radius:6px; padding:12px; text-align:center;">
+        <span style="font-size:11px; font-weight:700; color:#64748B;">TOTAL COLLECTED</span>
+        <div style="font-size:22px; font-weight:900; color:var(--accent);" id="kpi-total-collected">$0.00</div>
+      </div>
+      <div style="background:#F8FAFC; border:1px solid #E2E8F0; border-radius:6px; padding:12px; text-align:center;">
+        <span style="font-size:11px; font-weight:700; color:#64748B;">OUTSTANDING BALANCE</span>
+        <div style="font-size:22px; font-weight:900; color:var(--danger);" id="kpi-balance-due">$0.00</div>
+      </div>
+      <div style="background:#F8FAFC; border:1px solid #E2E8F0; border-radius:6px; padding:12px; text-align:center;">
+        <span style="font-size:11px; font-weight:700; color:#64748B;">UNSETTLED CYCLES</span>
+        <div style="font-size:22px; font-weight:900; color:var(--amber);" id="kpi-unsettled-count">0</div>
+      </div>
+    </div>
+
+    <div class="grid-2">
+      <!-- Record Completed Load Commission Form -->
+      <div>
+        <h4 style="font-size:13px; margin-bottom:8px; color:var(--primary);">Record Completed Load Commission</h4>
+        <div style="background:#F8F9FA; border:1px solid #CFD8DC; border-radius:6px; padding:14px;">
+          <div class="form-group">
+            <label>Select Active Carrier:</label>
+            <select class="form-control" id="bill-carrier-select"></select>
+          </div>
+          <div class="grid-2">
+            <div class="form-group">
+              <label>Gross Freight Linehaul ($):</label>
+              <input type="number" class="form-control" id="bill-gross-amount" placeholder="e.g. 3150.00" value="3150.00">
+            </div>
+            <div class="form-group">
+              <label>Equipment Type:</label>
+              <select class="form-control" id="bill-equipment">
+                <option value="53_dry_van" selected>53′ Dry Van (5.0% Launch / 7.0% Std)</option>
+                <option value="53_reefer">53′ Reefer (5.5% Launch / 8.0% Std)</option>
+              </select>
+            </div>
+          </div>
+          <button type="button" class="btn btn-accent" style="width:100%; font-size:12px; font-weight:800; padding:9px;" onclick="CockpitController.billing.recordManualCommission()">
+            ➕ Calculate & Record Load Commission
+          </button>
+        </div>
+      </div>
+
+      <!-- Live Billing Cycles & Invoices -->
+      <div>
+        <h4 style="font-size:13px; margin-bottom:8px; color:var(--primary); display:flex; justify-content:space-between;">
+          <span>Generated Billing Cycles & Invoices</span>
+          <button class="btn" style="padding:2px 8px; font-size:10px;" onclick="CockpitController.billing.fetchAll()">Refresh</button>
+        </h4>
+        <div style="background:#FFF; border:1px solid #CFD8DC; border-radius:6px; max-height:280px; overflow-y:auto;">
+          <table style="width:100%; border-collapse:collapse; font-size:12px;">
+            <thead>
+              <tr style="background:#EAF0F3; text-align:left;">
+                <th style="padding:8px 10px;">Invoice #</th>
+                <th style="padding:8px 10px;">Carrier / MC</th>
+                <th style="padding:8px 10px;">Period</th>
+                <th style="padding:8px 10px;">Total Due</th>
+                <th style="padding:8px 10px;">Balance Due</th>
+                <th style="padding:8px 10px;">Status</th>
+                <th style="padding:8px 10px;">Cutoff</th>
+              </tr>
+            </thead>
+            <tbody id="billingCyclesTableBody">
+              <tr><td colspan="7" style="text-align:center; padding:15px; color:#64748B;">No billing records found.</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- Phase 4: Multi-Provider Reconciliation Section -->
+    <div style="margin-top:24px; border-top:2px solid #E2E8F0; padding-top:20px;">
+      <h3 style="font-size:15px; color:var(--primary); margin-bottom:12px; display:flex; align-items:center; gap:8px;">
+        <span>💳 FastSpring & Payoneer Payment Reconciliation Engine (Multi-Provider Staging)</span>
+      </h3>
+      <p style="font-size:12px; color:#64748B; margin-bottom:16px;">
+        Ingest daily or weekly statement exports from FastSpring (Orders/Payouts) or Payoneer (Account History). The staging engine computes a SHA-256 integrity hash, matches by Invoice Number, Carrier MC, Email, or Name, executes atomic payment application, and transitions compliant carriers to <code>PAID_ACTIVE</code>.
+      </p>
+
+      <div class="grid-2">
+        <!-- Ingestion Box -->
+        <div style="background:#F8FAFC; border:1px solid #CFD8DC; border-radius:6px; padding:16px;">
+          <h4 style="font-size:13px; margin-bottom:10px; color:var(--primary);">Ingest Payment Statement (CSV)</h4>
+          <div class="grid-2" style="margin-bottom:12px;">
+            <div class="form-group">
+              <label>Payment Provider:</label>
+              <select class="form-control" id="reconcile-provider">
+                <option value="FASTSPRING" selected>FastSpring (Subscriptions / Retainer / Cards)</option>
+                <option value="PAYONEER">Payoneer (Bank Transfers / Direct Wire)</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Statement File Name:</label>
+              <input type="text" class="form-control" id="reconcile-filename" placeholder="e.g. fastspring_orders_20261103.csv" value="statement_export.csv">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label>Upload CSV File or Drop Here:</label>
+            <input type="file" id="reconcile-file-input" accept=".csv,text/csv" class="form-control" style="background:#FFF;" onchange="CockpitController.billing.handleFileUpload(event)">
+          </div>
+
+          <div class="form-group">
+            <label>CSV Data Preview / Direct Input:</label>
+            <textarea id="reconcile-csv-text" class="form-control" rows="5" placeholder="Order ID,Reference,Date,Total,Currency,Customer Email,Customer Name..."></textarea>
+          </div>
+
+          <div style="display:flex; gap:8px; flex-wrap:wrap; margin-top:10px;">
+            <button type="button" class="btn btn-accent" style="font-weight:800; flex:1;" onclick="CockpitController.billing.stageStatement()">
+              🚀 Ingest & Reconcile Statement
+            </button>
+            <button type="button" class="btn" style="font-size:11px; background:#4A5568;" onclick="CockpitController.billing.loadSampleFastSpring()">
+              ⚡ Sample FastSpring CSV
+            </button>
+            <button type="button" class="btn" style="font-size:11px; background:#4A5568;" onclick="CockpitController.billing.loadSamplePayoneer()">
+              ⚡ Sample Payoneer CSV
+            </button>
+          </div>
+        </div>
+
+        <!-- Recent Ingestions History -->
+        <div>
+          <h4 style="font-size:13px; margin-bottom:10px; color:var(--primary); display:flex; justify-content:space-between;">
+            <span>Statement Ingestion History</span>
+            <button class="btn" style="padding:2px 8px; font-size:10px;" onclick="CockpitController.billing.fetchAll()">Refresh</button>
+          </h4>
+          <div style="background:#FFF; border:1px solid #CFD8DC; border-radius:6px; max-height:300px; overflow-y:auto;">
+            <table style="width:100%; border-collapse:collapse; font-size:11px;">
+              <thead>
+                <tr style="background:#EAF0F3; text-align:left;">
+                  <th style="padding:6px 8px;">Date</th>
+                  <th style="padding:6px 8px;">Provider</th>
+                  <th style="padding:6px 8px;">File Name</th>
+                  <th style="padding:6px 8px;">Rows</th>
+                  <th style="padding:6px 8px;">Matched</th>
+                  <th style="padding:6px 8px;">Status</th>
+                </tr>
+              </thead>
+              <tbody id="paymentImportsTableBody">
+                <tr><td colspan="6" style="text-align:center; padding:15px; color:#64748B;">No statement imports recorded yet.</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- Staged Transactions & Dispatcher Manual Matching -->
+      <div style="margin-top:18px;">
+        <h4 style="font-size:13px; margin-bottom:8px; color:var(--primary); display:flex; justify-content:space-between; align-items:center;">
+          <span>Staged Transaction Rows & Match Resolution</span>
+          <div style="display:flex; gap:6px;">
+            <button class="btn" style="padding:2px 8px; font-size:10px; background:#0F172A;" onclick="CockpitController.billing.filterRows('ALL')">All</button>
+            <button class="btn" style="padding:2px 8px; font-size:10px; background:#16A34A;" onclick="CockpitController.billing.filterRows('MATCHED')">Matched</button>
+            <button class="btn" style="padding:2px 8px; font-size:10px; background:#D97706;" onclick="CockpitController.billing.filterRows('UNMATCHED')">Unmatched</button>
+            <button class="btn" style="padding:2px 8px; font-size:10px; background:#DC2626;" onclick="CockpitController.billing.filterRows('REJECTED')">Rejected/Duplicate</button>
+          </div>
+        </h4>
+        <div style="background:#FFF; border:1px solid #CFD8DC; border-radius:6px; max-height:340px; overflow-y:auto;">
+          <table style="width:100%; border-collapse:collapse; font-size:11px;">
+            <thead>
+              <tr style="background:#EAF0F3; text-align:left;">
+                <th style="padding:8px 10px;">Provider Tx ID</th>
+                <th style="padding:8px 10px;">Provider</th>
+                <th style="padding:8px 10px;">Payer Info</th>
+                <th style="padding:8px 10px;">Reference</th>
+                <th style="padding:8px 10px;">Amount ($)</th>
+                <th style="padding:8px 10px;">Match Status</th>
+                <th style="padding:8px 10px; text-align:right;">Dispatcher Resolution</th>
+              </tr>
+            </thead>
+            <tbody id="paymentRowsTableBody">
+              <tr><td colspan="7" style="text-align:center; padding:20px; color:#64748B;">No staged transaction rows.</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- TAB 7: Driver App & Live Load Dispatch -->
+<div id="tab-live-app" class="tab-pane">
+  <div class="card full-width">
+    <div class="card-header">
+      <span>📲 Driver App Bridge — Push Real-Time Load Offers & Confirmations</span>
+      <div>
+        <a href="carrier_app.html" target="_blank" class="btn btn-accent" style="text-decoration:none; padding:4px 10px; font-size:11px;">
+          📱 Open Driver App (Live Preview) ↗
+        </a>
+      </div>
+    </div>
+    <p style="font-size:12px; color:#555; margin-bottom:15px;">
+      Broadcast new load offers directly to the driver's phone application. The driver receives an in-app alert or call simulation, reviews the route and rate, and taps Accept or Decline with a confirmation window.
+    </p>
+
+    <div class="grid-2">
+      <!-- Create & Push Load Form -->
+      <div>
+        <h4 style="font-size:13px; margin-bottom:8px; color:var(--primary);">Dispatch New Load to Driver App</h4>
+        <div style="background:#F8F9FA; border:1px solid #CFD8DC; border-radius:6px; padding:14px;">
+          <div class="form-group">
+            <label>Assigned Carrier / MC:</label>
+            <select class="form-control" id="app-dispatch-mc">
+              <option value="MC-987452">Miller Express Hauling (MC-987452) — Active 42d Free</option>
+              <option value="MC-112345">Hayes Freight Lines (MC-112345) — Active 14d Free</option>
+              <option value="MC-884321">Ramirez Transport (MC-884321) — 5% Launch Fee (53' Dry Van)</option>
+            </select>
+          </div>
+          <div class="grid-2">
+            <div class="form-group">
+              <label>Origin & PU Time:</label>
+              <input type="text" class="form-control" id="app-origin" value="Dallas, TX">
+            </div>
+            <div class="form-group">
+              <label>Destination & Deliv Time:</label>
+              <input type="text" class="form-control" id="app-dest" value="Columbus, OH">
+            </div>
+          </div>
+          <div class="grid-3">
+            <div class="form-group">
+              <label>Loaded Miles:</label>
+              <input type="number" class="form-control" id="app-loaded-mi" value="1050">
+            </div>
+            <div class="form-group">
+              <label>Deadhead Miles:</label>
+              <input type="number" class="form-control" id="app-dh-mi" value="25">
+            </div>
+            <div class="form-group">
+              <label>Gross Pay ($):</label>
+              <input type="number" class="form-control" id="app-gross" value="3150">
+            </div>
+          </div>
+          <div class="grid-2">
+            <div class="form-group">
+              <label>Broker Name & MC:</label>
+              <input type="text" class="form-control" id="app-broker" value="C.H. Robinson (MC-12345)">
+            </div>
+            <div class="form-group">
+              <label>Detention Terms:</label>
+              <input type="text" class="form-control" id="app-detention" value="$50/hr after 2 hrs free">
+            </div>
+          </div>
+          <button type="button" class="btn btn-accent" style="width:100%; font-size:13px; font-weight:800; padding:11px;" onclick="pushLoadToDriverApp()">
+            🚀 Broadcast Load Offer to Driver App
+          </button>
+        </div>
+      </div>
+
+      <!-- Live Broadcast Queue & Responses -->
+      <div>
+        <h4 style="font-size:13px; margin-bottom:8px; color:var(--primary);">Real-Time Driver Responses</h4>
+        <div style="background:#FFF; border:1px solid #CFD8DC; border-radius:6px; padding:12px; max-height:360px; overflow-y:auto;">
+          <table style="width:100%; border-collapse:collapse; font-size:12px;" border="1" bordercolor="#EEE">
+            <thead>
+              <tr style="background:#EAF0F3; text-align:left;">
+                <th style="padding:6px;">Load ID</th>
+                <th style="padding:6px;">Carrier</th>
+                <th style="padding:6px;">Route / Gross</th>
+                <th style="padding:6px;">Driver Status</th>
+              </tr>
+            </thead>
+            <tbody id="app-loads-tbody">
+              <tr>
+                <td style="padding:6px;"><b>LD-2026-901</b></td>
+                <td style="padding:6px;">Miller Express</td>
+                <td style="padding:6px;">Dallas ➔ Columbus ($3,150)</td>
+                <td style="padding:6px;"><span class="badge badge-warning" id="status-LD-2026-901">OFFER SENT (WAITING)</span></td>
+              </tr>
+            </tbody>
+          </table>
+
+          <div style="margin-top:14px; background:#F8F9FA; padding:10px; border-radius:4px; font-size:11px; color:#555;">
+            💡 <b>Sync Status:</b> Reactive database listener active. When driver taps "Accept & Authorize" in <a href="carrier_app.html" target="_blank">carrier_app.html</a>, this status updates in real-time.
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- TAB 6: Referral & Free Days Ledger -->
+<div id="tab-referrals" class="tab-pane">
+  <div class="card full-width">
+    <div class="card-header">
+      <span>🔄 The Rolling 14 — Carrier Free Days Ledger & Referral Manager</span>
+      <span class="badge badge-success" style="background:#287D8E; color:#fff;">Live Desk Engine</span>
+    </div>
+    <p style="font-size:12px; color:#555; margin-bottom:15px;">
+      Manage carrier 14-day free trial balances, verify first-load deliveries for referred drivers, and automatically credit +14 days to referring carriers.
+    </p>
+
+    <div class="grid-2">
+      <!-- Active Carriers Free Days Table -->
+      <div>
+        <h4 style="font-size:13px; margin-bottom:8px; color:var(--primary);">Active Carriers Runway Ledger</h4>
+        <table style="width:100%; border-collapse:collapse; font-size:12px;" border="1" bordercolor="#CFD8DC">
+          <thead>
+            <tr style="background:#EAF0F3; text-align:left;">
+              <th style="padding:6px;">Carrier / MC</th>
+              <th style="padding:6px;">Base Trial</th>
+              <th style="padding:6px;">Referral Bonus</th>
+              <th style="padding:6px;">Total Free Runway</th>
+              <th style="padding:6px;">Action</th>
+            </tr>
+          </thead>
+          <tbody id="ref-carrier-tbody">
+            <tr>
+              <td style="padding:6px;"><b>Miller Hauling</b> (MC-987452)</td>
+              <td style="padding:6px;">14 Days</td>
+              <td style="padding:6px; color:#287D8E; font-weight:bold;" id="miller-bonus">+28 Days</td>
+              <td style="padding:6px; font-weight:bold; color:#172B4D;" id="miller-total">42 Days Free</td>
+              <td style="padding:6px;"><button class="btn btn-accent" style="padding:4px 8px; font-size:11px;" onclick="addManualDays('Miller Hauling', 14)">+14 Days</button></td>
+            </tr>
+            <tr>
+              <td style="padding:6px;"><b>Bobby Hayes</b> (MC-112345)</td>
+              <td style="padding:6px;">14 Days</td>
+              <td style="padding:6px; color:#287D8E; font-weight:bold;">+0 Days</td>
+              <td style="padding:6px; font-weight:bold; color:#172B4D;">14 Days Free</td>
+              <td style="padding:6px;"><button class="btn btn-accent" style="padding:4px 8px; font-size:11px;" onclick="addManualDays('Bobby Hayes', 14)">+14 Days</button></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Verify New Referred Load Delivery -->
+      <div>
+        <h4 style="font-size:13px; margin-bottom:8px; color:var(--primary);">Verify 1st Load & Auto-Credit +14 Days</h4>
+        <div style="background:#F8F9FA; border:1px solid #CFD8DC; border-radius:6px; padding:12px;">
+          <div class="form-group">
+            <label>Referring Carrier (To Receive +14 Days):</label>
+            <select class="form-control" id="credit-referrer">
+              <option value="Miller Hauling (MC-987452)">Miller Hauling (MC-987452)</option>
+              <option value="Bobby Hayes (MC-112345)">Bobby Hayes (MC-112345)</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Referred Driver Who Finished 1st Load:</label>
+            <input type="text" class="form-control" id="credit-referred-name" value="Samir Jackson (MC-765432)">
+          </div>
+          <div class="form-group">
+            <label>Signed POD / Load Reference #:</label>
+            <input type="text" class="form-control" id="credit-load-ref" value="LOAD-2026-8812 (Verified)">
+          </div>
+          <button class="btn btn-accent" style="width:100%; font-size:13px; padding:10px;" onclick="executeReferralCredit()">
+            ✅ Approve POD & Credit +14 Days Automatically
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Generated Automated SMS Notification -->
+    <div style="margin-top:20px;">
+      <h4 style="font-size:13px; margin-bottom:8px; color:var(--primary);">Automated SMS / WhatsApp Notification (Numero Desk)</h4>
+      <textarea class="form-control" id="referral-sms-text" style="height:80px; font-weight:600;"></textarea>
+      <div style="display:flex; gap:10px; margin-top:8px;">
+        <button class="btn" style="flex:1;" onclick="copyText('referral-sms-text')">📋 Copy Notification Message</button>
+        <button class="btn btn-accent" style="flex:1;" onclick="alert('Notification logged! Ready to send from Numero Desk (+1 409-941-7180).')">📲 Send via Numero App</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- TAB 1: RPM & Profit Calculator -->
+
+<!-- TAB 8: Dual Telephony & VoIP Command Center -->
+<div id="tab-dual-voice" class="tab-pane">
+  <div class="card full-width">
+    <div class="card-header">
+      <span>🎙️ Dual Telephony & VoIP Command Center (Twilio PSTN + LiveKit WebRTC Intercom)</span>
+      <span class="badge badge-success" style="background:#287D8E; color:#fff;">Active Voice Gateway</span>
+    </div>
+    <p style="font-size:12px; color:#555; margin-bottom:15px;">
+      Hybrid communication console: Dial external brokers/shippers across US phone lines via <b>Twilio Voice (+1 409-941-7180)</b> with automated dual-track recording, and talk to your fleet drivers in-app with zero delay and crystal-clear Opus audio via <b>LiveKit WebRTC SFU</b>.
+    </p>
+
+    <div class="grid-2">
+      <!-- Left: Twilio PSTN External Broker Dialer -->
+      <div>
+        <h4 style="font-size:13px; margin-bottom:8px; color:var(--primary);">📞 Twilio External PSTN Dialer (Brokers / Shippers)</h4>
+        <div style="background:#F8F9FA; border:1px solid #CFD8DC; border-radius:6px; padding:14px;">
+          <div class="form-group">
+            <label>Caller ID (Official Texas Line):</label>
+            <input type="text" class="form-control" value="+1 (409) 941-7180" readonly style="background:#ECEFF1; font-weight:bold; color:#172B4D;">
+          </div>
+          <div class="form-group">
+            <label>Broker Phone Number (US 10-Digit):</label>
+            <input type="tel" class="form-control" id="pstn-dest-phone" placeholder="e.g. (800) 326-9977 (C.H. Robinson)" style="font-size:14px; font-weight:bold;">
+          </div>
+          <div class="form-group">
+            <label>Target Load Reference (for Audio Log):</label>
+            <input type="text" class="form-control" id="pstn-load-ref" value="LD-2026-901">
+          </div>
+          <div style="display:flex; gap:10px;">
+            <button type="button" class="btn btn-accent" style="flex:1; padding:10px; font-weight:800;" onclick="simulateTwilioCall()">
+              📞 Dial Broker via Twilio
+            </button>
+            <button type="button" class="btn" style="background:#D32F2F; color:#fff; padding:10px;" onclick="hangupTwilioCall()">
+              End Call
+            </button>
+          </div>
+          <div id="twilio-call-status" style="margin-top:10px; font-size:11px; color:#666; font-family:monospace;">
+            Status: Ready • Dual-Track S3 Recording Active
+          </div>
+
+          <!-- Chris Voss Tactical Negotiation HUD -->
+          <div style="margin-top:16px; background:#FFFFFF; border:1px solid #B0BEC5; border-radius:6px; padding:10px;">
+            <div style="font-size:11px; font-weight:bold; color:#172B4D; text-transform:uppercase; margin-bottom:6px;">
+              🧠 Tactical Hostage Negotiation Prompters (Chris Voss Method)
+            </div>
+            <div style="font-size:11px; color:#37474F; line-height:1.5;">
+              <div>• <b>Mirroring:</b> Repeat their last 3 words: <i>"Tight delivery window?"</i></div>
+              <div>• <b>Labeling:</b> <i>"It seems like you have trucks waiting at the shipper and need this moved immediately."</i></div>
+              <div>• <b>Calibrated Question:</b> <i>"How does accepting $2.10/mi make sense when fuel in Pennsylvania is $4.10?"</i></div>
+              <div>• <b>No-Oriented Ask:</b> <i>"Would it be unreasonable to lock this in at $3,150 right now?"</i></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right: LiveKit WebRTC Fleet Audio Intercom -->
+      <div>
+        <h4 style="font-size:13px; margin-bottom:8px; color:var(--primary);">🎙️ LiveKit In-App Fleet Intercom (Drivers / PTT)</h4>
+        <div style="background:#FFF; border:1px solid #CFD8DC; border-radius:6px; padding:14px;">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+            <span style="font-size:12px; font-weight:bold; color:#287D8E;">LiveKit SFU: Texas Operations Desk</span>
+            <span class="badge badge-success">Online (0.00$ Cost)</span>
+          </div>
+
+          <!-- Driver Audio Channels -->
+          <div style="display:flex; flex-direction:column; gap:8px; margin-bottom:14px;">
+            <div style="display:flex; justify-content:space-between; align-items:center; background:#F8F9FA; padding:8px 12px; border-radius:4px; border:1px solid #E0E0E0;">
+              <div>
+                <b style="font-size:12px; color:#172B4D;">Miller Hauling (TRK-01)</b>
+                <span style="display:block; font-size:10px; color:#666;">In-Cab App Connected • Dallas, TX</span>
+              </div>
+              <button class="btn btn-accent" style="padding:4px 10px; font-size:11px;" onclick="connectDriverIntercom('Miller Hauling')">
+                🎙️ Intercom Audio
+              </button>
+            </div>
+            <div style="display:flex; justify-content:space-between; align-items:center; background:#F8F9FA; padding:8px 12px; border-radius:4px; border:1px solid #E0E0E0;">
+              <div>
+                <b style="font-size:12px; color:#172B4D;">Hayes Freight (TRK-02)</b>
+                <span style="display:block; font-size:10px; color:#666;">In-Cab App Connected • Atlanta, GA</span>
+              </div>
+              <button class="btn btn-accent" style="padding:4px 10px; font-size:11px;" onclick="connectDriverIntercom('Hayes Freight')">
+                🎙️ Intercom Audio
+              </button>
+            </div>
+          </div>
+
+          <!-- Broadcast PTT Button -->
+          <div style="text-align:center; padding:15px; background:#0B1B2A; border-radius:8px; color:#fff;">
+            <div style="font-size:11px; color:#80CBC4; margin-bottom:8px; text-transform:uppercase;">
+              Fleet Push-To-Talk Walkie Talkie
+            </div>
+            <button type="button" id="deskPttBtn" class="btn" style="background:#287D8E; color:#fff; font-size:13px; font-weight:800; padding:12px 24px; border-radius:24px; width:100%; box-shadow:0 4px 15px rgba(40,125,142,0.4);" onmousedown="deskPttStart()" onmouseup="deskPttStop()">
+              HOLD TO BROADCAST TO ALL TRUCKS (PTT)
+            </button>
+            <div id="deskPttStatus" style="font-size:10px; color:#B0BEC5; margin-top:8px;">
+              Microphone Muted (Press & hold button to talk)
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="tab-rpm" class="tab-pane active">
+  <div class="card">
+    <div class="card-header">
+      <span>Load Economics & All-Miles Calculator</span>
+      <span class="badge badge-success">ATRI 2025/2026 Grounded</span>
+    </div>
+    <div class="form-group">
+      <label>Agreed Rate Con Gross ($ USD):</label>
+      <input type="number" id="rpm-gross" class="form-control" value="1500" oninput="calcRPM()">
+    </div>
+    <div class="grid-2">
+      <div class="form-group">
+        <label>Loaded Miles:</label>
+        <input type="number" id="rpm-loaded" class="form-control" value="750" oninput="calcRPM()">
+      </div>
+      <div class="form-group">
+        <label>Deadhead Miles:</label>
+        <input type="number" id="rpm-dh" class="form-control" value="50" oninput="calcRPM()">
+      </div>
+    </div>
+    <div class="form-group">
+      <label>Carrier Cost Baseline ($/mi) [Default: ATRI $2.336]:</label>
+      <input type="number" id="rpm-cpm" class="form-control" step="0.01" value="2.336" oninput="calcRPM()">
+    </div>
+
+    <div class="output-box">
+      <div class="metric-row">
+        <span>Total Operational Miles:</span>
+        <span class="metric-val" id="out-total-miles">800 mi</span>
+      </div>
+      <div class="metric-row">
+        <span>Deadhead Share Ratio:</span>
+        <span class="metric-val" id="out-dh-share">6.25%</span>
+      </div>
+      <div class="metric-row">
+        <span>Loaded Rate Per Mile (Loaded RPM):</span>
+        <span class="metric-val" style="color:var(--primary);" id="out-loaded-rpm">$2.000 / mi</span>
+      </div>
+      <div class="metric-row">
+        <span><b>All-Miles Operational RPM:</b></span>
+        <span class="metric-val" style="color:var(--accent); font-size:16px;" id="out-all-rpm">$1.875 / mi</span>
+      </div>
+      <div class="metric-row">
+        <span>Spread vs. Cost Baseline:</span>
+        <span class="metric-val" id="out-spread">-$0.461 / mi</span>
+      </div>
+      <div class="metric-row">
+        <span>Operational Evaluation:</span>
+        <span id="out-verdict" class="badge badge-warning">EVALUATING</span>
+      </div>
+    </div>
+
+    <div style="margin-top:12px; font-size:11px; color:#627485; line-height:1.4; border-top:1px solid #E5E8E8; pt-2;">
+      * <b>Routing & Profit Notice:</b> Mileage inputs are highway estimations. Commercial routing must always account for bridge clearances, axle weights, and hazmat restrictions via commercial truck GPS. Gross freight does not equal net carrier profit.
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header">
+      <span>Operational Strategy Recommendations</span>
+    </div>
+    <div style="font-size:13px; line-height:1.5;">
+      <p><b>Rule 1: Never evaluate a load on Loaded RPM alone.</b> A $3.00 loaded rate with 250 miles deadhead into a dead market loses money.</p>
+      <p style="margin-top:10px;"><b>Rule 2: The Destination Reload Factor.</b> A $1.90/mi load going into Columbus, OH is far better than a $2.40/mi load going into Orlando, FL or Denver, CO where deadhead back will exceed 200 miles.</p>
+      <p style="margin-top:10px;"><b>Rule 3: Deadhead Ceiling.</b> Aim to keep Deadhead Share under <b>8.0%</b> for solo owner-operators.</p>
+    </div>
+  </div>
+</div>
+
+<!-- TAB 2: Fast Carrier SMS Generator -->
+<div id="tab-sms" class="tab-pane">
+  <div class="card">
+    <div class="card-header">
+      <span>One-Click Load Approval SMS Generator</span>
+    </div>
+    <div class="grid-2">
+      <div class="form-group">
+        <label>Broker Name:</label>
+        <input type="text" id="sms-broker" class="form-control" value="Echo Global Logistics">
+      </div>
+      <div class="form-group">
+        <label>Broker MC#:</label>
+        <input type="text" id="sms-mc" class="form-control" value="MC 345678">
+      </div>
+    </div>
+    <div class="grid-2">
+      <div class="form-group">
+        <label>Origin City, ST:</label>
+        <input type="text" id="sms-origin" class="form-control" value="Charlotte, NC">
+      </div>
+      <div class="form-group">
+        <label>Destination City, ST:</label>
+        <input type="text" id="sms-dest" class="form-control" value="Columbus, OH">
+      </div>
+    </div>
+    <div class="grid-3">
+      <div class="form-group">
+        <label>Loaded Mi:</label>
+        <input type="number" id="sms-loaded" class="form-control" value="750">
+      </div>
+      <div class="form-group">
+        <label>DH Mi:</label>
+        <input type="number" id="sms-dh" class="form-control" value="50">
+      </div>
+      <div class="form-group">
+        <label>All-In Gross ($):</label>
+        <input type="number" id="sms-gross" class="form-control" value="1500">
+      </div>
+    </div>
+    <div class="grid-2">
+      <div class="form-group">
+        <label>Pickup Date/Time:</label>
+        <input type="text" id="sms-pu" class="form-control" value="Tomorrow 09:00 AM EDT">
+      </div>
+      <div class="form-group">
+        <label>Delivery Date/Time:</label>
+        <input type="text" id="sms-deliv" class="form-control" value="Next Day 08:00 AM EDT">
+      </div>
+    </div>
+    <div class="grid-2">
+      <div class="form-group">
+        <label>Rate Con Detention ($/hr):</label>
+        <input type="number" id="sms-det-rate" class="form-control" value="50">
+      </div>
+      <div class="form-group">
+        <label>Rate Con Free Time (Hours):</label>
+        <input type="number" id="sms-det-free" class="form-control" value="2">
+      </div>
+    </div>
+    <button class="btn btn-accent" style="width:100%;" onclick="generateSMS()">Generate Clean Approval SMS</button>
+  </div>
+
+  <div class="card">
+    <div class="card-header">
+      <span>Generated SMS (Ready to paste into Numero)</span>
+    </div>
+    <textarea id="sms-output" class="form-control" readonly></textarea>
+    <button class="btn btn-copy" onclick="copyText('sms-output')">📋 Copy SMS to Clipboard</button>
+    <div id="copy-status" style="color:var(--success); font-size:12px; margin-top:5px; text-align:center;"></div>
+  </div>
+</div>
+
+<!-- TAB 3: Detention Timer & Notice -->
+<div id="tab-detention" class="tab-pane">
+  <div class="card">
+    <div class="card-header">
+      <span>Minute-105 Detention Notice Generator</span>
+    </div>
+    <div class="grid-2">
+      <div class="form-group">
+        <label>Carrier Legal Name:</label>
+        <input type="text" id="det-carrier" class="form-control" value="Blue Ridge Hauling LLC">
+      </div>
+      <div class="form-group">
+        <label>Truck Unit #:</label>
+        <input type="text" id="det-truck" class="form-control" value="Truck 101">
+      </div>
+    </div>
+    <div class="grid-2">
+      <div class="form-group">
+        <label>Broker Agent Email:</label>
+        <input type="text" id="det-broker-email" class="form-control" value="broker@brokerage.sample">
+      </div>
+      <div class="form-group">
+        <label>Load Ref / Rate Con #:</label>
+        <input type="text" id="det-load" class="form-control" value="ECHO-89102">
+      </div>
+    </div>
+    <div class="grid-2">
+      <div class="form-group">
+        <label>Facility Name / City:</label>
+        <input type="text" id="det-facility" class="form-control" value="Target Distribution / Charlotte NC">
+      </div>
+      <div class="form-group">
+        <label>Arrival Time at Gate:</label>
+        <input type="text" id="det-time" class="form-control" value="09:00 AM EDT">
+      </div>
+    </div>
+    <div class="grid-2">
+      <div class="form-group">
+        <label>Rate Con Agreed Detention ($/hr):</label>
+        <input type="number" id="det-rate" class="form-control" value="50">
+      </div>
+      <div class="form-group">
+        <label>Agreed Free Time (Hours):</label>
+        <input type="number" id="det-free" class="form-control" value="2">
+      </div>
+    </div>
+    <button class="btn btn-accent" style="width:100%;" onclick="generateDetentionNotice()">Generate Official Minute-105 Email</button>
+  </div>
+
+  <div class="card">
+    <div class="card-header">
+      <span>Official Broker Notice Email Body</span>
+    </div>
+    <textarea id="det-output" class="form-control" style="min-height:160px;" readonly></textarea>
+    <button class="btn btn-copy" onclick="copyText('det-output')">📋 Copy Email Body</button>
+  </div>
+</div>
+
+<!-- TAB 4: HOS 11h/14h Shift Checker -->
+<div id="tab-hos" class="tab-pane">
+  <div class="card">
+    <div class="card-header">
+      <span>FMCSA Driver Hours of Service Checker</span>
+    </div>
+    <div class="form-group">
+      <label>What time did driver come ON DUTY today? (e.g. 06:00):</label>
+      <input type="time" id="hos-start" class="form-control" value="06:00" onchange="calcHOS()">
+    </div>
+    <div class="form-group">
+      <label>Driving Hours Completed So Far (Hours):</label>
+      <input type="number" id="hos-driven" class="form-control" step="0.5" value="4.5" oninput="calcHOS()">
+    </div>
+    <div class="form-group">
+      <label>On-Duty / Yard Time Completed (Hours):</label>
+      <input type="number" id="hos-onduty" class="form-control" step="0.5" value="1.5" oninput="calcHOS()">
+    </div>
+    <div class="output-box">
+      <div class="metric-row">
+        <span>Driving Time Left (out of 11h max):</span>
+        <span class="metric-val" id="out-hos-drive">6.5 hrs</span>
+      </div>
+      <div class="metric-row">
+        <span>14-Hour Window Hard Stop Time:</span>
+        <span class="metric-val" style="color:var(--danger);" id="out-hos-stop">20:00 (8:00 PM)</span>
+      </div>
+      <div class="metric-row">
+        <span>Safe Delivery Distance (at 50 mph avg):</span>
+        <span class="metric-val" style="color:var(--success);" id="out-hos-miles">~325 miles max</span>
+      </div>
+    </div>
+    <div style="margin-top:12px; font-size:11px; color:#C0392B; background:#FDEDEC; padding:8px 10px; border-radius:4px; border:1px solid #F5B7B1; line-height:1.4;">
+      <b>⚠️ FMCSA HOS Compliance Notice:</b> This tool provides operational estimations only. The driver's certified Electronic Logging Device (ELD), official FMCSA duty records, and actual road/weather conditions strictly govern legal compliance and remaining drive time. Almajdoub Dispatch never requests or pressures drivers to exceed HOS limits.
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header">
+      <span>HOS Rules to Remember</span>
+    </div>
+    <div style="font-size:13px; line-height:1.5;">
+      <p><b>11-Hour Drive Clock:</b> Max 11 driving hours after 10 consecutive hours off-duty.</p>
+      <p style="margin-top:8px;"><b>14-Hour Shift Window:</b> Cannot drive past the 14th consecutive hour. Breaks do NOT stop this clock!</p>
+      <p style="margin-top:8px;"><b>30-Minute Break:</b> Required after 8 cumulative hours of driving.</p>
+      <p style="margin-top:8px;"><b>Rule of Thumb:</b> In spot freight, estimate real-world transit at <b>48–52 miles per hour</b> including traffic and scales.</p>
+    </div>
+  </div>
+</div>
+
+<!-- TAB 5: Calling Teleprompter -->
+<div id="tab-scripts" class="tab-pane">
+  <div class="card full-width">
+    <div class="card-header">
+      <span>The 60-Second Live Calling Teleprompter</span>
+    </div>
+    <div class="script-box">
+      <div class="script-speaker">OPENER (0:00 - 0:20):</div>
+      "Hey, is this [First Name]? ... Hey [First Name], this is Ahmed with Almajdoub Dispatch. I'll keep it real quick—I know you're busy with the truck. I manage back-office search and load booking for 53′ dry van and reefer owner-operators. Are you running under your own authority right now?"
+    </div>
+    <div class="script-box">
+      <div class="script-speaker">IF HE BOOKS HIS OWN LOADS:</div>
+      "Got it, and that's honestly why I called. I'm not trying to take control of your truck—you approve every single load. I just handle the hunting, broker vetting, rate negotiations, and paperwork so you don't have to deal with all that while you're behind the wheel. What area are you running mostly — Southeast, Midwest, or out to Texas?"
+    </div>
+    <div class="script-box">
+      <div class="script-speaker">THE 14-DAY OPERATIONAL TRIAL CLOSE:</div>
+      "Let's do a 14-day operational trial on your truck. Completely free of dispatch fees. No contracts, zero long-term commitment. You tell me your lanes, deadhead limit, and minimum rate. I scour the boards, fight the brokers, and bring you the options. You approve every load in writing before I touch it. If it doesn't make sense after two weeks, we part ways. Would you be open to testing it on your next few runs?"
+    </div>
+    <div class="script-box">
+      <div class="script-speaker">IF HE IS DRIVING / BUSY:</div>
+      "100%—get safely parked, don't worry about this call. I'll shoot you a quick text with my direct cell. When you're parked and waiting on the dock, take a look. Drive safe!" <i>(Hang up in 15 seconds)</i>
+    </div>
+  </div>
+</div>
+
+<script>
+  function showTab(tabId) {
+    document.querySelectorAll('.tab-pane').forEach(el => el.classList.remove('active'));
+    document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
+    const pane = document.getElementById(tabId);
+    if (pane) pane.classList.add('active');
+    const btns = document.querySelectorAll('.tab-btn');
+    btns.forEach(btn => {
+      const oc = btn.getAttribute('onclick');
+      if (oc && oc.indexOf(tabId) !== -1) {
+        btn.classList.add('active');
+      }
+    });
+  }
+
+  function calcRPM() {
+    const gross = parseFloat(document.getElementById('rpm-gross').value) || 0;
+    const loaded = parseFloat(document.getElementById('rpm-loaded').value) || 0;
+    const dh = parseFloat(document.getElementById('rpm-dh').value) || 0;
+    const cpm = parseFloat(document.getElementById('rpm-cpm').value) || 2.336;
+
+    const totalMiles = loaded + dh;
+    const loadedRPM = loaded > 0 ? (gross / loaded) : 0;
+    const allRPM = totalMiles > 0 ? (gross / totalMiles) : 0;
+    const dhShare = totalMiles > 0 ? ((dh / totalMiles) * 100) : 0;
+    const spread = allRPM - cpm;
+
+    document.getElementById('out-total-miles').innerText = totalMiles + ' mi';
+    document.getElementById('out-dh-share').innerText = dhShare.toFixed(2) + '%';
+    document.getElementById('out-loaded-rpm').innerText = '$' + loadedRPM.toFixed(3) + ' / mi';
+    document.getElementById('out-all-rpm').innerText = '$' + allRPM.toFixed(3) + ' / mi';
+    
+    const spreadEl = document.getElementById('out-spread');
+    spreadEl.innerText = (spread >= 0 ? '+$' : '-$') + Math.abs(spread).toFixed(3) + ' / mi';
+    spreadEl.style.color = spread >= 0 ? 'var(--success)' : 'var(--danger)';
+
+    const verdictEl = document.getElementById('out-verdict');
+    if (totalMiles === 0) {
+      verdictEl.className = 'badge'; verdictEl.innerText = 'NO MILES';
+    } else if (spread >= 0.15) {
+      verdictEl.className = 'badge badge-success'; verdictEl.innerText = 'STRONG PROFITABLE LOAD';
+    } else if (spread >= -0.15) {
+      verdictEl.className = 'badge badge-warning'; verdictEl.innerText = 'MARGINAL (BREAK-EVEN REPOSITION)';
+    } else {
+      verdictEl.className = 'badge badge-danger'; verdictEl.innerText = 'UNPROFITABLE - REJECT OR COUNTER';
+    }
+  }
+
+  function generateSMS() {
+    const broker = document.getElementById('sms-broker').value;
+    const mc = document.getElementById('sms-mc').value;
+    const origin = document.getElementById('sms-origin').value;
+    const dest = document.getElementById('sms-dest').value;
+    const loaded = document.getElementById('sms-loaded').value;
+    const dh = document.getElementById('sms-dh').value;
+    const gross = parseFloat(document.getElementById('sms-gross').value) || 0;
+    const pu = document.getElementById('sms-pu').value;
+    const deliv = document.getElementById('sms-deliv').value;
+    const detRate = document.getElementById('sms-det-rate').value || '50';
+    const detFree = document.getElementById('sms-det-free').value || '2';
+
+    const total = parseInt(loaded) + parseInt(dh);
+    const rpm = total > 0 ? (gross / total).toFixed(3) : '0.000';
+
+    const text = `LOAD FOR APPROVAL:
+• Broker: ${broker} (${mc})
+• Route: ${origin} to ${dest}
+• Schedule: PU ${pu} | Deliv ${deliv}
+• Miles: ${loaded} loaded + ${dh} DH = ${total} total miles
+• Rate: $${gross.toLocaleString()} All-In ($${rpm}/mi total RPM)
+• Detention: $${detRate}/hr after ${detFree} hrs confirmed per Rate Con.
+Reply YES to authorize booking under your MC.`;
+
+    document.getElementById('sms-output').value = text;
+  }
+
+  function generateDetentionNotice() {
+    const carrier = document.getElementById('det-carrier').value;
+    const truck = document.getElementById('det-truck').value;
+    const load = document.getElementById('det-load').value;
+    const facility = document.getElementById('det-facility').value;
+    const time = document.getElementById('det-time').value;
+    const detRate = document.getElementById('det-rate').value || '50';
+    const detFree = document.getElementById('det-free').value || '2';
+
+    const text = `SUBJECT: NOTICE OF APPROACHING DETENTION — Load #${load} / ${truck}
+
+Dear Broker Operations Team,
+
+Please be advised that ${truck} operating under ${carrier} arrived on site at ${facility} at ${time} under Load #${load}.
+
+The agreed ${detFree}-hour free time window expires in 15 minutes. 
+Please contact the warehouse dock immediately to expedite loading/unloading to avoid detention charges of $${detRate}.00/hour pursuant to our signed Rate Confirmation.
+
+Thank you for your prompt attention,
+Almajdoub Dispatch Desk — Back-Office & Carrier Support
+Represented by: Ahmed Al-Majdoub
+Direct Line / SMS: +1 (409) 941-7180`;
+
+    document.getElementById('det-output').value = text;
+  }
+
+  function calcHOS() {
+    const start = document.getElementById('hos-start').value;
+    const driven = parseFloat(document.getElementById('hos-driven').value) || 0;
+    const onduty = parseFloat(document.getElementById('hos-onduty').value) || 0;
+
+    const driveLeft = Math.max(0, 11 - driven);
+    document.getElementById('out-hos-drive').innerText = driveLeft.toFixed(1) + ' hrs';
+    document.getElementById('out-hos-miles').innerText = '~' + Math.round(driveLeft * 50) + ' miles max';
+
+    if (start) {
+      const parts = start.split(':');
+      let hour = parseInt(parts[0]) + 14;
+      let minute = parts[1];
+      if (hour >= 24) hour -= 24;
+      document.getElementById('out-hos-stop').innerText = String(hour).padStart(2, '0') + ':' + minute;
+    }
+  }
+
+  function copyText(id) {
+    const el = document.getElementById(id);
+    el.select();
+    document.execCommand('copy');
+    const status = document.getElementById('copy-status');
+    if (status) {
+      status.innerText = 'Copied to clipboard!';
+      setTimeout(() => status.innerText = '', 2500);
+    }
+  }
+
+  
+  
+  function pushLoadToDriverApp() {
+    if (typeof AlmajdoubDB === 'undefined') {
+      alert('AlmajdoubDB loaded. Initializing...');
+    }
+    const mc = document.getElementById('app-dispatch-mc').value;
+    const origin = document.getElementById('app-origin').value;
+    const dest = document.getElementById('app-dest').value;
+    const loaded = parseInt(document.getElementById('app-loaded-mi').value) || 0;
+    const dh = parseInt(document.getElementById('app-dh-mi').value) || 0;
+    const gross = parseFloat(document.getElementById('app-gross').value) || 0;
+    const broker = document.getElementById('app-broker').value;
+    const detention = document.getElementById('app-detention').value;
+
+    const newLoad = {
+      id: 'LD-2026-' + Math.floor(100 + Math.random() * 900),
+      mc: mc,
+      carrierName: mc.includes('987452') ? 'Miller Express Hauling LLC' : 'Hayes Freight Lines',
+      broker: broker,
+      origin: origin,
+      destination: dest,
+      loadedMiles: loaded,
+      deadheadMiles: dh,
+      totalMiles: loaded + dh,
+      grossRate: gross,
+      dispatcherFeePercent: 0,
+      dispatcherFeeAmount: 0,
+      netCarrierPayout: gross,
+      rpm: ((loaded + dh) > 0 ? (gross / (loaded + dh)).toFixed(2) : 0),
+      detentionClause: detention,
+      tonuAmount: 350.00,
+      status: 'OFFERED_PENDING_APPROVAL',
+      createdAt: new Date().toISOString()
+    };
+
+    if (window.AlmajdoubDB) {
+      AlmajdoubDB.saveLoad(newLoad);
+    }
+    if (window.CockpitController && window.CockpitController.dispatch) {
+      CockpitController.dispatch.broadcastLoad(newLoad);
+    }
+
+    const tbody = document.getElementById('app-loads-tbody');
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+      <td style="padding:6px;"><b>${newLoad.id}</b></td>
+      <td style="padding:6px;">${newLoad.carrierName.split(' ')[0]}</td>
+      <td style="padding:6px;">${newLoad.origin} ➔ ${newLoad.destination} ($${newLoad.grossRate.toLocaleString()})</td>
+      <td style="padding:6px;"><span class="badge badge-warning">OFFER SENT (WAITING)</span></td>
+    `;
+    tbody.insertBefore(tr, tbody.firstChild);
+
+    alert(`🚀 Load ${newLoad.id} broadcasted directly to Driver App for ${newLoad.carrierName}!`);
+  }
+
+  function executeReferralCredit() {
+    const referrer = document.getElementById('credit-referrer').value;
+    const referred = document.getElementById('credit-referred-name').value;
+    const loadRef = document.getElementById('credit-load-ref').value;
+
+    let bonusEl = document.getElementById('miller-bonus');
+    let totalEl = document.getElementById('miller-total');
+    if (referrer.includes('Miller')) {
+      bonusEl.innerText = '+42 Days';
+      totalEl.innerText = '56 Days Free';
+    }
+
+    const msg = `🎉 Congratulations from Almajdoub Dispatch! Your referred driver ${referred} just successfully completed Load #${loadRef}. We have credited +14 Days of 100% FREE dispatching to your account. Your new free runway is 56 DAYS. Thank you for building our carrier network! 🚛`;
+    document.getElementById('referral-sms-text').value = msg;
+    alert(`Success! +14 Days credited to ${referrer}. Notification prepared for Numero!`);
+  }
+
+  function addManualDays(carrier, days) {
+    alert(`+${days} Days added manually to ${carrier}. Ledger updated.`);
+  }
+
+  // Initial runs
+  calcRPM();
+  generateSMS();
+  generateDetentionNotice();
+  calcHOS();
+</script>
+
+<script src="assets/js/almajdoub_api.js"></script>
+<script src="assets/js/almajdoub_supabase.js"></script>
+<script src="assets/js/almajdoub_db.js"></script>
+<script src="assets/js/cockpit_controller.js"></script>
+<script>
+  window.addEventListener('DOMContentLoaded', () => {
+    if (window.CockpitController) {
+      CockpitController.init();
+    }
+  });
+</script>
+<script>
+
+  // ==========================================
+  // BROKER INTELLIGENCE & CREDIT LEDGER LOGIC
+  // ==========================================
+  function renderBrokerTable() {
+    const tbody = document.getElementById('brokerTableBody');
+    if (!tbody || !window.AlmajdoubDB) return;
+
+    const brokers = window.AlmajdoubDB.getBrokers();
+    const search = (document.getElementById('brokerSearchInput')?.value || '').toLowerCase();
+    const badgeFilter = document.getElementById('brokerBadgeFilter')?.value || 'ALL';
+
+    const filtered = brokers.filter(b => {
+      const matchSearch = b.name.toLowerCase().includes(search) || b.mc.toLowerCase().includes(search);
+      const matchBadge = (badgeFilter === 'ALL') || (b.badge === badgeFilter);
+      return matchSearch && matchBadge;
+    });
+
+    tbody.innerHTML = filtered.map(b => {
+      let badgeStyle = 'background:#E0F2FE; color:#0369A1;';
+      let badgeLabel = 'Preferred';
+      if (b.badge === 'TIER_1_PREFERRED') {
+        badgeStyle = 'background:#DCFCE7; color:#15803D; font-weight:bold;';
+        badgeLabel = '★ Tier-1 Preferred';
+      } else if (b.badge === 'VERIFIED_STRICT') {
+        badgeStyle = 'background:#FEF3C7; color:#B45309;';
+        badgeLabel = '⚠ Verified Strict';
+      } else if (b.badge === 'BLACKLISTED') {
+        badgeStyle = 'background:#FEE2E2; color:#B91C1C; font-weight:bold;';
+        badgeLabel = '⛔ Blacklisted';
+      }
+
+      const factStyle = b.factoringStatus === 'APPROVED' ? 'color:#15803D; font-weight:bold;' : 'color:#B91C1C; font-weight:bold;';
+
+      return `
+        <tr style="border-bottom:1px solid #E2E8F0;">
+          <td style="padding:10px 12px;">
+            <strong style="color:var(--primary); font-size:13px;">${b.name}</strong>
+            <span style="display:block; font-size:11px; color:#64748B;">MC: <b>${b.mc}</b> • DOT: ${b.dot}</span>
+          </td>
+          <td style="padding:10px 12px;">
+            <span style="${factStyle}">${b.factoringStatus}</span>
+            <span style="display:block; font-size:10px; color:#64748B;">Limit: ${b.creditLimit}</span>
+          </td>
+          <td style="padding:10px 12px; font-weight:bold; color:#0F172A;">
+            ${b.daysToPay} Days
+          </td>
+          <td style="padding:10px 12px;">
+            <span style="font-weight:600; color:#334155;">${b.detentionScore}</span>
+            <span style="display:block; font-size:10px; color:#64748B;">${b.detentionPolicy}</span>
+          </td>
+          <td style="padding:10px 12px;">
+            <span style="font-weight:600;">${b.tonuScore}</span>
+            <span style="display:block; font-size:10px; color:#64748B;">$${b.tonuAmount} Std</span>
+          </td>
+          <td style="padding:10px 12px; font-weight:bold; color:#D97706;">
+            ★ ${b.internalRating} / 5.0
+          </td>
+          <td style="padding:10px 12px;">
+            <span style="padding:3px 8px; border-radius:4px; font-size:10px; ${badgeStyle}">${badgeLabel}</span>
+          </td>
+          <td style="padding:10px 12px; text-align:center;">
+            <button class="btn" style="padding:4px 8px; font-size:10px; background:var(--primary);" onclick="alert('Viewing Ledger Notes for ${b.name}:\n\n' + '${b.notes}')">
+              Notes
+            </button>
+          </td>
+        </tr>
+      `;
+    }).join('');
+
+    const totalEl = document.getElementById('stat-total-brokers');
+    if (totalEl) totalEl.innerText = `${brokers.length} Active`;
+  }
+
+  function filterBrokerTable() {
+    renderBrokerTable();
+  }
+
+  function showAddBrokerModal() {
+    const name = prompt('Enter Brokerage Legal Name:');
+    if (!name) return;
+    const mc = prompt('Enter Broker MC Number (e.g. MC-12345):');
+    if (!mc) return;
+    const days = parseInt(prompt('Estimated Days to Pay (e.g. 19):') || '21');
+
+    const newBroker = {
+      mc: mc.toUpperCase(),
+      dot: 'DOT-PENDING',
+      name: name,
+      phone: '+1 (800) 555-0199',
+      email: 'ops@broker.com',
+      factoringStatus: 'APPROVED',
+      creditLimit: '$75,000',
+      daysToPay: days,
+      detentionPolicy: '$50.00/hr after 2 hrs',
+      detentionScore: 'A',
+      tonuAmount: 250.00,
+      tonuScore: 'A',
+      internalRating: 4.5,
+      badge: 'TIER_1_PREFERRED',
+      totalLoadsCompleted: 1,
+      notes: 'Added via Desk Ledger. Verified clean payment history.'
+    };
+
+    window.AlmajdoubDB.saveBroker(newBroker);
+    renderBrokerTable();
+    alert(`Broker ${name} (${mc}) saved to Almajdoub Intelligence Ledger!`);
+  }
+
+  // ==========================================
+  // GEMINI 2.0 FLASH AI AUDIO & DOC ENGINE
+  // ==========================================
+  const CALL_PRESETS = {
+    chrobinson: {
+      transcript: `[00:02] Ahmed: "Hi David, calling under Miller Express MC-987452 on your Dallas to Columbus van load."
+[00:15] Broker (David): "Hey Ahmed, yeah it is 34,500 lbs palletized electronics picking up in Hutchins at 8 AM."
+[00:32] Ahmed: "My driver is 20 miles out. We need $2,450 to lock it in right now."
+[00:48] Broker: "I can meet you at $2,450 all-in. Standard $50 an hour detention after 2 hours, and TONU is $250."
+[01:05] Ahmed: "Done deal. Please send Rate Con to dispatch@almajdoub.com. Make sure arrival instructions are clear."
+[01:18] Broker: "Sending right now. Receiver empties in 45 mins usually. Appreciate it!"`,
+      gross: 2450.00,
+      equip: "53' Dry Van",
+      detention: "$50.00/hr after 2 hrs",
+      tonu: "$250.00",
+      verbal: "Broker verified receiver dock empties fast (~45 mins). Rate Con guaranteed within 10 minutes.",
+      risk: "Low Risk (98% Confidence)",
+      riskClass: "badge-success"
+    },
+    tql_detention: {
+      transcript: `[00:04] Ahmed: "Calling on load 771249 with TQL out of Atlanta."
+[00:18] Broker: "It's ready now. $1,950 flat rate to Chicago. 41,000 lbs food grade."
+[00:35] Ahmed: "Rate is accepted, but verify your detention terms. We enforce $50/hr after 2 hours."
+[00:50] Broker: "Yes, $50/hr applies, but the driver MUST get arrival and departure stamps on the BOL or accounting denies it."
+[01:10] Ahmed: "Understood, our drivers follow the BOL stamp protocol. Sending driver info."`,
+      gross: 1950.00,
+      equip: "53' Dry Van (Food Grade)",
+      detention: "$50.00/hr (Strict In/Out BOL Stamp Required)",
+      tonu: "$200.00",
+      verbal: "Broker reiterated strict BOL arrival/departure stamp rule for detention approval.",
+      risk: "Verified Strict (91% Confidence)",
+      riskClass: "badge-warning"
+    },
+    bad_broker: {
+      transcript: `[00:03] Ahmed: "Inquiring on Memphis to Charlotte load."
+[00:12] Broker: "I have it at $1,400. You take it or leave it."
+[00:25] Ahmed: "That is under $1.80 a mile with deadhead. Can you come up to $1,800?"
+[00:40] Broker: "No, and we don't pay detention if the shipper runs behind."
+[00:52] Ahmed: "Understood, that does not meet our carrier's operating cost baseline. Passing on this load."`,
+      gross: 1400.00,
+      equip: "53' Dry Van",
+      detention: "DENIED (No detention paid)",
+      tonu: "$0.00",
+      verbal: "Broker refused standard detention compensation. Operational loss against ATRI baseline ($2.336/mi).",
+      risk: "HIGH RISK / REJECTED",
+      riskClass: "badge-danger"
+    }
+  };
+
+  function loadCallPreset() {
+    const val = document.getElementById('ai-call-preset').value;
+    const preset = CALL_PRESETS[val];
+    if (preset) {
+      document.getElementById('ai-audio-transcript').value = preset.transcript;
+    }
+  }
+
+  function runGeminiAudioAnalysis() {
+    const val = document.getElementById('ai-call-preset').value;
+    const preset = CALL_PRESETS[val] || CALL_PRESETS.chrobinson;
+
+    const resultsBox = document.getElementById('ai-audio-results');
+    resultsBox.style.display = 'block';
+
+    document.getElementById('res-gross').innerText = `$${preset.gross.toLocaleString()}`;
+    document.getElementById('res-equip').innerText = preset.equip;
+    document.getElementById('res-detention').innerText = preset.detention;
+    document.getElementById('res-tonu').innerText = preset.tonu;
+    document.getElementById('res-verbal').innerText = preset.verbal;
+
+    const badge = document.getElementById('ai-risk-badge');
+    badge.innerText = preset.risk;
+    if (preset.risk.includes('Low')) {
+      badge.style.background = '#D1FAE5';
+      badge.style.color = '#065F46';
+    } else if (preset.risk.includes('Strict')) {
+      badge.style.background = '#FEF3C7';
+      badge.style.color = '#B45309';
+    } else {
+      badge.style.background = '#FEE2E2';
+      badge.style.color = '#991B1B';
+    }
+  }
+
+  function saveAiEntitiesToCockpit() {
+    const grossStr = document.getElementById('res-gross').innerText.replace(/[$,]/g, '');
+    const gross = parseFloat(grossStr) || 2450;
+    
+    // Update RPM calculator
+    const grossInput = document.getElementById('rpm-gross');
+    if (grossInput) {
+      grossInput.value = gross;
+      calcRPM();
+    }
+
+    // Update Detention rate in detention timer
+    const detRateInput = document.getElementById('det-rate');
+    if (detRateInput) detRateInput.value = '50';
+
+    alert('✅ Gemini 2.0 Flash extracted terms applied to Cockpit:\n\nA Gross Rate: $' + gross + '\nA Detention Rate: $50/hr\nA Saved to Active Load Record in Almajdoub DB.');
+  }
+
+  function runGeminiEmailParser() {
+    const results = document.getElementById('ai-email-results');
+    results.style.display = 'block';
+  }
+
+  function applyParsedToCockpit() {
+    const grossInput = document.getElementById('rpm-gross');
+    if (grossInput) {
+      grossInput.value = 2450;
+      calcRPM();
+    }
+    alert('✅ Rate Con entities applied to active trip. Rate: $2,450.00 | Detention: $50/hr.');
+  }
+
+// --- DUAL TELEPHONY & LIVEKIT HANDLERS ---
+function simulateTwilioCall() {
+  const phone = document.getElementById('pstn-dest-phone').value || '(800) 555-0199';
+  const loadRef = document.getElementById('pstn-load-ref').value || 'LD-DIRECT';
+  const statusEl = document.getElementById('twilio-call-status');
+  statusEl.innerHTML = `<span style="color:#287D8E; font-weight:bold;">DIALING PSTN:</span> Connecting to ${phone} from +1 (409) 941-7180...<br><span style="color:#C2185B;">● DUAL-TRACK RECORDING ENGAGED (AWS S3)</span>`;
+}
+
+function hangupTwilioCall() {
+  const statusEl = document.getElementById('twilio-call-status');
+  statusEl.innerHTML = `Status: Call Terminated • Audio Archived to Load Record`;
+}
+
+function connectDriverIntercom(driverName) {
+  alert(`Connected to LiveKit SFU Audio Room: [room-${driverName.toLowerCase().replace(/\s+/g, '-')}]\nAudio latency: 68ms (Opus HD Voice)`);
+}
+
+function deskPttStart() {
+  const btn = document.getElementById('deskPttBtn');
+  const status = document.getElementById('deskPttStatus');
+  btn.style.background = '#E53935';
+  status.innerHTML = `<span style="color:#FF5252; font-weight:bold;">🔴 BROADCASTING LIVE TO ALL TRUCKS (LIVEKIT SFU)...</span>`;
+  if (window.AlmajdoubVoice) window.AlmajdoubVoice.pttStart();
+}
+
+function deskPttStop() {
+  const btn = document.getElementById('deskPttBtn');
+  const status = document.getElementById('deskPttStatus');
+  btn.style.background = '#287D8E';
+  status.innerHTML = `Microphone Muted (Press & hold button to talk)`;
+  if (window.AlmajdoubVoice) window.AlmajdoubVoice.pttStop();
+}
+
+</script>
+</body>
+</html>

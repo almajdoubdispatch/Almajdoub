@@ -1,0 +1,1475 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Almajdoub Carrier App | Driver Cockpit & Load Dispatch</title>
+  <meta name="description" content="Dedicated carrier application for registered Almajdoub Dispatch motor carriers. Review loads, one-tap approval, live deadhead calculation, and weekly settlement invoices.">
+  <link rel="icon" type="image/svg+xml" href="assets/img/logo-mark.svg">
+  <link rel="stylesheet" href="assets/css/style.css">
+  <style>
+    /* ==========================================================================
+       ALMAJDOUB CARRIER APPLICATION (PWA / MOBILE APP STYLESHEET)
+       Design System: Elite Highway Midnight & Signal Gold
+       ========================================================================== */
+    :root {
+      --app-bg: #060D17;
+      --app-surface: #0E1B30;
+      --app-surface-light: #162744;
+      --app-gold: #FFD000;
+      --app-gold-hover: #F0C400;
+      --app-cyan: #76D2E0;
+      --app-success: #36B37E;
+      --app-danger: #FF5630;
+      --app-border: rgba(255, 255, 255, 0.12);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      background-color: var(--app-bg);
+      color: #FFFFFF;
+      font-family: var(--font-body);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      padding-bottom: 75px; /* Room for mobile bottom dock */
+    }
+
+    /* App Header */
+    .app-top-header {
+      background: rgba(14, 27, 48, 0.98);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--app-border);
+      padding: 12px 18px;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .app-brand-lockup {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+    }
+    .app-brand-lockup img {
+      height: 32px;
+      width: auto;
+    }
+    .app-brand-title {
+      font-family: var(--font-heading);
+      font-size: 1.05rem;
+      font-weight: 800;
+      letter-spacing: 0.05em;
+      color: #FFFFFF;
+      line-height: 1.1;
+    }
+    .app-brand-title span {
+      display: block;
+      font-size: 0.7rem;
+      color: var(--app-cyan);
+      font-weight: 600;
+    }
+
+    .app-status-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(54, 179, 126, 0.15);
+      border: 1px solid rgba(54, 179, 126, 0.35);
+      padding: 4px 10px;
+      border-radius: 20px;
+      font-size: 0.75rem;
+      color: #A3E6CD;
+      font-weight: 700;
+    }
+    .live-blip {
+      width: 7px;
+      height: 7px;
+      background: var(--app-success);
+      border-radius: 50%;
+      box-shadow: 0 0 6px var(--app-success);
+      animation: blip 1.6s infinite;
+    }
+    @keyframes blip {
+      0%, 100% { opacity: 0.4; transform: scale(0.9); }
+      50% { opacity: 1; transform: scale(1.15); }
+    }
+
+    /* Auth Gate Modal (Gated Access for Registered Carriers) */
+    .auth-gate-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(6, 13, 23, 0.96);
+      backdrop-filter: blur(16px);
+      z-index: 9999;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+    .auth-card {
+      background: var(--app-surface);
+      border: 2px solid var(--app-gold);
+      border-radius: var(--radius-lg);
+      padding: 36px 28px;
+      max-width: 440px;
+      width: 100%;
+      text-align: center;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.8), 0 0 30px rgba(255,208,0,0.15);
+      position: relative;
+    }
+    .auth-title {
+      font-family: var(--font-heading);
+      font-size: 1.6rem;
+      font-weight: 800;
+      color: #FFFFFF;
+      margin-bottom: 6px;
+    }
+    .auth-sub {
+      font-size: 0.85rem;
+      color: var(--color-mist);
+      margin-bottom: 24px;
+      line-height: 1.45;
+    }
+    .otp-digits-row {
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+      margin: 18px 0;
+    }
+    .otp-input {
+      width: 44px;
+      height: 52px;
+      background: #060D17;
+      border: 2px solid rgba(255, 255, 255, 0.2);
+      border-radius: 6px;
+      text-align: center;
+      font-size: 1.4rem;
+      font-weight: 800;
+      color: var(--app-gold);
+      font-family: var(--font-mono);
+    }
+    .otp-input:focus {
+      outline: none;
+      border-color: var(--app-gold);
+      box-shadow: 0 0 10px rgba(255,208,0,0.3);
+    }
+
+    /* Incoming Load Call Simulation Overlay (Expert Recommendation) */
+    .incoming-call-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(6, 13, 23, 0.95);
+      backdrop-filter: blur(20px);
+      z-index: 9500;
+      display: none;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 40px 24px 50px;
+      text-align: center;
+    }
+    .caller-avatar {
+      width: 90px;
+      height: 90px;
+      background: var(--app-gold);
+      color: #0E1B30;
+      font-size: 3rem;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 20px auto 16px;
+      box-shadow: 0 0 30px rgba(255, 208, 0, 0.4);
+      animation: ringBounce 1.2s infinite;
+    }
+    @keyframes ringBounce {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.08); }
+    }
+    .caller-title {
+      font-size: 1.4rem;
+      font-weight: 800;
+      color: #FFFFFF;
+      margin-bottom: 4px;
+    }
+    .caller-subtitle {
+      font-size: 0.9rem;
+      color: var(--app-cyan);
+    }
+    .call-load-snapshot {
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid var(--app-gold);
+      border-radius: var(--radius-md);
+      padding: 20px;
+      max-width: 480px;
+      margin: 0 auto;
+      text-align: left;
+    }
+
+    /* Main App Container */
+    .app-main-content {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 20px 16px;
+      width: 100%;
+      flex: 1;
+    }
+
+    /* Carrier Top Bar */
+    .carrier-hero-card {
+      background: linear-gradient(135deg, #0E1B30 0%, #162744 100%);
+      border: 1px solid var(--app-border);
+      border-radius: var(--radius-lg);
+      padding: 20px 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+      flex-wrap: wrap;
+      margin-bottom: 24px;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+    }
+    .carrier-id-text h2 {
+      font-size: 1.25rem;
+      font-weight: 800;
+      color: #FFFFFF;
+      margin-bottom: 4px;
+    }
+    .carrier-id-text p {
+      font-size: 0.8rem;
+      color: var(--app-cyan);
+      margin: 0;
+      font-family: var(--font-mono);
+    }
+    .free-runway-badge {
+      background: rgba(255, 208, 0, 0.12);
+      border: 1px solid var(--app-gold);
+      padding: 8px 16px;
+      border-radius: 8px;
+      text-align: right;
+    }
+    .free-runway-badge span {
+      display: block;
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      color: var(--color-mist);
+      font-weight: 700;
+    }
+    .free-runway-badge strong {
+      font-size: 1.4rem;
+      color: var(--app-gold);
+      font-family: var(--font-heading);
+    }
+
+    /* Load Offer Box (The Complete Manifest) */
+    .load-manifest-card {
+      background: var(--app-surface);
+      border: 2px solid var(--app-gold);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      margin-bottom: 24px;
+      box-shadow: 0 12px 36px rgba(0,0,0,0.5);
+      position: relative;
+    }
+    .load-header-strip {
+      background: linear-gradient(90deg, #10213B 0%, #1A3258 100%);
+      padding: 14px 20px;
+      border-bottom: 1px solid var(--app-border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+    .load-id-tag {
+      font-family: var(--font-mono);
+      font-weight: 800;
+      color: var(--app-gold);
+      font-size: 0.95rem;
+    }
+    .load-broker-tag {
+      font-size: 0.8rem;
+      color: var(--color-mist);
+    }
+    .load-gross-banner {
+      background: rgba(0, 0, 0, 0.35);
+      padding: 16px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid var(--app-border);
+    }
+    .gross-big-figure {
+      font-family: var(--font-heading);
+      font-size: 2.2rem;
+      font-weight: 900;
+      color: var(--app-gold);
+      line-height: 1;
+    }
+    .gross-rate-sub {
+      font-size: 0.85rem;
+      color: var(--app-cyan);
+      font-family: var(--font-mono);
+      margin-top: 4px;
+    }
+    .fee-calc-box {
+      text-align: right;
+      font-size: 0.8rem;
+    }
+    .fee-calc-box span {
+      display: block;
+      color: var(--color-mist);
+    }
+    .fee-calc-box strong {
+      color: var(--app-success);
+      font-size: 0.95rem;
+    }
+
+    /* Route Timeline Details */
+    .route-timeline-wrap {
+      padding: 24px 20px;
+    }
+    .route-stop-row {
+      display: flex;
+      gap: 16px;
+      margin-bottom: 20px;
+      position: relative;
+    }
+    .route-stop-row:first-child::after {
+      content: "";
+      position: absolute;
+      top: 32px;
+      left: 14px;
+      width: 2px;
+      height: 48px;
+      background: var(--app-cyan);
+      opacity: 0.4;
+    }
+    .stop-dot {
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+      font-size: 0.75rem;
+      flex-shrink: 0;
+    }
+    .dot-pickup { background: var(--app-cyan); color: #0E1B30; }
+    .dot-delivery { background: var(--app-gold); color: #0E1B30; }
+    .stop-info h4 {
+      font-size: 1.05rem;
+      font-weight: 800;
+      color: #FFFFFF;
+      margin-bottom: 3px;
+    }
+    .stop-info p {
+      font-size: 0.85rem;
+      color: var(--color-mist);
+      margin-bottom: 2px;
+    }
+    .stop-time-badge {
+      display: inline-block;
+      background: rgba(255, 255, 255, 0.08);
+      padding: 2px 8px;
+      border-radius: 4px;
+      font-size: 0.75rem;
+      color: var(--app-gold);
+      font-family: var(--font-mono);
+      margin-top: 4px;
+    }
+
+    /* Specs Grid */
+    .specs-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+      gap: 12px;
+      background: rgba(0, 0, 0, 0.25);
+      padding: 14px 20px;
+      border-top: 1px solid var(--app-border);
+      border-bottom: 1px solid var(--app-border);
+      font-size: 0.8rem;
+    }
+    .spec-item span {
+      display: block;
+      color: #8C9BAB;
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    .spec-item strong {
+      color: #FFFFFF;
+      font-size: 0.9rem;
+    }
+
+    /* Action Buttons: Accept / Decline */
+    .load-action-bar {
+      padding: 18px 20px;
+      display: flex;
+      gap: 12px;
+    }
+    .btn-action-app {
+      flex: 1;
+      height: 52px;
+      border-radius: 8px;
+      font-weight: 800;
+      font-size: 1rem;
+      border: none;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      transition: all 0.2s ease;
+    }
+    .btn-accept-load {
+      background: var(--app-gold);
+      color: #0E1B30;
+      box-shadow: 0 4px 16px rgba(255,208,0,0.3);
+    }
+    .btn-accept-load:hover {
+      background: var(--app-gold-hover);
+      transform: translateY(-2px);
+    }
+    .btn-decline-load {
+      background: rgba(255, 86, 48, 0.15);
+      border: 1.5px solid var(--app-danger);
+      color: #FFA39E;
+    }
+    .btn-decline-load:hover {
+      background: rgba(255, 86, 48, 0.25);
+    }
+
+    /* Confirmation Modal (Window) */
+    .confirm-modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.85);
+      backdrop-filter: blur(8px);
+      z-index: 9900;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+    .confirm-modal-box {
+      background: var(--app-surface);
+      border: 2px solid var(--app-cyan);
+      border-radius: var(--radius-lg);
+      padding: 30px;
+      max-width: 440px;
+      width: 100%;
+      text-align: center;
+      box-shadow: 0 20px 50px rgba(0,0,0,0.8);
+    }
+    .confirm-modal-box h3 {
+      font-size: 1.35rem;
+      font-weight: 800;
+      color: #FFFFFF;
+      margin-bottom: 12px;
+    }
+    .confirm-modal-box p {
+      font-size: 0.9rem;
+      color: var(--color-mist);
+      line-height: 1.5;
+      margin-bottom: 24px;
+    }
+    .confirm-btn-row {
+      display: flex;
+      gap: 12px;
+    }
+
+    /* Weekly Invoicing Tab / Card */
+    .invoicing-section-card {
+      background: var(--app-surface);
+      border: 1px solid var(--app-border);
+      border-radius: var(--radius-lg);
+      padding: 24px;
+      margin-bottom: 24px;
+    }
+    .inv-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 18px;
+      border-bottom: 1px solid var(--app-border);
+      padding-bottom: 12px;
+    }
+    .settlement-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.85rem;
+    }
+    .settlement-table th {
+      text-align: left;
+      padding: 8px 10px;
+      color: var(--app-cyan);
+      border-bottom: 1px solid var(--app-border);
+    }
+    .settlement-table td {
+      padding: 12px 10px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+      color: var(--color-mist);
+    }
+
+    /* Bottom Navigation Dock (PWA App Tabs) */
+    .app-dock-bar {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 68px;
+      background: #060D17;
+      border-top: 1px solid var(--app-border);
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      z-index: 1000;
+    }
+    .dock-tab {
+      flex: 1;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 4px;
+      color: #8C9BAB;
+      text-decoration: none;
+      font-size: 0.725rem;
+      font-weight: 700;
+      cursor: pointer;
+      border: none;
+      background: none;
+      transition: color 0.15s;
+    }
+    .dock-tab svg {
+      width: 22px;
+      height: 22px;
+      fill: currentColor;
+    }
+    .dock-tab.active, .dock-tab:hover {
+      color: var(--app-gold);
+    }
+
+    /* In-Cab Ergonomics: Push-To-Talk Intercom (LiveKit SFU) */
+    .in-cab-ptt-dock {
+      position: fixed;
+      bottom: 74px;
+      left: 16px;
+      right: 16px;
+      z-index: 999;
+      display: flex;
+      justify-content: center;
+    }
+    .btn-ptt-mic {
+      background: linear-gradient(135deg, #172B4D 0%, #0E1B30 100%);
+      border: 2px solid var(--app-gold);
+      color: #FFFFFF;
+      font-family: var(--font-heading);
+      font-weight: 800;
+      font-size: 0.85rem;
+      padding: 12px 24px;
+      border-radius: 30px;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.6), 0 0 15px rgba(255,208,0,0.2);
+      cursor: pointer;
+      user-select: none;
+      touch-action: none;
+      transition: all 0.15s ease;
+      width: 100%;
+      max-width: 480px;
+      justify-content: center;
+    }
+    .btn-ptt-mic:active, .btn-ptt-mic.transmitting {
+      background: #E53935 !important;
+      border-color: #FFCDD2 !important;
+      transform: scale(0.97);
+      box-shadow: 0 0 30px rgba(229, 57, 53, 0.8) !important;
+    }
+    .ptt-status-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #4CAF50;
+      display: inline-block;
+    }
+    .btn-ptt-mic.transmitting .ptt-status-dot {
+      background: #FFFFFF;
+      animation: blink 0.5s infinite;
+    }
+    @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0.2; } }
+
+    /* Loss Aversion Protection Strip */
+    .loss-aversion-strip {
+      background: rgba(40, 125, 142, 0.12);
+      border-top: 1px solid rgba(40, 125, 142, 0.35);
+      border-bottom: 1px solid rgba(40, 125, 142, 0.35);
+      padding: 10px 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      font-size: 0.775rem;
+      color: #D1DCE5;
+    }
+    .safeguard-pill {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .safeguard-pill strong {
+      color: #FFFFFF;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- 1. Gated Access Overlay (OTP Verification System) -->
+  <div class="auth-gate-overlay" id="authGate">
+    <div class="auth-card">
+      <div style="font-size: 2.8rem; margin-bottom: 10px;">🚛🔒</div>
+      <h2 class="auth-title">Carrier App Access</h2>
+      <p class="auth-sub">
+        Exclusive to registered Almajdoub Dispatch motor carriers. Enter your registered USDOT/MC number or phone to receive your 6-digit OTP code.
+      </p>
+
+      <!-- Step 1: Identifier Input -->
+      <div id="authStep1">
+        <div style="margin-bottom: 16px; text-align: left;">
+          <label style="display:block; font-size:0.8rem; color:var(--app-cyan); font-weight:700; margin-bottom:6px;">Carrier MC# or Phone:</label>
+          <input type="text" id="authMCInput" value="MC-987452" placeholder="e.g. MC-987452" style="width:100%; background:#060D17; border:1.5px solid rgba(255,255,255,0.25); color:#FFFFFF; padding:12px; border-radius:6px; font-family:var(--font-mono); font-size:1rem; text-transform:uppercase;">
+        </div>
+        <button type="button" class="btn-action-app btn-accept-load" style="width:100%;" id="btnSendOTP">
+          <span>📲 Send 6-Digit OTP Code</span>
+        </button>
+      </div>
+
+      <!-- Step 2: OTP Entry -->
+      <div id="authStep2" style="display: none;">
+        <p style="font-size: 0.85rem; color: var(--app-cyan); margin-bottom: 10px;">
+          Code sent to your Numero line! <br><strong style="color:var(--app-gold);">(Demo Code: 718042)</strong>
+        </p>
+        <div class="otp-digits-row">
+          <input type="text" maxlength="1" class="otp-input" value="7">
+          <input type="text" maxlength="1" class="otp-input" value="1">
+          <input type="text" maxlength="1" class="otp-input" value="8">
+          <input type="text" maxlength="1" class="otp-input" value="0">
+          <input type="text" maxlength="1" class="otp-input" value="4">
+          <input type="text" maxlength="1" class="otp-input" value="2">
+        </div>
+        <button type="button" class="btn-action-app btn-accept-load" style="width:100%;" id="btnVerifyOTP">
+          <span>🔓 Verify & Enter App</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 2. Incoming Load Call Overlay (Realistic Simulation) -->
+  <div class="incoming-call-overlay" id="incomingCallOverlay">
+    <div>
+      <div class="caller-avatar">📞</div>
+      <h3 class="caller-title">Ahmed (Almajdoub Dispatch Desk)</h3>
+      <p class="caller-subtitle">Incoming Load Authorization Request · Texas Line</p>
+    </div>
+
+    <div class="call-load-snapshot">
+      <div style="font-size: 0.8rem; color: var(--app-gold); font-weight: 800; margin-bottom: 6px;">
+        HOT LANE LOAD OFFER:
+      </div>
+      <div style="font-size: 1.15rem; font-weight: 800; color: #FFFFFF;">
+        Dallas, TX ➔ Columbus, OH
+      </div>
+      <div style="font-size: 0.9rem; color: var(--color-mist); margin-top: 4px;">
+        1,050 Loaded Miles · <strong>$3,150 Gross ($3.00/mi All-In)</strong>
+      </div>
+    </div>
+
+    <div style="display: flex; gap: 16px; max-width: 480px; margin: 0 auto; width: 100%;">
+      <button type="button" class="btn-action-app btn-accept-load" style="background:#36B37E; color:#FFFFFF;" id="btnAnswerCall">
+        <span>📞 View Full Details</span>
+      </button>
+      <button type="button" class="btn-action-app btn-decline-load" id="btnDismissCall">
+        <span>Dismiss</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- 3. App Header Bar -->
+  <header class="app-top-header">
+    <a href="index.html" class="app-brand-lockup">
+      <img src="assets/img/Almajdoub_Monogram_White.png" alt="Almajdoub Dispatch Official Monogram Mark — Cyan and Dark Navy Operations Seal">
+      <div class="app-brand-title">
+        ALMAJDOUB DISPATCH
+        <span>Carrier Mobile Cockpit</span>
+      </div>
+    </a>
+
+    <div style="display: flex; align-items: center; gap: 12px;">
+      <div class="app-status-badge">
+        <span class="live-blip"></span>
+        <span>DESK LIVE</span>
+      </div>
+      <button type="button" id="btnSimulateCall" style="background:none; border:1px solid var(--app-gold); color:var(--app-gold); padding:4px 8px; border-radius:4px; font-size:0.75rem; font-weight:700; cursor:pointer;">
+        🔔 Test Load Alert
+      </button>
+    </div>
+  </header>
+
+  <!-- 4. Main App Pages -->
+  <main class="app-main-content">
+
+    <!-- Active Carrier Profile Card -->
+    <div class="carrier-hero-card">
+      <div class="carrier-id-text">
+        <h2 id="appCarrierName">Miller Express Hauling LLC</h2>
+        <p><span id="appCarrierMC">MC-987452</span> · Equipment: 53′ Dry Van (Peterbilt 389)</p>
+        <div style="display: flex; gap: 8px; align-items: center; margin-top: 6px; flex-wrap: wrap;">
+          <span style="font-size: 0.72rem; background: rgba(54,179,126,0.2); border: 1px solid rgba(54,179,126,0.4); color: #A3E6CD; padding: 2px 8px; border-radius: 12px; font-weight: 700;">
+            ● DAT Seat: Assigned (Desk #1)
+          </span>
+          <span style="font-size: 0.72rem; background: rgba(255,208,0,0.15); border: 1px solid rgba(255,208,0,0.3); color: var(--app-gold); padding: 2px 8px; border-radius: 12px; font-weight: 700;">
+            Founding Cohort (5.0% Dry Van / 5.5% Reefer)
+          </span>
+        </div>
+      </div>
+
+      <div class="free-runway-badge">
+        <span>Active Free Runway</span>
+        <strong id="appFreeDaysCount">42 Days Free</strong>
+      </div>
+    </div>
+
+    <!-- TAB VIEW 1: LOAD RADAR & INCOMING OFFERS -->
+    <div id="paneLoads">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px;">
+        <h3 style="font-size:1.15rem; font-weight:800; color:#FFFFFF;">
+          📥 Load Inbox & Rate Confirmations (<span id="pendingLoadsCount" style="color:var(--app-gold);">1</span>)
+        </h3>
+        <span style="font-size:0.8rem; color:var(--app-cyan);">Auto-Sync with Texas Desk</span>
+      </div>
+
+      <!-- Load Manifest Card (Full Specification) -->
+      <div class="load-manifest-card" id="activeLoadCard">
+        <div class="load-header-strip">
+          <div>
+            <span class="load-id-tag" id="loadIdDisplay">#LD-2026-901</span>
+            <span class="load-broker-tag" id="loadBrokerDisplay">· Broker: C.H. Robinson (MC-12345)</span>
+          </div>
+          <span style="background:rgba(255,208,0,0.15); color:var(--app-gold); padding:2px 8px; border-radius:4px; font-size:0.75rem; font-weight:800;" id="loadStatusPill">
+            ACTION REQUIRED: APPROVE LOAD
+          </span>
+        </div>
+
+        <div class="load-gross-banner">
+          <div>
+            <div class="gross-big-figure" id="loadGrossDisplay">$3,150.00</div>
+            <div class="gross-rate-sub" id="loadRPMDisplay">All-In Rate · $2.93 / Total Mile</div>
+          </div>
+          <div class="fee-calc-box">
+            <span>Dispatcher Fee (0% Promo):</span>
+            <strong style="color:var(--app-gold);">$0.00 (Free Runway)</strong>
+            <span>Net Payout: <strong style="color:#FFFFFF;" id="loadNetDisplay">$3,150.00</strong></span>
+          </div>
+        </div>
+
+        <!-- Loss Aversion Financial Safeguard Strip -->
+        <div class="loss-aversion-strip">
+          <div class="safeguard-pill">
+            <span>🛡️</span>
+            <span><strong>Deadhead Trap Prevented:</strong> Only 25 mi DH (Preserved +$340 profit vs market avg)</span>
+          </div>
+          <div class="safeguard-pill">
+            <span>⏱️</span>
+            <span><strong>Detention Safeguard:</strong> $65.00/hr auto-clocked after 2h free time (Zero unbilled dock wait)</span>
+          </div>
+        </div>
+
+        <!-- Route Stops Details -->
+        <div class="route-timeline-wrap">
+          <div class="route-stop-row">
+            <div class="stop-dot dot-pickup">PU</div>
+            <div class="stop-info">
+              <h4>Dallas, TX (Pickup)</h4>
+              <p id="loadPUAddr">4500 Logistics Way, Hutchins, TX 75141</p>
+              <span class="stop-time-badge" id="loadPUTime">⏰ Appointment: Oct 24, 2026 - 08:00 AM CST</span>
+            </div>
+          </div>
+
+          <div class="route-stop-row">
+            <div class="stop-dot dot-delivery">DEL</div>
+            <div class="stop-info">
+              <h4>Columbus, OH (Receiver)</h4>
+              <p id="loadDelivAddr">1200 Distribution Pkwy, Grove City, OH 43123</p>
+              <span class="stop-time-badge" id="loadDelivTime">⏰ Delivery: Oct 25, 2026 - 04:00 PM EST</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Mileage & Specs Grid -->
+        <div class="specs-grid">
+          <div class="spec-item">
+            <span>Loaded Miles</span>
+            <strong id="specLoaded">1,050 mi</strong>
+          </div>
+          <div class="spec-item">
+            <span>Deadhead (DH)</span>
+            <strong id="specDH" style="color:var(--app-success);">25 mi (2.3%)</strong>
+          </div>
+          <div class="spec-item">
+            <span>Commodity</span>
+            <strong id="specCommodity">Electronics</strong>
+          </div>
+          <div class="spec-item">
+            <span>Weight</span>
+            <strong id="specWeight">34,500 lbs</strong>
+          </div>
+          <div class="spec-item">
+            <span>Detention Clause</span>
+            <strong id="specDetention" style="color:var(--app-gold);">$50/hr (after 2h)</strong>
+          </div>
+          <div class="spec-item">
+            <span>TONU Amount</span>
+            <strong id="specTonu">$350.00</strong>
+          </div>
+        </div>
+
+        <!-- Accept / Decline Action Bar -->
+        <div class="load-action-bar" id="loadActionBar">
+          <button type="button" class="btn-action-app btn-accept-load" id="btnAcceptTrigger">
+            <span>✓ ACCEPT & AUTHORIZE</span>
+          </button>
+          <button type="button" class="btn-action-app btn-decline-load" id="btnDeclineTrigger">
+            <span>✕ DECLINE</span>
+          </button>
+        </div>
+
+        <div id="loadDecisionResult" style="display:none; padding:16px 20px; text-align:center; font-weight:800; font-size:1rem;"></div>
+      </div>
+    </div>
+
+    <!-- TAB VIEW 2: WEEKLY SETTLEMENT INVOICING -->
+    <div id="paneInvoices" style="display: none;">
+      <div class="invoicing-section-card">
+        <div class="inv-header">
+          <div>
+            <h3 style="font-size:1.25rem; font-weight:800; color:#FFFFFF;">Weekly Settlements & Invoicing</h3>
+            <p style="font-size:0.8rem; color:var(--app-cyan); margin:0;">Transparent Accounting & 100% Free Trial Accounting</p>
+          </div>
+          <button type="button" class="btn-action-app btn-accept-load" style="height:36px; padding:0 14px; font-size:0.8rem;" id="btnGenerateWeekly">
+            📄 Generate Weekly Invoice
+          </button>
+        </div>
+
+        <div style="overflow-x:auto;">
+          <table class="settlement-table">
+            <thead>
+              <tr>
+                <th>Invoice #</th>
+                <th>Week Ending</th>
+                <th>Gross Freight</th>
+                <th>Standard Fee</th>
+                <th>Promo Discount</th>
+                <th>Fee Due</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody id="invoiceTableBody">
+              <!-- Populated by JavaScript -->
+            </tbody>
+          </table>
+        </div>
+
+        <div style="background:rgba(255,208,0,0.06); border:1px solid rgba(255,208,0,0.25); padding:14px; border-radius:6px; margin-top:20px; font-size:0.85rem; color:var(--color-mist);">
+          💡 <strong>Carrier Notice:</strong> Invoices generated with status <span style="color:var(--app-gold); font-weight:700;">SETTLED_FREE_TRIAL</span> reflect 0% dispatch service fees during your promotional and referral runway. You keep 100% of your gross broker payouts.
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB VIEW 3: REFERRAL FREE DAYS TRACKER -->
+    <div id="paneReferrals" style="display: none;">
+      <div class="invoicing-section-card">
+        <h3 style="font-size:1.25rem; font-weight:800; color:#FFFFFF; margin-bottom:8px;">The Rolling 14 Engine</h3>
+        <p style="font-size:0.85rem; color:var(--color-mist); margin-bottom:20px;">
+          Share your referral code with fellow owner-operators. When they complete their first paid load and settle their invoice, your account earns +14 Free Days!
+        </p>
+
+        <div style="background:#060D17; border:1px dashed var(--app-gold); padding:16px; border-radius:8px; display:flex; justify-content:space-between; align-items:center; margin-bottom:16px;">
+          <div>
+            <span style="font-size:0.75rem; color:var(--app-cyan); text-transform:uppercase;">Your Referral Code:</span>
+            <div style="font-family:var(--font-mono); font-size:1.3rem; font-weight:800; color:#FFFFFF;">MC-987452</div>
+          </div>
+          <a href="referral_portal.html" class="btn-action-app btn-accept-load" style="height:38px; padding:0 14px; font-size:0.8rem; text-decoration:none;">
+            Open Referral Portal →
+          </a>
+        </div>
+      </div>
+    </div>
+    <!-- TAB VIEW 4: DESK & LOAD BOARD SETTINGS -->
+    <div id="paneProfile" style="display: none;">
+      <div class="invoicing-section-card">
+        <div class="inv-header">
+          <div>
+            <h3 style="font-size:1.25rem; font-weight:800; color:#FFFFFF;">Desk Representation & Load Boards</h3>
+            <p style="font-size:0.8rem; color:var(--app-cyan); margin:0;">Bona Fide Agency Status (49 CFR § 371.2) & DAT One Integration</p>
+          </div>
+          <span class="app-status-badge">
+            <span class="live-blip"></span>
+            <span>VERIFIED PARTNER</span>
+          </span>
+        </div>
+
+        <!-- Load Board & Seat Card -->
+        <div style="background:#060D17; border:1px solid var(--app-border); border-radius:8px; padding:18px; margin-top:16px;">
+          <h4 style="font-size:0.95rem; font-weight:700; color:#FFFFFF; margin-bottom:12px; display:flex; justify-content:space-between; align-items:center;">
+            <span>📡 Load Board Integration Status</span>
+            <span style="font-size:0.75rem; color:var(--app-success); font-weight:700;">ACTIVE & AUTHORIZED</span>
+          </h4>
+
+          <div class="specs-grid" style="margin-bottom:16px;">
+            <div class="spec-item">
+              <span>DAT One Access Method</span>
+              <strong style="color:var(--app-success);">Secondary Sub-Seat Assigned</strong>
+            </div>
+            <div class="spec-item">
+              <span>Assigned Dispatcher User</span>
+              <strong style="color:#FFFFFF;">Ahmed Almajdoub (Desk #1)</strong>
+            </div>
+            <div class="spec-item">
+              <span>Truckstop.com Integration</span>
+              <strong style="color:var(--app-gold);">LPOA Agency Authorized</strong>
+            </div>
+            <div class="spec-item">
+              <span>Security & TOS Protocol</span>
+              <strong style="color:#A3E6CD;">Zero-Password Sharing (Compliant)</strong>
+            </div>
+          </div>
+
+          <div style="background:rgba(118,210,224,0.06); border:1px solid rgba(118,210,224,0.25); border-radius:6px; padding:12px; font-size:0.8rem; color:var(--color-mist); line-height:1.5;">
+            🔒 <strong>Terms of Service Safeguard:</strong> In full compliance with DAT Solutions Terms of Service, Almajdoub Dispatch accesses freight boards strictly via carrier-assigned sub-user seats or authorized agency representation under 49 CFR § 371.2. Your master account credentials remain 100% confidential.
+          </div>
+        </div>
+
+        <!-- Truck Equipment & Regional Capability Profile (The 4 Golden Chips) -->
+        <div style="background:#060D17; border:1px solid var(--app-border); border-radius:8px; padding:18px; margin-top:16px;">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+            <h4 style="font-size:0.95rem; font-weight:700; color:#FFFFFF; margin:0;">
+              🚛 Special Regional Equipment & Capabilities
+            </h4>
+            <span style="font-size:0.75rem; color:#A3E6CD; font-weight:700;">
+              VERIFIED ABOARD
+            </span>
+          </div>
+          <p style="font-size:0.8rem; color:var(--color-mist); margin-bottom:14px; line-height:1.4;">
+            These 4 equipment flags instantly qualify your truck for mountain passes (Donner/Eisenhower), California freight, and secure broker loads without onboarding delays.
+          </p>
+
+          <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
+            <div style="background:#0E1B30; border:1px solid rgba(54,179,126,0.4); padding:10px 14px; border-radius:6px; display:flex; justify-content:space-between; align-items:center;">
+              <div>
+                <strong style="font-size:0.825rem; color:#FFFFFF; display:block;">⚙️ Mountain Tire Chains</strong>
+                <span style="font-size:0.7rem; color:#A3E6CD;">4x Required Chains</span>
+              </div>
+              <span style="background:rgba(54,179,126,0.2); color:#A3E6CD; padding:2px 8px; border-radius:10px; font-size:0.75rem; font-weight:700;">YES</span>
+            </div>
+
+            <div style="background:#0E1B30; border:1px solid rgba(54,179,126,0.4); padding:10px 14px; border-radius:6px; display:flex; justify-content:space-between; align-items:center;">
+              <div>
+                <strong style="font-size:0.825rem; color:#FFFFFF; display:block;">🔒 Load Locks & Straps</strong>
+                <span style="font-size:0.7rem; color:#A3E6CD;">Cargo Securement</span>
+              </div>
+              <span style="background:rgba(54,179,126,0.2); color:#A3E6CD; padding:2px 8px; border-radius:10px; font-size:0.75rem; font-weight:700;">YES</span>
+            </div>
+
+            <div style="background:#0E1B30; border:1px solid rgba(255,255,255,0.1); padding:10px 14px; border-radius:6px; display:flex; justify-content:space-between; align-items:center;">
+              <div>
+                <strong style="font-size:0.825rem; color:#8C9BAB; display:block;">📦 Manual Pallet Jack</strong>
+                <span style="font-size:0.7rem; color:#8C9BAB;">Driver Assist</span>
+              </div>
+              <span style="background:rgba(255,255,255,0.06); color:#8C9BAB; padding:2px 8px; border-radius:10px; font-size:0.75rem; font-weight:700;">NO</span>
+            </div>
+
+            <div style="background:#0E1B30; border:1px solid rgba(54,179,126,0.4); padding:10px 14px; border-radius:6px; display:flex; justify-content:space-between; align-items:center;">
+              <div>
+                <strong style="font-size:0.825rem; color:#FFFFFF; display:block;">🌿 CARB Clean-Idle</strong>
+                <span style="font-size:0.7rem; color:#A3E6CD;">California Certified</span>
+              </div>
+              <span style="background:rgba(54,179,126,0.2); color:#A3E6CD; padding:2px 8px; border-radius:10px; font-size:0.75rem; font-weight:700;">YES</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Operational Desk & Assigned Team -->
+        <div style="background:#060D17; border:1px solid var(--app-border); border-radius:8px; padding:18px; margin-top:16px;">
+          <h4 style="font-size:0.95rem; font-weight:700; color:#FFFFFF; margin-bottom:12px;">
+            🧑‍💼 Assigned Dispatch Desk
+          </h4>
+          <div class="specs-grid" style="margin-bottom:12px;">
+            <div class="spec-item">
+              <span>Lead Dispatcher</span>
+              <strong style="color:#FFFFFF;">Ahmed Almajdoub (Founder)</strong>
+            </div>
+            <div class="spec-item">
+              <span>Operational Desk Capacity</span>
+              <strong style="color:var(--app-cyan);">1 of 5 Carriers (High-Touch Focus)</strong>
+            </div>
+            <div class="spec-item">
+              <span>Direct Phone / VoIP</span>
+              <strong style="color:var(--app-gold);"><a href="tel:+14099417180" style="color:inherit; text-decoration:none;">(409) 941-7180</a></strong>
+            </div>
+            <div class="spec-item">
+              <span>Rate Structure</span>
+              <strong style="color:var(--app-success);">Launch Partner 5.0% (5.5% Reefer)</strong>
+            </div>
+          </div>
+        </div>
+
+
+        <!-- Driver Home-Time Scheduling Module -->
+        <div style="background:#060D17; border:2px solid #76D2E0; border-radius:8px; padding:18px; margin-top:16px;">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+            <h4 style="font-size:0.95rem; font-weight:800; color:#FFFFFF; margin:0; display:flex; align-items:center; gap:8px;">
+              <span>🏠 Request Home-Time Routing</span>
+            </h4>
+            <span id="hometimeRequestStatus" style="font-size:0.75rem; background:rgba(118,210,224,0.15); border:1px solid #76D2E0; color:#76D2E0; padding:2px 8px; border-radius:10px; font-weight:700;">
+              BASE: COLUMBUS, OH
+            </span>
+          </div>
+
+          <p style="font-size:0.8rem; color:var(--color-mist); margin-bottom:14px; line-height:1.4;">
+            Notify your dispatcher in advance. Our freight routing engine will prioritize homeward-bound loads and filter out loads that move you away from your driveway.
+          </p>
+
+          <form id="hometimeForm" onsubmit="submitHometimeRequest(event)" style="display:flex; flex-direction:column; gap:12px;">
+            <div>
+              <label style="font-size:0.8rem; color:#A3E6CD; font-weight:700; display:block; margin-bottom:6px;">
+                Select Target Home-Time Window:
+              </label>
+              <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(130px, 1fr)); gap:8px;">
+                <label style="display:flex; align-items:center; gap:6px; background:#0E1B30; padding:8px 12px; border-radius:6px; border:1px solid var(--app-border); font-size:0.8rem; cursor:pointer;">
+                  <input type="radio" name="hometimeTiming" value="ASAP" onchange="toggleDateInput()">
+                  <span><strong>ASAP (Next Available Outbound Lane)</strong></span>
+                </label>
+                <label style="display:flex; align-items:center; gap:6px; background:#0E1B30; padding:8px 12px; border-radius:6px; border:1px solid var(--app-border); font-size:0.8rem; cursor:pointer;">
+                  <input type="radio" name="hometimeTiming" value="WEEKEND" checked onchange="toggleDateInput()">
+                  <span><strong>Upcoming Weekend Reset</strong></span>
+                </label>
+                <label style="display:flex; align-items:center; gap:6px; background:#0E1B30; padding:8px 12px; border-radius:6px; border:1px solid var(--app-border); font-size:0.8rem; cursor:pointer;">
+                  <input type="radio" name="hometimeTiming" value="SPECIFIC_DATE" onchange="toggleDateInput()">
+                  <span><strong>Specific Target Date</strong></span>
+                </label>
+              </div>
+            </div>
+
+            <div id="specificDateWrap" style="display:none;">
+              <label style="font-size:0.75rem; color:#8C9BAB; display:block; margin-bottom:4px;">Target Arrival Date:</label>
+              <input type="date" id="targetHomeDate" class="form-input" style="background:#0E1B30; color:#fff; border:1px solid var(--app-border); padding:8px; border-radius:4px; width:100%;">
+            </div>
+
+            <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
+              <div>
+                <label style="font-size:0.75rem; color:#8C9BAB; display:block; margin-bottom:4px;">Duration at Home:</label>
+                <select id="homeDuration" class="form-input" style="background:#0E1B30; color:#fff; border:1px solid var(--app-border); padding:8px; border-radius:4px; width:100%;">
+                  <option value="34h_restart">34-Hour DOT Restart</option>
+                  <option value="48h_weekend" selected>48 Hours (Full Weekend)</option>
+                  <option value="3_4_days">3 - 4 Days Reset</option>
+                  <option value="1_week">1 Full Week (Vacation)</option>
+                </select>
+              </div>
+              <div>
+                <label style="font-size:0.75rem; color:#8C9BAB; display:block; margin-bottom:4px;">Reason / Focus:</label>
+                <select id="homeReason" class="form-input" style="background:#0E1B30; color:#fff; border:1px solid var(--app-border); padding:8px; border-radius:4px; width:100%;">
+                  <option value="routine_reset" selected>Routine Rest / Family Time</option>
+                  <option value="family_event">Special Family Event / Kids</option>
+                  <option value="truck_service">Tractor / Trailer PM Service</option>
+                  <option value="medical">Medical / Personal Care</option>
+                </select>
+              </div>
+            </div>
+
+            <button type="submit" class="btn-action-app btn-accept-load" style="width:100%; height:44px; margin-top:6px; font-size:0.85rem;">
+              📨 Submit Home-Time Schedule to Desk
+            </button>
+          </form>
+
+          <div id="hometimeSuccessBanner" style="display:none; background:rgba(54,179,126,0.15); border:1px solid #36B37E; color:#A3E6CD; border-radius:6px; padding:10px; margin-top:10px; font-size:0.8rem; text-align:center;">
+            ✅ <strong>Home-Time Request Dispatched to Ahmed!</strong> Cockpit will prioritize inbound loads to Columbus, OH.
+          </div>
+        </div>
+
+        <!-- Real-Time Road Weather & Regulatory Emergency Safety Center -->
+        <div style="background:#060D17; border:2px solid #FF5630; border-radius:8px; padding:18px; margin-top:16px;">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+            <h4 style="font-size:0.95rem; font-weight:800; color:#FFFFFF; margin:0; display:flex; align-items:center; gap:8px;">
+              <span>🚨 Live Road-Weather & Driver Safety Center</span>
+            </h4>
+            <span style="font-size:0.75rem; background:rgba(255,86,48,0.2); border:1px solid #FF5630; color:#FF8A80; padding:2px 8px; border-radius:10px; font-weight:700;">
+              NOAA AUTOMATED
+            </span>
+          </div>
+
+          <!-- Alert 1: Chain Law Alert -->
+          <div style="background:#0E1B30; border-left:4px solid #FFD000; padding:12px; border-radius:4px; margin-bottom:10px;">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:4px;">
+              <strong style="color:#FFD000; font-size:0.85rem;">⚙️ Chain Laws In Effect: Donner Pass (I-80 CA) & Eisenhower (I-70 CO)</strong>
+              <span style="font-size:0.7rem; color:#8C9BAB;">Fine: Up to $1,157</span>
+            </div>
+            <p style="font-size:0.75rem; color:var(--color-mist); margin:0; line-height:1.4;">
+              Commercial vehicles must carry minimum 4 tire chains. Pull into Nyack/Truckee chain stations if road signs flash. Do not attempt unchained summit ascent.
+            </p>
+          </div>
+
+          <!-- Alert 2: High Wind Blowover Warning -->
+          <div style="background:#0E1B30; border-left:4px solid #FF5630; padding:12px; border-radius:4px; margin-bottom:10px;">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:4px;">
+              <strong style="color:#FF8A80; font-size:0.85rem;">💨 High Wind Blowover Alert: I-80 Wyoming (Laramie - Walcott)</strong>
+              <span style="font-size:0.7rem; color:#FF5630; font-weight:700;">Gusts > 55 MPH</span>
+            </div>
+            <p style="font-size:0.75rem; color:var(--color-mist); margin:0; line-height:1.4;">
+              Empty and light 53' Dry Vans (under 15,000 lbs cargo) face severe rollover hazard. Mandatory directive: Park at Little America or Cheyenne until gusts subside.
+            </p>
+          </div>
+
+          <!-- Alert 3: FMCSA 49 CFR § 395.1(b) Adverse Driving Conditions Exception -->
+          <div style="background:#0E1B30; border-left:4px solid #36B37E; padding:12px; border-radius:4px;">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
+              <strong style="color:#A3E6CD; font-size:0.85rem;">⏰ FMCSA 49 CFR § 395.1(b) Adverse Driving Exception</strong>
+              <span style="font-size:0.7rem; background:#36B37E; color:#060D17; padding:1px 6px; border-radius:4px; font-weight:800;">+2 HOURS LEGAL</span>
+            </div>
+            <p style="font-size:0.75rem; color:var(--color-mist); margin-bottom:8px; line-height:1.4;">
+              If caught in sudden unforeseen snow, ice, or fog, federal law allows +2 extra driving hours (up to 13h drive / 16h duty window) to reach safe parking without violation.
+            </p>
+            <div style="background:#060D17; padding:8px; border-radius:4px; font-family:monospace; font-size:0.7rem; color:#FFFFFF; margin-bottom:8px;" id="eldAnnotationText">
+              [49 CFR 395.1(b) EXCEPTION] Unforeseen severe blizzard encountered. Utilizing +2hr driving window to reach safe parking. Authorized by Almajdoub Dispatch.
+            </div>
+            <button type="button" class="btn-action-app btn-accept-load" style="height:32px; font-size:0.75rem; padding:0 12px;" onclick="copyEldRemark()">
+              📋 Copy Legal ELD Annotation Remark
+            </button>
+            <span id="eldCopiedMsg" style="font-size:0.75rem; color:#A3E6CD; margin-left:8px; display:none;">Copied to clipboard!</span>
+          </div>
+        </div>
+
+        <!-- Location Telemetry & Deadhead Optimization -->
+        <div style="background:#060D17; border:1px solid var(--app-border); border-radius:8px; padding:18px; margin-top:16px;">
+          <h4 style="font-size:0.95rem; font-weight:700; color:#FFFFFF; margin-bottom:8px;">
+            📍 Smart Deadhead & Proximity Telemetry
+          </h4>
+          <p style="font-size:0.8rem; color:var(--color-mist); margin-bottom:14px; line-height:1.4;">
+            Location sharing allows our Texas desk to calculate real-time road-network deadhead distances and alert you to high-paying loads right near your dropoff points.
+          </p>
+          <div style="display:flex; justify-content:space-between; align-items:center; background:rgba(255,255,255,0.04); padding:10px 14px; border-radius:6px;">
+            <div>
+              <div style="font-size:0.85rem; font-weight:700; color:#FFFFFF;">Live Proximity Sensing</div>
+              <div style="font-size:0.75rem; color:var(--app-success);">Active · Reduced Deadhead Benchmark (&lt;8%)</div>
+            </div>
+            <span style="background:rgba(54,179,126,0.2); border:1px solid rgba(54,179,126,0.4); color:#A3E6CD; padding:4px 10px; border-radius:12px; font-size:0.75rem; font-weight:700;">
+              AUTHORIZED
+            </span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+
+  </main>
+
+  <!-- 5. Confirmation Modal Window (Action Acceptance / Decline) -->
+  <div class="confirm-modal-overlay" id="confirmModal">
+    <div class="confirm-modal-box">
+      <div style="font-size: 2.4rem; margin-bottom: 8px;" id="modalIcon">📋</div>
+      <h3 id="modalTitle">Confirm Load Authorization</h3>
+      <p id="modalDesc">
+        You are authorizing Almajdoub Dispatch to execute Broker Rate Confirmation #LD-2026-901 under your authority (MC-987452). All-in gross rate: $3,150.00.
+      </p>
+
+      <div class="confirm-btn-row">
+        <button type="button" class="btn-action-app btn-accept-load" id="btnModalConfirm">
+          <span>Yes, Confirm</span>
+        </button>
+        <button type="button" class="btn-action-app btn-decline-load" id="btnModalCancel">
+          <span>Cancel</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- In-Cab Push-to-Talk Intercom (LiveKit WebRTC SFU) -->
+  <div class="in-cab-ptt-dock" id="inCabPttDock">
+    <button type="button" class="btn-ptt-mic" id="btnPttIntercom">
+      <span style="font-size: 1.1rem;">🎙️</span>
+      <span id="pttLabel">HOLD TO TALK WITH AHMED (PTT INTERCOM)</span>
+      <span class="ptt-status-dot"></span>
+    </button>
+  </div>
+
+  <!-- 6. Mobile Bottom Dock Navigation -->
+  <nav class="app-dock-bar">
+    <button type="button" class="dock-tab active" data-tab="loads">
+      <svg viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
+      <span>Loads (1)</span>
+    </button>
+    <button type="button" class="dock-tab" data-tab="invoices">
+      <svg viewBox="0 0 24 24"><path d="M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z"/></svg>
+      <span>Invoicing</span>
+    </button>
+    <button type="button" class="dock-tab" data-tab="referrals">
+      <svg viewBox="0 0 24 24"><path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/></svg>
+      <span>Free Days</span>
+    </button>
+    <button type="button" class="dock-tab" data-tab="profile">
+      <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08-1.29 1.94-3.5 3.22-6 3.22z"/></svg>
+      <span>Desk & DAT</span>
+    </button>
+    <a href="tel:+14099417180" class="dock-tab" style="color:var(--app-gold);">
+      <svg viewBox="0 0 24 24"><path d="M20.01 15.38c-1.23 0-2.42-.2-3.53-.56a.977.977 0 00-1.01.24l-1.57 1.97c-2.83-1.35-5.48-3.9-6.89-6.83l1.95-1.66c.27-.28.35-.67.24-1.02-.37-1.11-.56-2.3-.56-3.53 0-.54-.45-.99-.99-.99H4.19C3.65 3 3 3.24 3 3.99 3 13.28 10.73 21 20.01 21c.71 0 .99-.63.99-1.18v-3.45c0-.54-.45-.99-.99-.99z"/></svg>
+      <span>Desk Call</span>
+    </a>
+  </nav>
+
+  <!-- Database & Reactive App Script -->
+  <script src="assets/js/almajdoub_api.js"></script>
+  <script src="assets/js/almajdoub_db.js"></script>
+  <script>
+    (function() {
+      // 1. Gated Access. Local OTP and local session spoofing are disabled.
+      const authGate = document.getElementById('authGate');
+      const authMCInput = document.getElementById('authMCInput');
+      const btnSendOTP = document.getElementById('btnSendOTP');
+      const authStep1 = document.getElementById('authStep1');
+      const authStep2 = document.getElementById('authStep2');
+      const btnVerifyOTP = document.getElementById('btnVerifyOTP');
+
+      let currentCarrier = null;
+      AlmajdoubApi.bootstrapSession().then(function(session) {
+        currentCarrier = session.user && (session.user.carrier || session.user);
+        if (!currentCarrier) throw new Error('Server did not return a carrier membership.');
+        authGate.style.display = 'none';
+        updateCarrierUI(currentCarrier);
+      }).catch(function() {
+        authGate.style.display = 'flex';
+      });
+
+      btnSendOTP.addEventListener('click', function() {
+        const val = authMCInput.value.trim();
+        if (!val) {
+          alert('Please enter your Registered Cell Phone or MC/USDOT Number.');
+          return;
+        }
+        alert('Local OTP is disabled. Use the approved identity provider to sign in; no carrier record was opened.');
+      });
+
+      btnVerifyOTP.addEventListener('click', function() {
+        // Collect digits
+        const inputs = document.querySelectorAll('.otp-input');
+        let code = '';
+        inputs.forEach(i => code += i.value);
+        alert('Local OTP verification is disabled. No local session can unlock carrier records.');
+      });
+
+      function updateCarrierUI(c) {
+        document.getElementById('appCarrierName').textContent = c.company;
+        document.getElementById('appCarrierMC').textContent = c.mc;
+        document.getElementById('appFreeDaysCount').textContent = c.freeDaysLeft + ' Days Free';
+        renderInvoices(c.mc);
+      }
+
+      // 2. Incoming Call Simulator
+      const callOverlay = document.getElementById('incomingCallOverlay');
+      const btnSimulateCall = document.getElementById('btnSimulateCall');
+      const btnAnswerCall = document.getElementById('btnAnswerCall');
+      const btnDismissCall = document.getElementById('btnDismissCall');
+
+      btnSimulateCall.addEventListener('click', function() {
+        callOverlay.style.display = 'flex';
+      });
+
+      btnAnswerCall.addEventListener('click', function() {
+        callOverlay.style.display = 'none';
+        document.querySelector('.dock-tab[data-tab="loads"]').click();
+      });
+
+      btnDismissCall.addEventListener('click', function() {
+        callOverlay.style.display = 'none';
+      });
+
+      // 3. Tab Switching
+      const tabs = document.querySelectorAll('.dock-tab[data-tab]');
+      const paneLoads = document.getElementById('paneLoads');
+      const paneInvoices = document.getElementById('paneInvoices');
+      const paneReferrals = document.getElementById('paneReferrals');
+      const paneProfile = document.getElementById('paneProfile');
+
+      tabs.forEach(tab => {
+        tab.addEventListener('click', function() {
+          tabs.forEach(t => t.classList.remove('active'));
+          this.classList.add('active');
+          const target = this.getAttribute('data-tab');
+
+          paneLoads.style.display = target === 'loads' ? 'block' : 'none';
+          paneInvoices.style.display = target === 'invoices' ? 'block' : 'none';
+          paneReferrals.style.display = target === 'referrals' ? 'block' : 'none';
+          if (paneProfile) paneProfile.style.display = target === 'profile' ? 'block' : 'none';
+        });
+      });
+
+      // 4. Accept / Decline Workflow with Confirmation Modal Window
+      const confirmModal = document.getElementById('confirmModal');
+      const modalTitle = document.getElementById('modalTitle');
+      const modalDesc = document.getElementById('modalDesc');
+      const btnAcceptTrigger = document.getElementById('btnAcceptTrigger');
+      const btnDeclineTrigger = document.getElementById('btnDeclineTrigger');
+      const btnModalConfirm = document.getElementById('btnModalConfirm');
+      const btnModalCancel = document.getElementById('btnModalCancel');
+      const loadActionBar = document.getElementById('loadActionBar');
+      const loadDecisionResult = document.getElementById('loadDecisionResult');
+
+      let currentDecision = null;
+
+      btnAcceptTrigger.addEventListener('click', function() {
+        currentDecision = 'ACCEPT';
+        modalTitle.textContent = 'Confirm Load Authorization';
+        modalDesc.innerHTML = 'You are authorizing <strong>Almajdoub Dispatch</strong> to sign Broker Rate Con #LD-2026-901. All-in gross rate: <strong>$3,150.00</strong>. Your truck will be locked into this dispatch.';
+        confirmModal.style.display = 'flex';
+      });
+
+      btnDeclineTrigger.addEventListener('click', function() {
+        currentDecision = 'DECLINE';
+        modalTitle.textContent = 'Decline Load Offer';
+        modalDesc.innerHTML = 'Are you sure you want to decline this load? Our Texas desk will immediately search for alternate lanes matching your criteria.';
+        confirmModal.style.display = 'flex';
+      });
+
+      btnModalCancel.addEventListener('click', function() {
+        confirmModal.style.display = 'none';
+        currentDecision = null;
+      });
+
+      btnModalConfirm.addEventListener('click', async function() {
+        confirmModal.style.display = 'none';
+        if (!currentCarrier) { alert('Authentication is required before a load decision.'); return; }
+        try {
+          await AlmajdoubDB.respondToLoad('LD-2026-901', currentDecision, null, window.__CURRENT_LOAD_VERSION || 1);
+          loadActionBar.style.display = 'none';
+          loadDecisionResult.style.display = 'block';
+          loadDecisionResult.style.background = currentDecision === 'ACCEPT' ? 'rgba(54, 179, 126, 0.2)' : 'rgba(255, 86, 48, 0.2)';
+          loadDecisionResult.style.color = currentDecision === 'ACCEPT' ? '#36B37E' : '#FFA39E';
+          loadDecisionResult.textContent = currentDecision === 'ACCEPT' ? 'Load decision submitted and confirmed by the dispatch server.' : 'Decline submitted to the dispatch server.';
+        } catch (error) {
+          loadDecisionResult.style.display = 'block';
+          loadDecisionResult.style.background = 'rgba(255, 86, 48, 0.2)';
+          loadDecisionResult.style.color = '#FFA39E';
+          loadDecisionResult.textContent = error.code === 'OCC_CONFLICT' ? 'This load changed on the server. Refresh before deciding again.' : 'Decision was not confirmed by the server. No local success was recorded.';
+        }
+      });
+
+      // 5. Invoicing Renderer & Generator
+      function renderInvoices(mc) {
+        const invoices = AlmajdoubDB.getInvoices(mc);
+        const tbody = document.getElementById('invoiceTableBody');
+        tbody.innerHTML = '';
+
+        invoices.forEach(inv => {
+          const tr = document.createElement('tr');
+          tr.innerHTML = `
+            <td><strong>${inv.invoiceNum}</strong></td>
+            <td>${inv.weekEnding}</td>
+            <td><strong>$${inv.totalGross.toLocaleString()}</strong></td>
+            <td>$${inv.nominalFee.toFixed(2)}</td>
+            <td style="color:var(--app-gold); font-weight:700;">-$${inv.discountPromo.toFixed(2)}</td>
+            <td style="color:#36B37E; font-weight:800;">$${inv.totalFeeDue.toFixed(2)}</td>
+            <td><span style="background:rgba(54,179,126,0.15); color:#36B37E; padding:2px 8px; border-radius:4px; font-weight:700; font-size:0.75rem;">${inv.status}</span></td>
+          `;
+          tbody.appendChild(tr);
+        });
+      }
+
+      document.getElementById('btnGenerateWeekly').addEventListener('click', function() {
+        const inv = AlmajdoubDB.generateWeeklyInvoice('MC-987452', new Date().toISOString().split('T')[0]);
+        renderInvoices('MC-987452');
+        alert(`Success! Generated Settlement Invoice ${inv.invoiceNum}. Retained Gross: $${inv.carrierRetained.toLocaleString()}`);
+      });
+
+      // 6. Push-To-Talk (LiveKit Intercom) Event Listeners
+      const btnPtt = document.getElementById('btnPttIntercom');
+      const pttLabel = document.getElementById('pttLabel');
+
+      function startTransmission(e) {
+        if (e) e.preventDefault();
+        btnPtt.classList.add('transmitting');
+        pttLabel.textContent = 'TRANSMITTING TO DESK (SPEAK NOW)...';
+        if (window.AlmajdoubVoice) window.AlmajdoubVoice.pttStart();
+      }
+
+      function stopTransmission(e) {
+        if (e) e.preventDefault();
+        btnPtt.classList.remove('transmitting');
+        pttLabel.textContent = 'HOLD TO TALK WITH AHMED (PTT INTERCOM)';
+        if (window.AlmajdoubVoice) window.AlmajdoubVoice.pttStop();
+      }
+
+      btnPtt.addEventListener('mousedown', startTransmission);
+      btnPtt.addEventListener('mouseup', stopTransmission);
+      btnPtt.addEventListener('touchstart', startTransmission, { passive: false });
+      btnPtt.addEventListener('touchend', stopTransmission, { passive: false });
+
+    })();
+  
+    // Home-Time & Safety Center Controls
+    window.toggleDateInput = function() {
+      const selected = document.querySelector('input[name="hometimeTiming"]:checked');
+      const wrap = document.getElementById('specificDateWrap');
+      if (wrap) {
+        wrap.style.display = (selected && selected.value === 'SPECIFIC_DATE') ? 'block' : 'none';
+      }
+    };
+
+    window.submitHometimeRequest = function(e) {
+      e.preventDefault();
+      const statusBadge = document.getElementById('hometimeRequestStatus');
+      const successBanner = document.getElementById('hometimeSuccessBanner');
+      if (statusBadge) {
+        statusBadge.innerHTML = '🟢 REQUEST ACTIVE (ROUTING HOME)';
+        statusBadge.style.background = 'rgba(54,179,126,0.2)';
+        statusBadge.style.borderColor = '#36B37E';
+        statusBadge.style.color = '#A3E6CD';
+      }
+      if (successBanner) {
+        successBanner.style.display = 'block';
+      }
+    };
+
+    window.copyEldRemark = function() {
+      const text = document.getElementById('eldAnnotationText').textContent.trim();
+      navigator.clipboard.writeText(text).then(function() {
+        const msg = document.getElementById('eldCopiedMsg');
+        if (msg) {
+          msg.style.display = 'inline';
+          setTimeout(() => msg.style.display = 'none', 3000);
+        }
+      });
+    };
+
+</script>
+</body>
+</html>

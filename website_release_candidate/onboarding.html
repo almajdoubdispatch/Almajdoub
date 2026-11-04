@@ -1,0 +1,1201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Carrier Fast-Track Onboarding & Agreement | Almajdoub Dispatch</title>
+  <meta name="description" content="100% digital, self-service motor carrier onboarding. Lock in 5.0% Launch Partner rate (5.5% Reefer), complete equipment profile, sign dispatch agreement, and get rolling within 24 hours.">
+  <link rel="icon" type="image/svg+xml" href="assets/img/logo-mark.svg">
+  <link rel="stylesheet" href="assets/css/style.css">
+  <meta name="theme-color" content="#0E1B30">
+  <style>
+    :root {
+      --navy-deep: #060D17;
+      --navy-card: #0E1B30;
+      --navy-input: #08101C;
+      --gold-bright: #FFD000;
+      --gold-hover: #E6BC00;
+      --cyan-bright: #76D2E0;
+      --cyan-text: #A3E6CD;
+      --white-pure: #FFFFFF;
+      --gray-light: #E2E8F0;
+      --gray-muted: #94A3B8;
+      --border-glow: rgba(118, 210, 224, 0.25);
+      --border-gold: rgba(255, 208, 0, 0.4);
+    }
+
+    body {
+      background-color: var(--navy-deep);
+      color: var(--white-pure);
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+
+    /* High-Contrast Sunlight Glare Accessibility */
+    .onboarding-hero {
+      background: radial-gradient(circle at 80% 20%, rgba(40, 125, 142, 0.28) 0%, rgba(6, 13, 23, 0.98) 85%);
+      border-bottom: 2px solid var(--border-glow);
+      padding: 40px 0 30px;
+    }
+
+    .trust-strip-top {
+      background: #08101C;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      padding: 10px 0;
+      font-size: 0.8125rem;
+      font-weight: 700;
+    }
+    .trust-strip-top .container {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+    .badge-pill-live {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(54, 179, 126, 0.15);
+      border: 1px solid #36B37E;
+      color: #A3E6CD;
+      padding: 4px 10px;
+      border-radius: 20px;
+      font-size: 0.775rem;
+    }
+    .pulse-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #36B37E;
+      box-shadow: 0 0 8px #36B37E;
+    }
+
+    .onboard-container {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+
+    .main-form-card {
+      background: var(--navy-card);
+      border: 2px solid var(--border-gold);
+      border-radius: 12px;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.8), 0 0 25px rgba(255, 208, 0, 0.15);
+      padding: 36px;
+      margin: 30px auto 60px;
+    }
+
+    @media (max-width: 768px) {
+      .main-form-card {
+        padding: 22px 16px;
+      }
+    }
+
+    .step-indicator-bar {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 8px;
+      margin-bottom: 32px;
+    }
+    .step-tab {
+      background: #08101C;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      border-radius: 6px;
+      padding: 12px 8px;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .step-tab.active {
+      border-color: var(--gold-bright);
+      background: rgba(255, 208, 0, 0.1);
+      box-shadow: 0 0 12px rgba(255, 208, 0, 0.2);
+    }
+    .step-tab.completed {
+      border-color: #36B37E;
+      background: rgba(54, 179, 126, 0.1);
+    }
+    .step-num {
+      font-size: 0.75rem;
+      font-weight: 800;
+      color: var(--cyan-bright);
+      display: block;
+      margin-bottom: 4px;
+    }
+    .step-title {
+      font-size: 0.8125rem;
+      font-weight: 700;
+      color: #FFFFFF;
+    }
+
+    .form-section-title {
+      font-size: 1.4rem;
+      font-weight: 800;
+      color: #FFFFFF;
+      margin-bottom: 6px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .form-section-desc {
+      font-size: 0.9rem;
+      color: var(--gray-light);
+      margin-bottom: 24px;
+      line-height: 1.5;
+    }
+
+    .grid-2col {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 18px;
+    }
+    @media (max-width: 650px) {
+      .grid-2col {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .grid-3col {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
+    }
+    @media (max-width: 768px) {
+      .grid-3col {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .form-group {
+      margin-bottom: 18px;
+    }
+    .form-label {
+      display: block;
+      font-size: 0.875rem;
+      font-weight: 700;
+      color: var(--cyan-bright);
+      margin-bottom: 6px;
+      letter-spacing: 0.02em;
+    }
+    .form-input, .form-select, .form-textarea {
+      width: 100%;
+      background: var(--navy-input);
+      border: 1.5px solid rgba(255, 255, 255, 0.2);
+      color: #FFFFFF;
+      padding: 13px 14px;
+      border-radius: 6px;
+      font-size: 1rem;
+      font-family: inherit;
+      box-sizing: border-box;
+      transition: all 0.2s;
+    }
+    .form-input:focus, .form-select:focus, .form-textarea:focus {
+      outline: none;
+      border-color: var(--gold-bright);
+      box-shadow: 0 0 0 3px rgba(255, 208, 0, 0.25);
+      background: #0E1A2C;
+    }
+
+    .checkbox-card-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+      gap: 12px;
+      margin: 12px 0 18px;
+    }
+    .checkbox-card {
+      background: #08101C;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      border-radius: 6px;
+      padding: 12px 14px;
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      cursor: pointer;
+      transition: border 0.2s;
+    }
+    .checkbox-card:hover {
+      border-color: var(--cyan-bright);
+    }
+    .checkbox-card input[type="checkbox"], .checkbox-card input[type="radio"] {
+      width: 18px;
+      height: 18px;
+      margin-top: 2px;
+      accent-color: var(--gold-bright);
+    }
+    .checkbox-label-text strong {
+      display: block;
+      font-size: 0.875rem;
+      color: #FFFFFF;
+    }
+    .checkbox-label-text span {
+      font-size: 0.775rem;
+      color: var(--gray-muted);
+    }
+
+    /* Brutal Truth & ATRI Notice Box */
+    .atri-truth-banner {
+      background: rgba(255, 208, 0, 0.08);
+      border: 1.5px solid var(--border-gold);
+      border-radius: 8px;
+      padding: 14px 18px;
+      margin-bottom: 24px;
+      font-size: 0.875rem;
+      line-height: 1.5;
+    }
+    .atri-truth-banner strong {
+      color: var(--gold-bright);
+    }
+
+    /* Signature Canvas Area */
+    .signature-wrap {
+      background: #FFFFFF;
+      border-radius: 6px;
+      padding: 4px;
+      margin: 10px 0;
+    }
+    #signatureCanvas {
+      width: 100%;
+      height: 150px;
+      background: #FFFFFF;
+      cursor: crosshair;
+      touch-action: none;
+      display: block;
+    }
+    .canvas-actions {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 6px;
+    }
+
+    /* Buttons */
+    .btn-nav-row {
+      display: flex;
+      justify-content: space-between;
+      gap: 14px;
+      margin-top: 30px;
+      padding-top: 20px;
+      border-top: 1px solid rgba(255, 255, 255, 0.15);
+    }
+    .btn-submit-gold {
+      background: var(--gold-bright);
+      color: #060D17;
+      font-size: 1.15rem;
+      font-weight: 900;
+      padding: 16px 28px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      box-shadow: 0 4px 18px rgba(255, 208, 0, 0.4);
+      transition: all 0.2s;
+    }
+    .btn-submit-gold:hover {
+      background: var(--gold-hover);
+      transform: translateY(-2px);
+      box-shadow: 0 6px 24px rgba(255, 208, 0, 0.6);
+    }
+    .btn-prev-outline {
+      background: transparent;
+      border: 1.5px solid rgba(255, 255, 255, 0.3);
+      color: #FFFFFF;
+      font-weight: 700;
+      padding: 14px 22px;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+    .btn-prev-outline:hover {
+      border-color: #FFFFFF;
+      background: rgba(255, 255, 255, 0.05);
+    }
+
+    /* Floating Fast Action Mobile Bar */
+    .mobile-float-bar {
+      display: none;
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: #08101C;
+      border-top: 2px solid var(--gold-bright);
+      padding: 10px 16px;
+      z-index: 9999;
+      box-shadow: 0 -4px 20px rgba(0,0,0,0.8);
+    }
+    @media (max-width: 768px) {
+      .mobile-float-bar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 10px;
+      }
+    }
+    .btn-float-call {
+      flex: 1;
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid var(--cyan-bright);
+      color: #FFFFFF;
+      text-decoration: none;
+      font-weight: 800;
+      font-size: 0.85rem;
+      text-align: center;
+      padding: 10px;
+      border-radius: 6px;
+    }
+    .btn-float-sign {
+      flex: 1.2;
+      background: var(--gold-bright);
+      color: #060D17;
+      text-decoration: none;
+      font-weight: 900;
+      font-size: 0.85rem;
+      text-align: center;
+      padding: 10px;
+      border-radius: 6px;
+    }
+  </style>
+  <link rel="canonical" href="https://almajdoubdispatch.com/onboarding.html">
+  <meta property="og:title" content="Carrier Onboarding & Agreement Activation | Almajdoub Dispatch">
+  <meta property="og:description" content="Digital carrier setup and agreement execution for US owner-operators and fleets. Secure SHA-256 cryptographic audit trail.">
+  <meta property="og:url" content="https://almajdoubdispatch.com/onboarding.html">
+  <meta property="og:type" content="website">
+  <meta property="og:image" content="https://almajdoubdispatch.com/assets/img/Almajdoub_Logo_Full_Color.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Carrier Onboarding & Agreement Activation | Almajdoub Dispatch">
+  <meta name="twitter:description" content="Digital carrier setup and agreement execution for US owner-operators and fleets. Secure SHA-256 cryptographic audit trail.">
+  <meta name="twitter:image" content="https://almajdoubdispatch.com/assets/img/Almajdoub_Logo_Full_Color.png">
+</head>
+<body>
+
+  <!-- Top Trust Strip -->
+  <div class="trust-strip-top">
+    <div class="container">
+      <div style="display:flex; align-items:center; gap:12px;">
+        <span class="badge-pill-live"><span class="pulse-dot"></span> DESK 1: 5/7 TRUCKS ACTIVE</span>
+        <span style="color: #FFD000;">⚡ Founding Partner Cohort: 5.0% Dry Van / 5.5% Reefer (Waitlist Open)</span>
+      </div>
+      <div>
+        <span>Direct Dispatch Desk: <a href="tel:+14099417180" style="color:var(--cyan-bright); font-weight:800; text-decoration:none;">+1 (409) 941-7180</a></span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Header -->
+  <header class="site-header">
+    <div class="container header-main">
+      <a href="index.html" class="brand-link" aria-label="Almajdoub Dispatch Home">
+        <img loading="lazy" decoding="async" src="assets/img/Almajdoub_Monogram_White.png" alt="Almajdoub Dispatch Official Monogram Mark — Cyan and Dark Navy Operations Seal" class="brand-logo-img">
+        <div class="brand-text-lockup">
+          <span class="brand-name">ALMAJDOUB DISPATCH</span>
+          <span class="brand-tagline">Your truck. Your call.</span>
+        </div>
+      </a>
+
+      <nav aria-label="Primary Navigation">
+        <ul class="nav-menu">
+          <li><a href="index.html" class="nav-link">Home</a></li>
+          <li><a href="how-it-works.html" class="nav-link">How We Work</a></li>
+          <li><a href="pricing.html" class="nav-link">Pricing</a></li>
+          <li><a href="onboarding.html" class="nav-cta active" style="background:var(--gold-bright); color:#060D17; font-weight:800;">Onboard Now (No Call)</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Hero Header -->
+  <section class="onboarding-hero">
+    <div class="onboard-container text-center">
+      <div style="display:inline-block; background:rgba(118, 210, 224, 0.15); border:1px solid var(--cyan-bright); color:var(--cyan-bright); font-size:0.8125rem; font-weight:800; padding:5px 16px; border-radius:20px; margin-bottom:14px;">
+        🚀 100% DIGITAL SELF-SERVE ONBOARDING · ZERO SALES PRESSURE
+      </div>
+      <h1 style="font-size:clamp(1.9rem, 3.8vw, 2.8rem); font-weight:900; line-height:1.15; margin:0 0 14px; color:#FFFFFF;">
+        Complete Carrier Profile & Execute Dispatch Agreement
+      </h1>
+      <p style="font-size:1.1rem; color:var(--gray-light); max-width:760px; margin:0 auto 10px; line-height:1.6;">
+        No lengthy sales calls. No bait-and-switch. Submit your operating parameters, select your equipment checklist, electronically sign your agreement, and let us prepare load options before your wheels turn.
+      </p>
+    </div>
+  </section>
+
+  <!-- Main Multi-Step Form Wrapper -->
+  <main class="onboard-container">
+    <div class="main-form-card">
+
+      <!-- Step Indicator Bar -->
+      <div class="step-indicator-bar">
+        <div class="step-tab active" id="tabIndicator1" onclick="goToStep(1)">
+          <span class="step-num">STEP 1</span>
+          <span class="step-title">Authority & Contact</span>
+        </div>
+        <div class="step-tab" id="tabIndicator2" onclick="goToStep(2)">
+          <span class="step-num">STEP 2</span>
+          <span class="step-title">Fleet & Lanes</span>
+        </div>
+        <div class="step-tab" id="tabIndicator3" onclick="goToStep(3)">
+          <span class="step-num">STEP 3</span>
+          <span class="step-title">Insurance & Pay</span>
+        </div>
+        <div class="step-tab" id="tabIndicator4" onclick="goToStep(4)">
+          <span class="step-num">STEP 4</span>
+          <span class="step-title">Sign Agreement</span>
+        </div>
+      </div>
+
+      <!-- Live Brutal Honesty Banner -->
+      <div class="atri-truth-banner">
+        <strong>🛡️ The Almajdoub Operational Invariant:</strong>
+        We ground every dispatch decision in ATRI's real-world operational cost of <strong>$2.336/mile</strong>. We never force loads, we take <strong>0% from your Fuel Surcharge, Detention ($65/hr), Layover, or TONU</strong>, and all freight payments go directly from broker/factoring into your bank account.
+      </div>
+
+      <form id="masterOnboardForm" onsubmit="handleFormSubmit(event)">
+
+        <!-- ==================== STEP 1: AUTHORITY & CONTACT ==================== -->
+        <div class="wizard-step" id="step1">
+          <div class="form-section-title">
+            <span>🏢</span> Step 1: Motor Carrier Authority & Identity
+          </div>
+          <p class="form-section-desc">
+            Provide your FMCSA legal credentials. We verify active operating authority instantly on SAFER.
+          </p>
+
+          <div class="grid-2col">
+            <div class="form-group">
+              <label class="form-label" for="carrierLegalName">Carrier Legal Company Name *</label>
+              <input type="text" id="carrierLegalName" name="carrierLegalName" class="form-input" placeholder="e.g. Vance Hauling LLC" required>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="dbaName">DBA (If Applicable)</label>
+              <input type="text" id="dbaName" name="dbaName" class="form-input" placeholder="Doing Business As...">
+            </div>
+          </div>
+
+          <div class="grid-2col">
+            <div class="form-group">
+              <label class="form-label" for="mcNumber">MC Number *</label>
+              <input type="text" id="mcNumber" name="mcNumber" class="form-input" placeholder="e.g. MC-1489201" required onblur="formatMC(this)">
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="dotNumber">USDOT Number *</label>
+              <input type="text" id="dotNumber" name="dotNumber" class="form-input" placeholder="e.g. 3928104" required>
+            </div>
+          </div>
+
+          <div class="grid-2col">
+            <div class="form-group">
+              <label class="form-label" for="primaryContactName">Owner / Contact Full Name *</label>
+              <input type="text" id="primaryContactName" name="primaryContactName" class="form-input" placeholder="e.g. Marcus Vance" required>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="cellPhone">Cell Phone (SMS / WhatsApp Dispatch) *</label>
+              <input type="tel" id="cellPhone" name="cellPhone" class="form-input" placeholder="e.g. (409) 941-7180" required>
+            </div>
+          </div>
+
+          <div class="grid-2col">
+            <div class="form-group">
+              <label class="form-label" for="dispatchEmail">Dispatch & Rate-Con Email *</label>
+              <input type="email" id="dispatchEmail" name="dispatchEmail" class="form-input" placeholder="e.g. marcus@vancehauling.com" required>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="homeBaseZip">Home Base Zip Code & City *</label>
+              <input type="text" id="homeBaseZip" name="homeBaseZip" class="form-input" placeholder="e.g. 77002, Houston TX" required>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="referralCodeInput">Referral Code or Referring Carrier MC (Optional)</label>
+            <input type="text" id="referralCodeInput" name="referralCodeInput" class="form-input" placeholder="e.g. REF-1489201 or MC-1489201" oninput="checkReferralInput(this.value)">
+            <div id="referralFeedback" style="font-size:0.8125rem; margin-top:6px; font-weight:700; display:none;"></div>
+          </div>
+
+          <div class="btn-nav-row" style="justify-content: flex-end;">
+            <button type="button" class="btn-submit-gold" onclick="validateAndNext(1)">
+              <span>Next: Fleet & Lane Profile</span>
+              <span>→</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- ==================== STEP 2: FLEET & LANES ==================== -->
+        <div class="wizard-step" id="step2" style="display:none;">
+          <div class="form-section-title">
+            <span>🚚</span> Step 2: Fleet Specifications & Route Strategy
+          </div>
+          <p class="form-section-desc">
+            Tell us about your equipment and your target lanes so we only bring you loads you actually want to pull.
+          </p>
+
+          <div class="grid-2col">
+            <div class="form-group">
+              <label class="form-label" for="equipmentType">Primary Equipment Type *</label>
+              <select id="equipmentType" name="equipmentType" class="form-select" required>
+                <option value="53_dry_van" selected>53′ Dry Van (Standard Linehaul)</option>
+                <option value="53_reefer">53′ Reefer (Refrigerated)</option>
+                <option value="flatbed" disabled>48′ / 53′ Flatbed (Currently Inactive - 53′ Van & Reefer Only)</option>
+                <option value="stepdeck" disabled>Stepdeck / Conestoga (Currently Inactive - 53′ Van & Reefer Only)</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="truckCount">Trucks Enrolled in Desk *</label>
+              <select id="truckCount" name="truckCount" class="form-select" required onchange="syncTruckCountToPlans()">
+                <option value="1" selected>1 Power Unit (Solo Owner-Operator)</option>
+                <option value="2">2 Power Units (Founding Fleet Eligible - $245/wk)</option>
+                <option value="3">3 Power Units (Standard Fleet - $299/wk)</option>
+                <option value="4">4 Power Units</option>
+                <option value="5">5 Power Units</option>
+                <option value="6-10">6 – 10 Power Units</option>
+                <option value="11-25">11 – 25 Power Units</option>
+                <option value="26-50">26 – 50 Power Units</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="grid-2col">
+            <div class="form-group">
+              <label class="form-label" for="targetRpmFloor">Minimum Desired Rate Per Mile (RPM Floor)</label>
+              <input type="text" id="targetRpmFloor" name="targetRpmFloor" class="form-input" placeholder="e.g. $2.25/mi loaded">
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="maxWeight">Maximum Payload Weight</label>
+              <input type="text" id="maxWeight" name="maxWeight" class="form-input" placeholder="e.g. 43,500 lbs">
+            </div>
+          </div>
+
+          <!-- Equipment & Winter Safety Additions -->
+          <div class="form-group">
+            <label class="form-label">Special Equipment & Safety Capabilities (Select All That Apply):</label>
+            <div class="checkbox-card-grid">
+              <label class="checkbox-card">
+                <input type="checkbox" id="equipChains" name="equipChains" value="chains">
+                <div class="checkbox-label-text">
+                  <strong>Tire Snow Chains</strong>
+                  <span>Qualified for Donner Pass & I-70 Rockies</span>
+                </div>
+              </label>
+              <label class="checkbox-card">
+                <input type="checkbox" id="equipStraps" name="equipStraps" value="straps" checked>
+                <div class="checkbox-label-text">
+                  <strong>Load Locks & E-Track Straps</strong>
+                  <span>Standard cargo securement</span>
+                </div>
+              </label>
+              <label class="checkbox-card">
+                <input type="checkbox" id="equipLiftgate" name="equipLiftgate" value="liftgate">
+                <div class="checkbox-label-text">
+                  <strong>Hydraulic Liftgate</strong>
+                  <span>Final-mile & high-rate residential freight</span>
+                </div>
+              </label>
+              <label class="checkbox-card">
+                <input type="checkbox" id="equipTwic" name="equipTwic" value="twic">
+                <div class="checkbox-label-text">
+                  <strong>TWIC Card Endorsement</strong>
+                  <span>Access to US Sea Ports & Petro Terminals</span>
+                </div>
+              </label>
+            </div>
+          </div>
+
+          <!-- Home-Time Logic -->
+          <div class="grid-2col">
+            <div class="form-group">
+              <label class="form-label" for="homeTimeSchedule">Hometime Logistics Preference *</label>
+              <select id="homeTimeSchedule" name="homeTimeSchedule" class="form-select" required>
+                <option value="every_weekend">Home Every Weekend (Friday/Saturday)</option>
+                <option value="every_2_weeks">Out 2 Weeks / Home 3-4 Days</option>
+                <option value="flexible_otr" selected>Over-the-Road (Flexible / Max Revenue Focus)</option>
+                <option value="custom_date">Before Specific Date Each Month</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="avoidRegions">Regions / States to Avoid</label>
+              <input type="text" id="avoidRegions" name="avoidRegions" class="form-input" placeholder="e.g. NYC 5 Boroughs, Northeast, or Toll Roads">
+            </div>
+          </div>
+
+          <div class="btn-nav-row">
+            <button type="button" class="btn-prev-outline" onclick="goToStep(1)">← Previous</button>
+            <button type="button" class="btn-submit-gold" onclick="validateAndNext(2)">Next: Insurance & Pay →</button>
+          </div>
+        </div>
+
+        <!-- ==================== STEP 3: INSURANCE & PAY ==================== -->
+        <div class="wizard-step" id="step3" style="display:none;">
+          <div class="form-section-title">
+            <span>💳</span> Step 3: Factoring & Insurance Verification
+          </div>
+          <p class="form-section-desc">
+            We set up your broker billing directly with your factoring company so you get paid same-day without delays.
+          </p>
+
+          <div class="grid-2col">
+            <div class="form-group">
+              <label class="form-label" for="factoringCompany">Factoring Company *</label>
+              <select id="factoringCompany" name="factoringCompany" class="form-select" required>
+                <option value="triumph">Triumph Business Capital / TriumphPay</option>
+                <option value="rts">RTS Financial</option>
+                <option value="apex">Apex Capital</option>
+                <option value="otr">OTR Solutions</option>
+                <option value="tbs">TBS Factoring</option>
+                <option value="other">Other Factoring Company</option>
+                <option value="none">Non-Factored (Direct Broker QuickPay)</option>
+                <option value="need_factoring">No Factoring — I Need a Partner Recommendation</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="factoringSatisfaction">Factoring Experience / Rate Satisfaction</label>
+              <select id="factoringSatisfaction" name="factoringSatisfaction" class="form-select">
+                <option value="satisfied" selected>Satisfied with current provider</option>
+                <option value="high_rates">Rates are too high (Looking for lower fee partner)</option>
+                <option value="slow_funding">Funding is slow / Looking to switch</option>
+                <option value="need_partner">Need an intro to a top-tier factoring partner</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="grid-2col">
+            <div class="form-group">
+              <label class="form-label" for="factoringNoaEmail">Factoring NOA / Billing Email</label>
+              <input type="email" id="factoringNoaEmail" name="factoringNoaEmail" class="form-input" placeholder="e.g. invoices@triumphpay.com">
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="feeSettlementMethod">Weekly Fee Settlement Preference *</label>
+              <select id="feeSettlementMethod" name="feeSettlementMethod" class="form-select" required>
+                <option value="direct_factoring_remittance" selected>Direct Factoring Remittance (Recommended: Automated ACH deduction, zero paperwork)</option>
+                <option value="friday_electronic_invoice">Factoring Friday Electronic Invoice (Payoneer / Melio ACH/Card link every Friday)</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="grid-2col">
+            <div class="form-group">
+              <label class="form-label" for="insuranceAgency">Insurance Producer / Agency Name *</label>
+              <input type="text" id="insuranceAgency" name="insuranceAgency" class="form-input" placeholder="e.g. Progressive / Great West Casualty" required>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="autoLiabilityLimit">Auto Liability Coverage *</label>
+              <select id="autoLiabilityLimit" name="autoLiabilityLimit" class="form-select" required>
+                <option value="1_million" selected>$1,000,000 Combined Single Limit (Standard)</option>
+                <option value="2_million">$2,000,000+ Extended Liability</option>
+                <option value="750k">$750,000 (FMCSA Minimum)</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="cargoInsuranceLimit">Cargo Insurance Coverage *</label>
+            <select id="cargoInsuranceLimit" name="cargoInsuranceLimit" class="form-select" required>
+              <option value="100k" selected>$100,000 Cargo Coverage (Required for Tier-1 Freight)</option>
+              <option value="150k">$150,000 Cargo Coverage</option>
+              <option value="250k">$250,000+ High-Value Electronics / Pharma</option>
+            </select>
+          </div>
+
+          <!-- Document Upload / Post-Intake Notice -->
+          <div style="background:rgba(255, 255, 255, 0.05); border:1px dashed rgba(255, 255, 255, 0.25); border-radius:8px; padding:18px; text-align:center; margin:16px 0;">
+            <div style="font-size:1.4rem; margin-bottom:6px;">📄</div>
+            <div style="font-weight:700; color:#FFFFFF; margin-bottom:4px;">Carrier Packet Documents (COI, W-9, MC Authority)</div>
+            <div style="font-size:0.8125rem; color:var(--gray-muted); max-width:550px; margin:0 auto 12px;">
+              You may upload them now, or simply reply to your welcome confirmation text message with photos of your Certificate of Insurance (COI) and W-9.
+            </div>
+            <input type="file" id="carrierDocsFile" multiple style="font-size:0.85rem; color:var(--cyan-bright);">
+          </div>
+
+          <div class="btn-nav-row">
+            <button type="button" class="btn-prev-outline" onclick="goToStep(2)">← Previous</button>
+            <button type="button" class="btn-submit-gold" onclick="validateAndNext(3)">Next: Sign Agreement →</button>
+          </div>
+        </div>
+
+        <!-- ==================== STEP 4: SIGN AGREEMENT ==================== -->
+        <div class="wizard-step" id="step4" style="display:none;">
+          <div class="form-section-title">
+            <span>✍️</span> Step 4: Dispatch Authorization & Digital E-Signature
+          </div>
+          <p class="form-section-desc">
+            Review the governing legal terms and electronically sign to activate your desk immediately.
+          </p>
+
+          <!-- Rate Selection Cards -->
+          <div class="form-group">
+            <label class="form-label">Select Your Dispatch Terms Program:</label>
+            <div class="grid-2col" id="planCardsContainer">
+              <label class="checkbox-card" id="cardTrial14" style="border-color:var(--gold-bright); background:rgba(255, 208, 0, 0.06);">
+                <input type="radio" name="rateTier" value="trial_14days" checked onchange="updatePlanSelection()">
+                <div class="checkbox-label-text">
+                  <strong style="color:var(--gold-bright);">⭐ 14-Day Free Risk-Free Trial (Recommended)</strong>
+                  <span>14 Days Free Trial · Rollovers to Founding 5.0% Dry Van / 5.5% Reefer during active cohort</span>
+                </div>
+              </label>
+              <label class="checkbox-card" id="cardDirectLaunch">
+                <input type="radio" name="rateTier" value="standard_direct" onchange="updatePlanSelection()">
+                <div class="checkbox-label-text">
+                  <strong>Direct Active Partner (5.0% Dry Van / 5.5% Reefer)</strong>
+                  <span>Skip trial · Immediate active dispatch at 5.0% Dry Van / 5.5% Reefer linehaul only</span>
+                </div>
+              </label>
+              <label class="checkbox-card" id="cardFleetRetainer" style="display:none; grid-column: span 2;">
+                <input type="radio" name="rateTier" value="fleet_retainer" onchange="updatePlanSelection()">
+                <div class="checkbox-label-text">
+                  <strong style="color:var(--cyan-bright);" id="fleetRetainerTitle">🏢 Fleet Flat Weekly Retainer</strong>
+                  <span id="fleetRetainerDesc">$245 / truck / week · 0% commission on base linehaul</span>
+                </div>
+              </label>
+            </div>
+          </div>
+
+          <!-- Governing Legal Terms Accordion Box -->
+          <div style="background:#060D17; border:1px solid rgba(255, 255, 255, 0.2); border-radius:6px; padding:16px; font-size:0.8125rem; color:var(--gray-light); max-height:180px; overflow-y:auto; line-height:1.6; margin-bottom:18px;">
+            <h4 style="color:#FFFFFF; margin:0 0 8px; font-size:0.9rem;">SUMMARY OF GOVERNING DISPATCH TERMS (49 CFR § 371.2):</h4>
+            <p>1. <strong>Bona Fide Agent:</strong> Carrier appoints Almajdoub Dispatch as independent administrative and marketing dispatch agent. Almajdoub Dispatch is not a broker.</p>
+            <p>2. <strong>Direct Payment:</strong> 100% of freight charges, accessorials, detention ($65/hr after 2h), layover, and TONU are paid directly to Carrier or Carrier's factoring company.</p>
+            <p>3. <strong>Zero Forced Dispatch:</strong> Carrier retains sole, absolute discretion to accept or reject any load proposed by Dispatcher without penalty.</p>
+            <p>4. <strong>Limited Power of Attorney:</strong> Carrier authorizes Dispatcher to execute broker carrier packets and rate confirmations solely upon prior approval by Carrier.</p>
+            <p>5. <strong>Safety & Telemetry:</strong> Voluntary telemetry enables winter mountain chain alerts, Wyoming wind blowover warnings, and 49 CFR § 395.1(b) adverse driving safe harbor extensions.</p>
+          </div>
+
+                    <!-- Mandatory Legal Checkboxes -->
+          <div style="display:flex; flex-direction:column; gap:10px; margin-bottom:20px;">
+            <label style="display:flex; align-items:flex-start; gap:10px; font-size:0.8125rem; color:#FFFFFF; cursor:pointer;">
+              <input type="checkbox" id="legalAckLpoa" required style="width:18px; height:18px; margin-top:2px; accent-color:var(--gold-bright);">
+              <span><strong>Limited Power of Attorney:</strong> I hereby grant Almajdoub Dispatch authority to contact brokers, negotiate rates, complete setup packets, and sign load confirmations solely with my prior verbal or written approval.</span>
+            </label>
+            <label style="display:flex; align-items:flex-start; gap:10px; font-size:0.8125rem; color:#FFFFFF; cursor:pointer;">
+              <input type="checkbox" id="legalAckLoadboardSubSeat" required style="width:18px; height:18px; margin-top:2px; accent-color:var(--gold-bright);">
+              <span><strong>Load Board Sub-Seat & MC Authorization:</strong> I explicitly authorize Dispatcher to utilize my USDOT and MC credentials for carrier setup packets, and consent to provisioning an authorized dispatcher sub-seat under my MC registration on electronic freight load boards (including DAT One and Truckstop) strictly for sourcing and booking freight for my designated power unit.</span>
+            </label>
+            <label style="display:flex; align-items:flex-start; gap:10px; font-size:0.8125rem; color:#FFFFFF; cursor:pointer;">
+              <input type="checkbox" id="legalAckUniversalAssignment" required style="width:18px; height:18px; margin-top:2px; accent-color:var(--gold-bright);">
+              <span><strong>Independent Sole Proprietor & Universal Assignment:</strong> I acknowledge that Dispatcher currently operates as an independent sole proprietor, and I consent that this agreement may be assigned to any organized corporate entity (US LLC, UK LTD, Dubai Freezone company, or other jurisdiction) owned or controlled by Ahmed Almajdoub upon simple written/electronic notice without modifying my agreed grandfathered pricing.</span>
+            </label>
+            <label style="display:flex; align-items:flex-start; gap:10px; font-size:0.8125rem; color:#FFFFFF; cursor:pointer;">
+              <input type="checkbox" id="legalAckDirectPay" required style="width:18px; height:18px; margin-top:2px; accent-color:var(--gold-bright);">
+              <span><strong>Direct Payment:</strong> I confirm that broker payments route directly to my bank account or factoring company, and I agree to remit the dispatch commission weekly on Friday upon receipt of the settlement ledger.</span>
+            </label>
+            <label style="display:flex; align-items:flex-start; gap:10px; font-size:0.8125rem; color:#FFFFFF; cursor:pointer;">
+              <input type="checkbox" id="legalAckTcpa" required style="width:18px; height:18px; margin-top:2px; accent-color:var(--gold-bright);">
+              <span><strong>TCPA & A2P 10DLC Communications Consent:</strong> By providing my cell phone and submitting this agreement, I give express written consent to receive operational dispatch SMS messages, load offers, and check-calls from Almajdoub Dispatch (+1 409-941-7180) via manual dispatch or automated technology. Msg & data rates may apply. Reply STOP to cancel at any time.</span>
+            </label>
+          </div>
+
+          <!-- Signature Pad & Typed Name -->
+          <div class="grid-2col">
+            <div class="form-group">
+              <label class="form-label" for="signerFullName">Authorized Officer Full Name *</label>
+              <input type="text" id="signerFullName" name="signerFullName" class="form-input" placeholder="Type full legal name" required>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="signerTitle">Signer Title *</label>
+              <input type="text" id="signerTitle" name="signerTitle" class="form-input" value="Owner-Operator / Managing Member" required>
+            </div>
+          </div>
+
+          <!-- Interactive Signature Canvas Pad -->
+          <div class="form-group">
+            <label class="form-label">Electronic Hand Signature (Draw with Finger / Mouse) *</label>
+            <div class="signature-wrap">
+              <canvas id="signatureCanvas"></canvas>
+            </div>
+            <div class="canvas-actions">
+              <span style="font-size:0.75rem; color:var(--gray-muted);">Legal electronic signature compliant with US ESIGN Act.</span>
+              <button type="button" onclick="clearSignature()" style="background:rgba(255,255,255,0.1); border:1px solid rgba(255,255,255,0.25); color:#FFFFFF; border-radius:4px; font-size:0.75rem; padding:4px 10px; cursor:pointer;">Clear & Redraw</button>
+            </div>
+          </div>
+
+          <div class="btn-nav-row">
+            <button type="button" class="btn-prev-outline" onclick="goToStep(3)">← Previous</button>
+            <button type="submit" class="btn-submit-gold" style="font-size:1.25rem;">
+              <span>🚀 Execute Agreement & Activate Desk</span>
+            </button>
+          </div>
+
+        </div>
+
+      </form>
+    </div>
+  </main>
+
+  <!-- Floating Mobile Quick Bar -->
+  <div class="mobile-float-bar">
+    <a href="tel:+14099417180" class="btn-float-call">📞 Call (409) 941-7180</a>
+    <a href="#main-content" class="btn-float-sign" onclick="goToStep(1)">✍️ Complete Onboarding</a>
+  </div>
+
+  <!-- Footer -->
+  <footer class="site-footer">
+    <div class="container text-center" style="padding:30px 0; font-size:0.8125rem; color:var(--gray-muted);">
+      <p style="margin-bottom:6px;">© 2026 Almajdoub Dispatch. All rights reserved. 49 CFR § 371.2 Bona Fide Carrier Dispatch Agent.</p>
+      <p>Independent desk operated by Ahmed Almajdoub · Direct Line: +1 (409) 941-7180 · <a href="privacy.html" style="color:var(--cyan-bright);">Privacy Notice</a> · <a href="terms.html" style="color:var(--cyan-bright);">Terms of Service</a></p>
+    </div>
+  </footer>
+
+  <!-- Scripts: Almajdoub DB & Multi-Step Wizard Engine -->
+  <script src="assets/js/almajdoub_api.js"></script>
+  <script src="assets/js/almajdoub_supabase.js?v=3.2"></script>
+  <script src="assets/js/pricing_catalog.js"></script>
+  <script src="assets/js/almajdoub_db.js"></script>
+  <script>
+    let currentStep = 1;
+    let canvas, ctx, isDrawing = false;
+    let refDebounce = null;
+
+    window.addEventListener('DOMContentLoaded', () => {
+      initCanvas();
+      
+      // Auto-populate from URL query params if any
+      const params = new URLSearchParams(window.location.search);
+      if (params.get('mc')) document.getElementById('mcNumber').value = params.get('mc');
+      if (params.get('phone')) document.getElementById('cellPhone').value = params.get('phone');
+      if (params.get('name')) {
+        document.getElementById('primaryContactName').value = params.get('name');
+        document.getElementById('signerFullName').value = params.get('name');
+      }
+      if (params.get('ticket')) {
+        window.carrierTicketNumber = params.get('ticket');
+      }
+
+      // Referral Code check from URL
+      const refParam = params.get('ref');
+      if (refParam) {
+        const refInput = document.getElementById('referralCodeInput');
+        if (refInput) {
+          refInput.value = refParam;
+          checkReferralInput(refParam);
+        }
+      }
+
+      // Sync initial truck count to plans
+      syncTruckCountToPlans();
+    });
+
+    function initCanvas() {
+      canvas = document.getElementById('signatureCanvas');
+      if (!canvas) return;
+      ctx = canvas.getContext('2d');
+      canvas.width = canvas.parentElement.clientWidth;
+      canvas.height = 150;
+      ctx.lineWidth = 2.5;
+      ctx.lineCap = 'round';
+      ctx.strokeStyle = '#060D17';
+
+      // Mouse Events
+      canvas.addEventListener('mousedown', startDraw);
+      canvas.addEventListener('mousemove', draw);
+      canvas.addEventListener('mouseup', stopDraw);
+      canvas.addEventListener('mouseleave', stopDraw);
+
+      // Touch Events for Mobile
+      canvas.addEventListener('touchstart', (e) => {
+        e.preventDefault();
+        const touch = e.touches[0];
+        const rect = canvas.getBoundingClientRect();
+        startDraw({ clientX: touch.clientX, clientY: touch.clientY });
+      }, { passive: false });
+
+      canvas.addEventListener('touchmove', (e) => {
+        e.preventDefault();
+        const touch = e.touches[0];
+        draw({ clientX: touch.clientX, clientY: touch.clientY });
+      }, { passive: false });
+
+      canvas.addEventListener('touchend', stopDraw);
+    }
+
+    function startDraw(e) {
+      isDrawing = true;
+      const rect = canvas.getBoundingClientRect();
+      ctx.beginPath();
+      ctx.moveTo(e.clientX - rect.left, e.clientY - rect.top);
+    }
+
+    function draw(e) {
+      if (!isDrawing) return;
+      const rect = canvas.getBoundingClientRect();
+      ctx.lineTo(e.clientX - rect.left, e.clientY - rect.top);
+      ctx.stroke();
+    }
+
+    function stopDraw() {
+      isDrawing = false;
+    }
+
+    function clearSignature() {
+      if (!ctx || !canvas) return;
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+    }
+
+    function goToStep(step) {
+      document.querySelectorAll('.wizard-step').forEach(el => el.style.display = 'none');
+      document.querySelectorAll('.step-tab').forEach((tab, idx) => {
+        tab.classList.remove('active');
+        if (idx + 1 < step) tab.classList.add('completed');
+        else if (idx + 1 === step) tab.classList.add('active');
+      });
+      document.getElementById('step' + step).style.display = 'block';
+      currentStep = step;
+      window.scrollTo({ top: 300, behavior: 'smooth' });
+    }
+
+    function validateAndNext(step) {
+      const stepEl = document.getElementById('step' + step);
+      const inputs = stepEl.querySelectorAll('input[required], select[required]');
+      for (let input of inputs) {
+        if (!input.value.trim()) {
+          input.focus();
+          alert('Please complete the required field: ' + (input.previousElementSibling ? input.previousElementSibling.innerText : 'Required'));
+          return;
+        }
+      }
+
+      // Sync name to signer name
+      if (step === 1) {
+        const contact = document.getElementById('primaryContactName').value;
+        if (!document.getElementById('signerFullName').value) {
+          document.getElementById('signerFullName').value = contact;
+        }
+      }
+
+      goToStep(step + 1);
+    }
+
+    function formatMC(el) {
+      let val = el.value.trim().toUpperCase();
+      if (val && !val.startsWith('MC-') && !val.startsWith('MC')) {
+        val = 'MC-' + val;
+      } else if (val.startsWith('MC') && !val.startsWith('MC-')) {
+        val = 'MC-' + val.substring(2);
+      }
+      el.value = val;
+    }
+
+    // Dynamic Fleet Retainer Plan Display based on Truck Count
+    function syncTruckCountToPlans() {
+      const tcEl = document.getElementById('truckCount');
+      if (!tcEl) return;
+      const tcVal = tcEl.value;
+      const num = parseInt(tcVal, 10);
+      const fleetCard = document.getElementById('cardFleetRetainer');
+      const fleetTitle = document.getElementById('fleetRetainerTitle');
+      const fleetDesc = document.getElementById('fleetRetainerDesc');
+      if (!fleetCard) return;
+
+      if (num === 2) {
+        fleetCard.style.display = 'flex';
+        if (fleetTitle) fleetTitle.innerText = '🏢 Founding Fleet Retainer ($245 / truck / week)';
+        if (fleetDesc) fleetDesc.innerText = 'Prepaid weekly retainer for 2 power units ($490/wk total) · 0% percentage commission';
+      } else if (num >= 3 || tcVal.includes('-')) {
+        fleetCard.style.display = 'flex';
+        if (fleetTitle) fleetTitle.innerText = '🏢 Standard Fleet Retainer ($299 / truck / week)';
+        if (fleetDesc) fleetDesc.innerText = 'Prepaid weekly retainer for 3+ power units · 0% percentage commission';
+      } else {
+        fleetCard.style.display = 'none';
+        const checked = document.querySelector('input[name="rateTier"]:checked');
+        if (checked && checked.value === 'fleet_retainer') {
+          const t14 = document.querySelector('input[name="rateTier"][value="trial_14days"]');
+          if (t14) t14.checked = true;
+          updatePlanSelection();
+        }
+      }
+    }
+
+    function updatePlanSelection() {
+      const selected = document.querySelector('input[name="rateTier"]:checked');
+      const val = selected ? selected.value : 'trial_14days';
+      ['cardTrial14', 'cardDirectLaunch', 'cardFleetRetainer'].forEach(id => {
+        const el = document.getElementById(id);
+        if (!el) return;
+        el.style.borderColor = 'rgba(255, 255, 255, 0.15)';
+        el.style.background = '#08101C';
+      });
+      if (val === 'trial_14days') {
+        const c = document.getElementById('cardTrial14');
+        if (c) { c.style.borderColor = 'var(--gold-bright)'; c.style.background = 'rgba(255, 208, 0, 0.06)'; }
+      } else if (val === 'standard_direct') {
+        const c = document.getElementById('cardDirectLaunch');
+        if (c) { c.style.borderColor = 'var(--cyan-bright)'; c.style.background = 'rgba(118, 210, 224, 0.08)'; }
+      } else if (val === 'fleet_retainer') {
+        const c = document.getElementById('cardFleetRetainer');
+        if (c) { c.style.borderColor = 'var(--cyan-bright)'; c.style.background = 'rgba(118, 210, 224, 0.08)'; }
+      }
+    }
+
+    // Referral Code Real-Time Verification via RPC
+    async function checkReferralInput(val) {
+      clearTimeout(refDebounce);
+      const fb = document.getElementById('referralFeedback');
+      if (!fb) return;
+      const clean = (val || '').trim();
+      if (!clean) {
+        fb.style.display = 'none';
+        fb.innerText = '';
+        return;
+      }
+      refDebounce = setTimeout(async () => {
+        if (window.AlmajdoubSupabase && typeof window.AlmajdoubSupabase.validateReferralCode === 'function') {
+          const res = await window.AlmajdoubSupabase.validateReferralCode(clean);
+          fb.style.display = 'block';
+          if (res && res.valid) {
+            fb.style.color = '#36B37E';
+            fb.textContent = '✓ Valid active referral partner (' + clean.toUpperCase() + ') — Waitlist bypassed to immediate onboarding!';
+          } else {
+            fb.style.color = '#FFD000';
+            fb.textContent = 'ℹ️ Code not recognized in active roster. Standard 14-day trial applies.';
+          }
+        }
+      }, 400);
+    }
+
+    async function handleFormSubmit(e) {
+      e.preventDefault();
+      
+      const submitBtn = document.querySelector('#step4 button[type="submit"]');
+      if (submitBtn) {
+        submitBtn.disabled = true;
+        submitBtn.innerHTML = '<span>⏳ Executing & Activating Desk...</span>';
+      }
+
+      const mc = document.getElementById('mcNumber').value.trim().toUpperCase();
+      const dot = document.getElementById('dotNumber').value.trim();
+      const company = document.getElementById('carrierLegalName').value.trim();
+      const contactName = document.getElementById('primaryContactName').value.trim();
+      const phone = document.getElementById('cellPhone').value.trim();
+      const email = document.getElementById('dispatchEmail').value.trim();
+      const equip = document.getElementById('equipmentType').value;
+      const homeBase = document.getElementById('homeBaseZip').value.trim();
+      const rpmFloor = document.getElementById('targetRpmFloor').value.trim();
+      const selectedTier = document.querySelector('input[name="rateTier"]:checked');
+      const rateTier = selectedTier ? selectedTier.value : 'trial_14days';
+      const signerName = document.getElementById('signerFullName').value.trim();
+      const truckCountVal = document.getElementById('truckCount') ? document.getElementById('truckCount').value : '1';
+      let parsedTruckCount = parseInt(truckCountVal, 10);
+      if (isNaN(parsedTruckCount) || parsedTruckCount < 1) parsedTruckCount = 1;
+
+      const refInputEl = document.getElementById('referralCodeInput');
+      const urlParams = new URLSearchParams(window.location.search);
+      const refCode = (refInputEl && refInputEl.value.trim()) || urlParams.get('ref') || '';
+
+      // Determine Canonical Plan Code
+      let planCode = 'TRIAL_14';
+      if (rateTier === 'fleet_retainer') {
+        planCode = (parsedTruckCount === 2) ? 'FLEET_FOUNDING_245' : 'FLEET_STANDARD_299';
+      } else if (rateTier === 'standard_direct') {
+        planCode = 'LAUNCH_PERCENTAGE';
+      } else {
+        planCode = 'TRIAL_14';
+      }
+
+      const sigCanvas = document.getElementById('signatureCanvas');
+      const sigImage = (sigCanvas && typeof sigCanvas.toDataURL === 'function') ? sigCanvas.toDataURL('image/png') : null;
+
+      let auditHash = '';
+      try {
+        // R-06 Full Canvas Base64 Hashing (no truncation)
+        const auditPayload = `${mc}|${dot}|${company}|${signerName}|${new Date().toISOString()}|${sigImage || ''}`;
+        const msgBuffer = new TextEncoder().encode(auditPayload);
+        const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer);
+        const hashArray = Array.from(new Uint8Array(hashBuffer));
+        auditHash = 'ESIGN-SHA256-' + hashArray.map(b => b.toString(16).padStart(2, '0')).join('').substring(0, 32).toUpperCase();
+      } catch (err) {
+        auditHash = 'ESIGN-SHA256-' + Date.now().toString(16) + Math.random().toString(16).substring(2, 10).toUpperCase();
+      }
+
+      const isReferredOrDirect = Boolean(refCode || rateTier === 'standard_direct' || rateTier === 'fleet_retainer');
+      const autoReferralCode = 'REF-' + mc.replace(/[^•-Za-z0-9]/gi, '');
+
+      const newCarrierPayload = {
+        mc: mc,
+        mc_number: mc,
+        dot: dot,
+        dot_number: dot,
+        name: contactName,
+        contact_person: contactName,
+        company: company,
+        carrier_name: company,
+        phone: phone,
+        email: email,
+        equipment: equip,
+        assigned_truck: String(parsedTruckCount),
+        truck_count: parsedTruckCount,
+        plan_code: planCode,
+        homeBase: homeBase,
+        rpmFloor: rpmFloor || '$2.25/mi',
+        status: isReferredOrDirect ? 'PENDING_PAYMENT' : 'ACTIVE_TRIAL',
+        freeDaysLeft: isReferredOrDirect ? 0 : 14,
+        referral_code_used: refCode || null,
+        referralCode: autoReferralCode,
+        referredBy: refCode || null,
+        signedDate: new Date().toISOString().split('T')[0],
+        signerName: signerName,
+        contractSigned: true,
+        auditHash: auditHash,
+        signature_hash: auditHash,
+        signatureImage: sigImage,
+        signature_image: sigImage,
+        tcpaConsent: true,
+        tcpa_consent: true,
+        notes: `Signed by: ${signerName} | Plan: ${planCode} | Factoring: ${document.getElementById('factoringCompany') ? document.getElementById('factoringCompany').value : 'triumph'} | Base: ${homeBase} | Floor: ${rpmFloor}`,
+        joinedDate: new Date().toISOString().split('T')[0]
+      };
+
+      // 1. Atomic Supabase Cloud Registration (BACKOFFICE_V1)
+      let regResult = null;
+      try {
+        if (window.AlmajdoubSupabase && typeof window.AlmajdoubSupabase.registerCarrier === 'function') {
+          regResult = await window.AlmajdoubSupabase.registerCarrier(newCarrierPayload);
+        }
+      } catch (err) {
+        console.warn('[Supabase Onboarding] Cloud capture network error:', err);
+      }
+
+      // Handle duplicate MC cleanly
+      if (regResult && regResult.success === false && regResult.error === 'duplicate_mc') {
+        alert('Notice: MC Number ' + mc + ' is already registered in our active dispatch system.\n\nIf you need to update your equipment profile, change active lanes, or view your load board, please contact Ahmed Al-Majdoub directly at (409) 941-7180 or dispatch@almajdoub.com.');
+        if (submitBtn) {
+          submitBtn.disabled = false;
+          submitBtn.innerHTML = '<span>🚀 Execute Agreement & Activate Desk</span>';
+        }
+        return;
+      }
+
+      // Zero Fake Success: If cloud registration failed, display clear notice and do not fake-redirect
+      if (!regResult || regResult.success === false) {
+        alert('Submission Notice: We were unable to securely register your agreement on the cloud dispatch server.\n\nReason: ' + ((regResult && regResult.error) || 'Network timeout or database unreachable') + '\n\nPlease retry or reach Ahmed Al-Majdoub directly at (409) 941-7180 or via WhatsApp.');
+        if (submitBtn) {
+          submitBtn.disabled = false;
+          submitBtn.innerHTML = '<span>🚀 Execute Agreement & Activate Desk</span>';
+        }
+        return;
+      }
+
+      const assignedTicket = regResult.ticket_number || '';
+      const assignedStatus = regResult.status || newCarrierPayload.status;
+      const assignedPlan = regResult.plan_code || planCode;
+
+      newCarrierPayload.ticket = assignedTicket;
+      newCarrierPayload.status = assignedStatus;
+
+      // 2. Transmit submission receipt in sessionStorage (Zero PII in URL or LocalStorage!)
+      sessionStorage.setItem('ALM_ONBOARDING_RECEIPT', JSON.stringify({
+        mc: mc,
+        company: company,
+        name: contactName,
+        phone: phone,
+        tier: rateTier,
+        hash: auditHash,
+        ticket: assignedTicket,
+        plan: assignedPlan,
+        status: assignedStatus,
+        timestamp: Date.now()
+      }));
+
+      // 4. Clean redirect to dedicated success portal without exposing PII in query parameters
+      window.location.href = 'onboarding-success.html';
+    }
+  </script>
+
+</body>
+</html>

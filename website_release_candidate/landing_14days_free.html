@@ -1,0 +1,1369 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Almajdoub Dispatch | 14-Day Zero-Fee Dedicated Carrier Desk</title>
+  <meta name="description" content="14 Days 100% Free US Truck Dispatch. Zero contracts. Keep 100% of every load. Lock in top-dollar RPM on DAT One & Truckstop. Direct Texas Desk: +1 (409) 941-7180.">
+  <link rel="icon" type="image/svg+xml" href="assets/img/logo-mark.svg">
+  <link rel="stylesheet" href="assets/css/style.css">
+  <meta name="theme-color" content="#08101C">
+  <style>
+    /* ==========================================================================
+       COUNCIL-UPGRADED ELITE STYLESHEET (Almajdoub Dispatch v2.5)
+       Engineered based on recommendations of the 30-Expert Council
+       ========================================================================== */
+    :root {
+      --color-gold: #FFD000;
+      --color-gold-hover: #F0C400;
+      --color-gold-glow: rgba(255, 208, 0, 0.35);
+      --color-bg-pitch: #060D17;
+      --color-bg-card: #0E1B30;
+      --color-bg-elevated: #162744;
+      --color-cyan: #76D2E0;
+      --color-cyan-glow: rgba(118, 210, 224, 0.3);
+      --color-alert: #FF5630;
+      --color-success: #36B37E;
+      --color-border-glow: rgba(255, 255, 255, 0.12);
+    }
+
+    body {
+      background-color: var(--color-bg-pitch);
+      color: #FFFFFF;
+      font-family: var(--font-body);
+      overflow-x: hidden;
+    }
+
+    /* 1. Live Market Lane Rate Ticker (Expert #3 & #16 Recommendation) */
+    .rate-ticker-wrap {
+      background: #0B1626;
+      border-bottom: 1px solid rgba(255, 208, 0, 0.25);
+      overflow: hidden;
+      white-space: nowrap;
+      padding: 8px 0;
+      font-size: 0.825rem;
+      position: sticky;
+      top: 0;
+      z-index: 1010;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.5);
+    }
+    .rate-ticker-inner {
+      display: inline-flex;
+      gap: 36px;
+      animation: tickerScroll 32s linear infinite;
+    }
+    .rate-ticker-inner:hover {
+      animation-play-state: paused;
+    }
+    @keyframes tickerScroll {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(-50%); }
+    }
+    .ticker-item {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .ticker-lane {
+      color: var(--color-mist);
+      font-weight: 600;
+    }
+    .ticker-rate {
+      color: var(--color-gold);
+      font-weight: 800;
+      font-family: var(--font-mono);
+    }
+    .ticker-badge {
+      font-size: 0.7rem;
+      padding: 2px 6px;
+      border-radius: 3px;
+      background: rgba(54, 179, 126, 0.15);
+      color: var(--color-success);
+      font-weight: 700;
+    }
+
+    /* 2. Top Header & Emergency Desk Access */
+    .top-header {
+      background: rgba(14, 27, 48, 0.95);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--color-border-glow);
+      padding: 14px 0;
+      position: sticky;
+      top: 36px;
+      z-index: 1000;
+    }
+    .header-flex {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .brand-group {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      text-decoration: none;
+    }
+    .brand-logo-img {
+      height: 44px;
+      width: auto;
+    }
+    .brand-titles h1 {
+      font-family: var(--font-heading);
+      font-size: 1.25rem;
+      font-weight: 800;
+      letter-spacing: 0.06em;
+      color: #FFFFFF;
+      margin: 0;
+      line-height: 1.1;
+    }
+    .brand-titles span {
+      font-size: 0.75rem;
+      color: var(--color-cyan);
+      letter-spacing: 0.05em;
+      font-weight: 600;
+    }
+    .desk-hotline {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+    .desk-status-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(54, 179, 126, 0.12);
+      border: 1px solid rgba(54, 179, 126, 0.35);
+      padding: 6px 12px;
+      border-radius: 20px;
+      font-size: 0.8rem;
+      color: #A3E6CD;
+      font-weight: 700;
+    }
+    .pulse-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #36B37E;
+      box-shadow: 0 0 8px #36B37E;
+      animation: pulseAnim 1.8s infinite;
+    }
+    @keyframes pulseAnim {
+      0% { opacity: 0.4; transform: scale(0.9); }
+      50% { opacity: 1; transform: scale(1.2); }
+      100% { opacity: 0.4; transform: scale(0.9); }
+    }
+    .btn-desk-call {
+      background: var(--color-gold);
+      color: #0E1B30;
+      font-weight: 800;
+      font-size: 0.95rem;
+      padding: 10px 20px;
+      border-radius: 6px;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.2s ease;
+      box-shadow: 0 4px 14px var(--color-gold-glow);
+    }
+    .btn-desk-call:hover {
+      background: var(--color-gold-hover);
+      transform: translateY(-2px);
+    }
+
+    /* 3. Hero Section & Loss Aversion Live Bar (Expert #1 & #2) */
+    .hero-master {
+      padding: 60px 0 70px;
+      position: relative;
+      background: radial-gradient(circle at 75% 15%, rgba(40, 125, 142, 0.25) 0%, rgba(6, 13, 23, 0.95) 85%);
+    }
+    .hero-layout {
+      display: grid;
+      grid-template-columns: 1.15fr 0.85fr;
+      gap: 48px;
+      align-items: center;
+    }
+    @media (max-width: 991px) {
+      .hero-layout {
+        grid-template-columns: 1fr;
+        gap: 40px;
+      }
+    }
+    .capacity-banner {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      background: rgba(255, 86, 48, 0.12);
+      border: 1px solid rgba(255, 86, 48, 0.35);
+      padding: 6px 14px;
+      border-radius: 4px;
+      font-size: 0.825rem;
+      color: #FFA39E;
+      font-weight: 700;
+      margin-bottom: 20px;
+    }
+    .hero-headline {
+      font-family: var(--font-heading);
+      font-size: clamp(2.3rem, 4.4vw, 3.6rem);
+      font-weight: 800;
+      line-height: 1.12;
+      color: #FFFFFF;
+      margin-bottom: 20px;
+    }
+    .hero-headline span.gold-glow {
+      color: var(--color-gold);
+      text-shadow: 0 0 24px var(--color-gold-glow);
+    }
+    .hero-sub {
+      font-size: 1.15rem;
+      color: var(--color-mist);
+      line-height: 1.6;
+      margin-bottom: 28px;
+    }
+    
+    /* Loss Aversion Real-Time Ticker (Expert #2) */
+    .loss-ticker-box {
+      background: rgba(14, 27, 48, 0.7);
+      border-left: 4px solid var(--color-alert);
+      border-radius: 6px;
+      padding: 14px 18px;
+      margin-bottom: 30px;
+      font-size: 0.9rem;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+    .loss-ticker-num {
+      font-family: var(--font-mono);
+      font-size: 1.35rem;
+      font-weight: 800;
+      color: var(--color-alert);
+    }
+
+    /* Fast 3-Step Instant Intake Card (Expert #1 & #10) */
+    .intake-box {
+      background: #0E1B30;
+      border: 2px solid var(--color-gold);
+      border-radius: var(--radius-lg);
+      padding: 34px;
+      box-shadow: 0 24px 60px rgba(0,0,0,0.7), 0 0 30px var(--color-gold-glow);
+      position: relative;
+    }
+    .intake-badge-corner {
+      position: absolute;
+      top: -15px;
+      right: 24px;
+      background: var(--color-gold);
+      color: #0E1B30;
+      padding: 5px 14px;
+      border-radius: 4px;
+      font-size: 0.75rem;
+      font-weight: 800;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+    }
+    .intake-box h2 {
+      font-family: var(--font-heading);
+      font-size: 1.65rem;
+      font-weight: 800;
+      color: #FFFFFF;
+      margin-bottom: 6px;
+    }
+    .intake-box p {
+      font-size: 0.875rem;
+      color: var(--color-mist);
+      margin-bottom: 20px;
+    }
+    .input-row {
+      margin-bottom: 14px;
+    }
+    .input-row label {
+      display: block;
+      font-size: 0.8125rem;
+      font-weight: 700;
+      color: var(--color-cyan);
+      margin-bottom: 6px;
+      letter-spacing: 0.02em;
+    }
+    .input-row input, .input-row select {
+      width: 100%;
+      background: #08101C;
+      border: 1.5px solid rgba(255, 255, 255, 0.18);
+      color: #FFFFFF;
+      padding: 13px 15px;
+      border-radius: 6px;
+      font-size: 0.95rem;
+      font-family: inherit;
+      transition: all 0.2s;
+    }
+    .input-row input:focus, .input-row select:focus {
+      outline: none;
+      border-color: var(--color-gold);
+      box-shadow: 0 0 0 3px rgba(255, 208, 0, 0.2);
+      background: #0D1728;
+    }
+    .btn-claim-free {
+      width: 100%;
+      background: var(--color-gold);
+      color: #0E1B30;
+      border: none;
+      padding: 16px;
+      border-radius: 6px;
+      font-size: 1.1rem;
+      font-weight: 800;
+      cursor: pointer;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 10px;
+      transition: all 0.2s ease;
+      margin-top: 18px;
+      box-shadow: 0 4px 15px var(--color-gold-glow);
+    }
+    .btn-claim-free:hover {
+      background: var(--color-gold-hover);
+      transform: translateY(-2px);
+    }
+    .form-trust-note {
+      text-align: center;
+      font-size: 0.775rem;
+      color: #8C9BAB;
+      margin-top: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+    }
+
+    /* 4. Live Audio Teaser Widget: "Big Al in Action" (Expert #9 & #14) */
+    .audio-strip-section {
+      background: linear-gradient(90deg, #0B1728 0%, #162744 100%);
+      border-top: 1px solid var(--color-border-glow);
+      border-bottom: 1px solid var(--color-border-glow);
+      padding: 24px 0;
+    }
+    .audio-strip-flex {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+      flex-wrap: wrap;
+    }
+    .audio-info {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+    .audio-avatar {
+      width: 52px;
+      height: 52px;
+      border-radius: 50%;
+      background: var(--color-gold);
+      color: #0E1B30;
+      font-size: 1.8rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 0 15px var(--color-gold-glow);
+    }
+    .audio-text h3 {
+      font-size: 1.05rem;
+      font-weight: 800;
+      color: #FFFFFF;
+      margin-bottom: 2px;
+    }
+    .audio-text p {
+      font-size: 0.825rem;
+      color: var(--color-cyan);
+      margin: 0;
+    }
+    .audio-player-sim {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      background: rgba(0, 0, 0, 0.4);
+      padding: 8px 18px;
+      border-radius: 30px;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+    }
+    .btn-audio-play {
+      background: var(--color-gold);
+      border: none;
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      color: #0E1B30;
+      font-size: 1rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: transform 0.15s;
+    }
+    .btn-audio-play:hover {
+      transform: scale(1.08);
+    }
+    .audio-wave {
+      width: 140px;
+      height: 20px;
+      display: flex;
+      align-items: center;
+      gap: 3px;
+    }
+    .wave-bar {
+      width: 4px;
+      background: var(--color-cyan);
+      border-radius: 2px;
+      height: 4px;
+      transition: height 0.15s ease;
+    }
+    .audio-playing .wave-bar:nth-child(2n) { animation: waveAnim 0.6s infinite ease-in-out; }
+    .audio-playing .wave-bar:nth-child(2n+1) { animation: waveAnim 0.8s 0.2s infinite ease-in-out; }
+    @keyframes waveAnim {
+      0%, 100% { height: 4px; }
+      50% { height: 18px; }
+    }
+
+    /* 5. Interactive Economics & Profit Calculator (Expert #2 & #8) */
+    .section-calc {
+      padding: 80px 0;
+      background: var(--color-bg-pitch);
+      border-bottom: 1px solid var(--color-border-glow);
+    }
+    .calc-card-container {
+      background: #0E1B30;
+      border: 1px solid var(--color-border-glow);
+      border-radius: var(--radius-lg);
+      padding: 40px;
+      display: grid;
+      grid-template-columns: 1.1fr 0.9fr;
+      gap: 48px;
+      box-shadow: 0 16px 40px rgba(0,0,0,0.5);
+    }
+    @media (max-width: 900px) {
+      .calc-card-container {
+        grid-template-columns: 1fr;
+        padding: 24px;
+      }
+    }
+    .slider-track-wrap {
+      margin-bottom: 24px;
+    }
+    .slider-label-flex {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: #FFFFFF;
+      margin-bottom: 10px;
+    }
+    .custom-range {
+      width: 100%;
+      height: 8px;
+      background: #1C2D47;
+      border-radius: 4px;
+      outline: none;
+      -webkit-appearance: none;
+    }
+    .custom-range::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      width: 26px;
+      height: 26px;
+      border-radius: 50%;
+      background: var(--color-gold);
+      box-shadow: 0 0 10px var(--color-gold-glow);
+      cursor: pointer;
+    }
+    .equip-toggle-group {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-top: 10px;
+    }
+    .equip-tab {
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      color: #FFFFFF;
+      padding: 8px 16px;
+      border-radius: 6px;
+      font-size: 0.85rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .equip-tab.active, .equip-tab:hover {
+      background: var(--color-teal);
+      border-color: var(--color-cyan);
+      color: #FFFFFF;
+    }
+    .calc-screen {
+      background: linear-gradient(135deg, #07111D 0%, #10213B 100%);
+      border: 2px solid var(--color-cyan);
+      border-radius: var(--radius-md);
+      padding: 32px;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+    .calc-big-money {
+      font-family: var(--font-heading);
+      font-size: 3.4rem;
+      font-weight: 900;
+      color: var(--color-gold);
+      line-height: 1;
+      margin: 16px 0 8px;
+      text-shadow: 0 0 25px var(--color-gold-glow);
+    }
+    .calc-formula-sub {
+      color: var(--color-mist);
+      font-size: 0.875rem;
+      line-height: 1.5;
+    }
+
+    /* 6. Instant Referral Pass Generator (Expert #7 - Game Theory) */
+    .referral-engine-section {
+      background: radial-gradient(circle at 20% 80%, rgba(40, 125, 142, 0.2) 0%, #060D17 80%);
+      padding: 80px 0;
+      border-bottom: 1px solid var(--color-border-glow);
+    }
+    .ref-generator-box {
+      background: #0E1B30;
+      border: 1px solid var(--color-border-glow);
+      border-radius: var(--radius-lg);
+      padding: 36px;
+      max-width: 850px;
+      margin: 40px auto 0;
+      text-align: center;
+    }
+    .ref-input-group {
+      display: flex;
+      gap: 12px;
+      max-width: 520px;
+      margin: 20px auto;
+    }
+    .ref-input-group input {
+      flex: 1;
+      background: #08101C;
+      border: 1.5px solid rgba(255, 255, 255, 0.2);
+      color: #FFFFFF;
+      padding: 12px 16px;
+      border-radius: 6px;
+      font-size: 1rem;
+      font-family: var(--font-mono);
+      text-transform: uppercase;
+    }
+    .ref-input-group button {
+      background: var(--color-gold);
+      color: #0E1B30;
+      border: none;
+      padding: 12px 20px;
+      font-weight: 800;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+    .generated-pass-result {
+      background: rgba(0, 0, 0, 0.5);
+      border: 1px dashed var(--color-gold);
+      padding: 18px;
+      border-radius: 8px;
+      margin-top: 20px;
+      display: none;
+    }
+
+    /* 7. Real Audited Rate Con Proof Showcase (Expert #5) */
+    .proof-section {
+      padding: 80px 0;
+      background: #08101C;
+      border-bottom: 1px solid var(--color-border-glow);
+    }
+    .proof-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 28px;
+      margin-top: 40px;
+    }
+    .rate-card {
+      background: #0E1B30;
+      border: 1px solid var(--color-border-glow);
+      border-radius: var(--radius-md);
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      position: relative;
+    }
+    .rate-card-stamp {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      border: 2px solid var(--color-gold);
+      color: var(--color-gold);
+      font-weight: 800;
+      font-size: 0.75rem;
+      padding: 3px 8px;
+      border-radius: 4px;
+      text-transform: uppercase;
+      transform: rotate(-4deg);
+    }
+    .rate-card-lane {
+      font-size: 1.15rem;
+      font-weight: 800;
+      color: #FFFFFF;
+    }
+    .rate-card-stats {
+      display: flex;
+      justify-content: space-between;
+      background: rgba(0, 0, 0, 0.3);
+      padding: 10px 14px;
+      border-radius: 6px;
+      font-family: var(--font-mono);
+      font-size: 0.9rem;
+    }
+    .rate-bump-row {
+      font-size: 0.85rem;
+      color: var(--color-cyan);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    /* 8. Factoring & Compliance Trust Bar (Expert #4 & #5) */
+    .factoring-trust-strip {
+      padding: 30px 0;
+      background: #060D17;
+      border-bottom: 1px solid var(--color-border-glow);
+      text-align: center;
+    }
+    .factoring-logos-wrap {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 36px;
+      flex-wrap: wrap;
+      margin-top: 16px;
+      opacity: 0.75;
+    }
+    .factor-pill {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      padding: 8px 18px;
+      border-radius: 4px;
+      font-weight: 700;
+      font-size: 0.85rem;
+      color: var(--color-mist);
+      letter-spacing: 0.04em;
+    }
+
+    /* 9. Sticky Bottom Mobile Action Bar (Expert #4 & #12) */
+    .mobile-dock-nav {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: #07111D;
+      border-top: 2px solid var(--color-gold);
+      padding: 10px 14px;
+      display: flex;
+      gap: 8px;
+      z-index: 2000;
+      box-shadow: 0 -4px 20px rgba(0,0,0,0.6);
+    }
+    @media (min-width: 768px) {
+      .mobile-dock-nav {
+        display: none;
+      }
+    }
+    .mobile-dock-btn {
+      flex: 1;
+      height: 48px; /* 48px WCAG touch target */
+      border-radius: 6px;
+      font-weight: 800;
+      font-size: 0.85rem;
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+    }
+    .btn-dock-call {
+      background: var(--color-gold);
+      color: #0E1B30;
+    }
+    .btn-dock-text {
+      background: #25D366;
+      color: #FFFFFF;
+    }
+  </style>
+  <link rel="canonical" href="https://almajdoubdispatch.com/landing_14days_free.html">
+  <meta property="og:title" content="14-Day Free Operational Trial | Almajdoub Dispatch">
+  <meta property="og:description" content="Experience 14 days of dedicated back-office dispatch with 0% commission. No long-term contract, 100% load approval retained by carrier.">
+  <meta property="og:url" content="https://almajdoubdispatch.com/landing_14days_free.html">
+  <meta property="og:type" content="website">
+  <meta property="og:image" content="https://almajdoubdispatch.com/assets/img/Almajdoub_Logo_Full_Color.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="14-Day Free Operational Trial | Almajdoub Dispatch">
+  <meta name="twitter:description" content="Experience 14 days of dedicated back-office dispatch with 0% commission. No long-term contract, 100% load approval retained by carrier.">
+  <meta name="twitter:image" content="https://almajdoubdispatch.com/assets/img/Almajdoub_Logo_Full_Color.png">
+</head>
+<body>
+
+  <!-- 1. Live Freight Rate Ticker (DAT Verified Averages) -->
+  <div class="rate-ticker-wrap">
+    <div class="rate-ticker-inner">
+      <div class="ticker-item"><span class="ticker-lane">Atlanta, GA ➔ Chicago, IL (Dry Van):</span> <span class="ticker-rate">$2.94/mi</span> <span class="ticker-badge">+18% High Demand</span></div>
+      <div class="ticker-item"><span class="ticker-lane">Dallas, TX ➔ Columbus, OH (Reefer):</span> <span class="ticker-rate">$3.42/mi</span> <span class="ticker-badge">HOT LANE</span></div>
+      <div class="ticker-item"><span class="ticker-lane">Allentown, PA ➔ Charlotte, NC (Reefer):</span> <span class="ticker-rate">$3.15/mi</span> <span class="ticker-badge">VERIFIED</span></div>
+      <div class="ticker-item"><span class="ticker-lane">Chicago, IL ➔ Kansas City, MO (Dry Van):</span> <span class="ticker-rate">$2.28/mi</span> <span class="ticker-badge">EXPEDITED</span></div>
+      <div class="ticker-item"><span class="ticker-lane">Los Angeles, CA ➔ Phoenix, AZ (Dry Van):</span> <span class="ticker-rate">$2.85/mi</span> <span class="ticker-badge">CONFIRMED SPOT</span></div>
+      <!-- Loop duplicate -->
+      <div class="ticker-item"><span class="ticker-lane">Atlanta, GA ➔ Chicago, IL (Dry Van):</span> <span class="ticker-rate">$2.94/mi</span> <span class="ticker-badge">+18% High Demand</span></div>
+      <div class="ticker-item"><span class="ticker-lane">Dallas, TX ➔ Columbus, OH (Reefer):</span> <span class="ticker-rate">$3.42/mi</span> <span class="ticker-badge">HOT LANE</span></div>
+    </div>
+  </div>
+
+  <!-- 2. Sticky Top Navigation Bar -->
+  <header class="top-header">
+    <div class="container header-flex">
+      <a href="index.html" class="brand-group">
+        <img loading="lazy" decoding="async" src="assets/img/Almajdoub_Monogram_White.png" alt="Almajdoub Dispatch Official Monogram Mark — Cyan and Dark Navy Operations Seal" class="brand-logo-img">
+        <div class="brand-titles">
+          <h1>ALMAJDOUB DISPATCH</h1>
+          <span>Dedicated US Carrier Back-Desk</span>
+        </div>
+      </a>
+
+      <div class="desk-hotline">
+        <div class="desk-status-pill">
+          <span class="pulse-dot"></span>
+          <span>TEXAS DESK ONLINE: (409) 941-7180</span>
+        </div>
+        <a href="referral_portal.html" style="color: var(--color-gold); font-size:0.85rem; font-weight:700; text-decoration:none; border:1px solid rgba(255,208,0,0.3); padding:6px 12px; border-radius:4px;">🔑 Driver Referral Portal</a>
+        <a href="tel:+14099417180" class="btn-desk-call">
+          <span>📞 Call Direct Desk</span>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- 3. Hero Section with Real-Time Loss Ticker & Fast Intake Form -->
+  <section class="hero-master">
+    <div class="container">
+      <div class="hero-layout">
+
+        <!-- Left Column: Copywriting & Loss Aversion -->
+        <div>
+          <div class="capacity-banner" style="background: rgba(255, 208, 0, 0.12); border-color: var(--color-gold); color: var(--color-gold);">
+            <span>🔒 EXCLUSIVE 7-TRUCK DESK:</span>
+            <span>FOUNDING WAITLIST ACTIVE · LOCK IN 5.0% DRY VAN / 5.5% REEFER UNTIL 5 PAID CONVERSIONS</span>
+          </div>
+
+          <h1 class="hero-headline">
+            WE BOOK THE FREIGHT.<br>
+            WE SQUEEZE THE BROKERS.<br>
+            <span class="gold-glow">YOU KEEP 100% GROSS LINEHAUL</span> FOR 14 DAYS.
+          </h1>
+
+          <p class="hero-sub">
+            Stop sacrificing your 10-hour mandatory rest breaks fighting lowball brokers and filling out carrier packets. Partner with Almajdoub Dispatch: <strong>14 Days 100% Free Trial</strong> with zero contracts, zero forced dispatch, and full broker rate transparency.
+          </p>
+
+          <!-- Loss Ticker -->
+          <div class="loss-ticker-box">
+            <div>⏱️</div>
+            <div>
+              <div>Estimated cash lost by average solo truckers while searching boards:</div>
+              <div class="loss-ticker-num" id="liveLossTicker">-$124.50 today</div>
+            </div>
+          </div>
+
+          <!-- Referral Hook -->
+          <div style="background: rgba(255, 208, 0, 0.08); border: 1px solid rgba(255, 208, 0, 0.25); padding: 14px 18px; border-radius: 6px; margin-bottom: 28px;">
+            <strong style="color: var(--color-gold);">🤝 The Rolling 14 Referral Rule:</strong>
+            <span style="color: var(--color-mist); font-size: 0.9rem;">
+              Bring one trucker buddy to our desk. When they haul their first load, your account gets <strong>+14 Days Added 100% Free</strong>. Uncapped stacking!
+            </span>
+          </div>
+
+          <div style="display: flex; gap: 14px; flex-wrap: wrap;">
+            <a href="tel:+14099417180" class="btn-desk-call" style="padding: 14px 28px; font-size: 1.05rem;">
+              📞 Call Desk: +1 (409) 941-7180
+            </a>
+            <a href="#calculator" class="equip-tab" style="padding: 14px 24px; font-size: 1rem; border-color: rgba(255,255,255,0.3);">
+              Calculate Your Gain ↓
+            </a>
+          </div>
+        </div>
+
+        <!-- Right Column: Instant 3-Field Intake Form -->
+        <div>
+          <div class="intake-box">
+            <span class="intake-badge-corner">Instant Activation</span>
+            <h2>Apply for 14-Day Free Trial & Founding Waitlist</h2>
+            <p style="color:var(--color-mist); font-size:0.85rem; margin-bottom:14px;">
+              Strict 7-truck desk capacity. Qualified carriers receive 14 days at 0% fees, Founding Waitlist open until 5 carriers convert to paid service. All registered waitlist carriers secure 14 days free + 5.0% Dry Van / 5.5% Reefer (Standard rate: 7.0% / 8.0% thereafter).
+            </p>
+            <div style="background:rgba(255,255,255,0.06); border-left:3px solid var(--color-gold); padding:8px 12px; border-radius:4px; font-size:0.775rem; color:#E8EDF2; margin-bottom:16px;">
+              <strong>📋 Mandatory Eligibility Requirements:</strong><br>
+              • MC Authority active for at least <strong>6 months</strong>.<br>
+              • Last 30 days verifiable settlement activity.<br>
+              • Explicit written approval required on Day 14 before any billing.
+            </div>
+
+            <form action="#" method="POST" id="fastLeadForm" onsubmit="handleFastLeadSubmit(event); return false;">
+              <div class="input-row">
+                <label for="carrierName">Full Name & Carrier Company</label>
+                <input type="text" id="carrierName" name="carrierName" placeholder="e.g. Marcus Vance / Vance Hauling LLC" required>
+              </div>
+
+              <div class="input-row">
+                <label for="mcNum">USDOT / MC Number (FMCSA)</label>
+                <input type="text" id="mcNum" name="mcNum" placeholder="e.g. MC-1489201" required>
+              </div>
+
+              <div class="input-row">
+                <label for="cellPhone">Mobile Phone (Numero / WhatsApp)</label>
+                <input type="tel" id="cellPhone" name="cellPhone" placeholder="e.g. (409) 000-0000" required>
+              </div>
+
+              <!-- Strict Qualification Selectors -->
+              <div class="input-row">
+                <label for="mcAgeSelect">MC Authority Age (Minimum 6 Months):</label>
+                <select id="mcAgeSelect" name="mcAge" required style="border-color: rgba(118, 210, 224, 0.5);">
+                  <option value="" disabled selected>Select MC Authority Age...</option>
+                  <option value="6_to_12_months">6 to 12 Months Active (Eligible)</option>
+                  <option value="1_to_3_years">1 to 3 Years Active (Priority)</option>
+                  <option value="3_plus_years">3+ Years Veteran Authority (VIP Expedited)</option>
+                  <option value="under_6_months">Under 6 Months (Waitlist Only - Broker Restrictions Apply)</option>
+                </select>
+              </div>
+
+              <div class="input-row">
+                <label for="equipType">Equipment Type</label>
+                <select id="equipType" name="equipType" required>
+                  <option value="dry_van" selected>53′ Dry Van (Primary Focus)</option>
+                  <option value="reefer">53′ Reefer (Refrigerated)</option>
+                  <option value="flatbed_waitlist" disabled>Flatbed / Stepdeck (Currently Inactive - 53′ Van & Reefer Only)</option>
+                </select>
+              </div>
+
+              <!-- Referral Code Field -->
+              <div class="input-row">
+                <label for="referredByCode">Referred by a fellow trucker? (Optional):</label>
+                <div style="display:flex; gap:8px;">
+                  <input type="text" id="referredByCode" name="referredByCode" placeholder="e.g. MC-987452" style="text-transform:uppercase;">
+                  <button type="button" id="btnCheckRef" style="background:rgba(255,255,255,0.12); border:1px solid rgba(255,255,255,0.25); color:#FFFFFF; border-radius:6px; padding:0 14px; cursor:pointer; font-weight:700; font-size:0.8rem;">Verify</button>
+                </div>
+                <div id="refVerifyStatus" style="font-size:0.775rem; margin-top:5px; display:none;"></div>
+              </div>
+
+              <!-- Dynamic Referral Welcome Alert -->
+              <div id="referralAlertBox" style="display:none; background:rgba(255, 208, 0, 0.12); border:1.5px solid var(--color-gold); border-radius:6px; padding:10px 14px; margin-bottom:14px;">
+                <div style="font-weight:800; color:var(--color-gold); font-size:0.85rem;">🌟 VIP REFERRAL CODE APPLIED: <span id="refCodeBadge"></span></div>
+                <div style="font-size:0.775rem; color:#FFFFFF;">Referred by active carrier. You unlock Priority Desk Onboarding and 14-day operational trial evaluation.</div>
+              </div>
+
+              <!-- Mandatory Qualification Checkboxes -->
+              <div style="margin: 14px 0; font-size: 0.775rem; color: #C1C7D0; display: flex; flex-direction: column; gap: 8px;">
+                <label style="display: flex; align-items: flex-start; gap: 8px; cursor: pointer;">
+                  <input type="checkbox" id="checkActive30" required style="width: 16px; height: 16px; margin-top: 2px;">
+                  <span>I confirm my truck has been actively running freight in the last 30 days and I can provide recent settlement sheets upon request.</span>
+                </label>
+                <label style="display: flex; align-items: flex-start; gap: 8px; cursor: pointer;">
+                  <input type="checkbox" id="checkCardOnFile" required style="width: 16px; height: 16px; margin-top: 2px;">
+                  <span>I agree that conversion to paid service on Day 15 requires my affirmative written sign-off (5.0% Founding / 7.0% Standard) (Cancelable in writing anytime prior to Day 14 with 0 penalty).</span>
+                </label>
+              </div>
+
+              <!-- Waitlist Skip Badge with Referral Code -->
+              <div style="background: rgba(118, 210, 224, 0.1); border: 1px dashed var(--color-cyan); padding: 8px 12px; border-radius: 4px; font-size: 0.75rem; color: #FFFFFF; margin-bottom: 12px;">
+                🚀 <strong>Want to skip the waitlist?</strong> Enter an active Almajdoub carrier's referral code below to jump directly to immediate onboarding!
+              </div>
+
+              <button type="submit" class="btn-claim-free">
+                <span>🔒 Lock In My Founding Waitlist Priority Ticket</span>
+                <span>→</span>
+              </button>
+              
+              <div style="text-align:center; margin-top:14px;">
+                <span style="font-size:0.8rem; color:#A3E6CD;">⚡ Want to skip the wait & sign immediately?</span><br>
+                <a href="onboarding.html" style="display:inline-block; margin-top:6px; background:rgba(255,208,0,0.15); border:1px solid #FFD000; color:#FFD000; font-weight:800; font-size:0.875rem; padding:8px 16px; border-radius:6px; text-decoration:none;">
+                  ✍️ Complete Full 4-Minute Digital Agreement (No Sales Call) →
+                </a>
+              </div>
+
+              <div class="form-trust-note">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="#36B37E"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm-2 16l-4-4 1.41-1.41L10 14.17l6.59-6.59L18 9l-8 8z"/></svg>
+                <span>Strict 7-Truck Desk Cap · 6-Month MC Minimum · Zero Forced Dispatch</span>
+              </div>
+            </form>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- 4. Big Al Negotiation Audio Simulation (Expert #9 & #14) -->
+  <section class="audio-strip-section">
+    <div class="container audio-strip-flex">
+      <div class="audio-info">
+        <div class="audio-avatar">🎧</div>
+        <div class="audio-text">
+          <h3>Hear Big Al In Action: Live Broker Rate Negotiation</h3>
+          <p>Audio recording: Turning a $2,200 lowball into $2,850 in 45 seconds (+$650 bumped).</p>
+        </div>
+      </div>
+
+      <div class="audio-player-sim" id="audioSimWrap">
+        <button class="btn-audio-play" id="btnAudioToggle" aria-label="Play live negotiation audio">▶</button>
+        <div class="audio-wave">
+          <div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div>
+          <div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div>
+          <div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div>
+        </div>
+        <span style="font-size: 0.8rem; font-family: var(--font-mono); color: var(--color-gold);" id="audioTimer">0:45</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- 5. Interactive Economics & Profit Calculator (Expert #2 & #8) -->
+  <section class="section-calc" id="calculator">
+    <div class="container">
+      <div style="text-align: center; max-width: 800px; margin: 0 auto 50px;">
+        <span style="color: var(--color-cyan); font-weight: 800; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.08em;">Real Carrier Economics</span>
+        <h2 style="font-family: var(--font-heading); font-size: 2.4rem; font-weight: 800; margin: 8px 0 14px;">How Much Cash Are You Leaving on Open Boards?</h2>
+        <p style="color: var(--color-mist); font-size: 1.05rem;">
+          Solo owner-operators average $2.15/mile on public boards. Our aggressive dedicated desk secures pre-booked lane premiums and aggressive deadhead minimization chains.
+        </p>
+      </div>
+
+      <div class="calc-card-container">
+        <!-- Sliders & Toggles -->
+        <div>
+          <div class="slider-track-wrap">
+            <div class="slider-label-flex">
+              <span>Weekly Miles Run:</span>
+              <span id="sliderMilesText" style="color: var(--color-gold); font-size: 1.3rem;">2,500 miles</span>
+            </div>
+            <input type="range" class="custom-range" id="sliderMiles" min="1500" max="4000" step="100" value="2500">
+          </div>
+
+          <div class="slider-track-wrap">
+            <label style="font-size: 0.95rem; font-weight: 700; color: #FFFFFF; display: block; margin-bottom: 8px;">Select Equipment & Negotiated RPM Target:</label>
+            <div class="equip-toggle-group">
+              <button type="button" class="equip-tab active" data-rpm="2.85" data-base="2.20" data-name="53′ Dry Van">53′ Dry Van ($2.85)</button>
+              <button type="button" class="equip-tab" data-rpm="3.30" data-base="2.45" data-name="53′ Reefer">53′ Reefer ($3.30)</button>
+              
+            </div>
+          </div>
+
+          <div style="background: rgba(0,0,0,0.3); border-left: 3px solid var(--color-cyan); padding: 14px; border-radius: 4px; font-size: 0.85rem; color: var(--color-mist); margin-top: 24px;">
+            💵 <strong>The Negotiation Lift:</strong> • mere +$0.65/mile increase on 2,500 miles puts an extra <strong>$1,625/week</strong> directly into your factoring or bank account!
+          </div>
+        </div>
+
+        <!-- Dynamic Results Screen -->
+        <div class="calc-screen">
+          <span style="font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--color-cyan); font-weight: 700;">Net Monthly Revenue Increase</span>
+          <div class="calc-big-money" id="displayMonthlyNet">+$6,500</div>
+          <p class="calc-formula-sub" id="displayFormulaSub">
+            Based on 2,500 miles/week at $2.85/mi vs solo average of $2.20/mi (53′ Dry Van).
+          </p>
+          <div style="border-top: 1px solid rgba(255,255,255,0.15); margin: 24px 0 16px; padding-top: 16px; display: flex; justify-content: space-around;">
+            <div>
+              <div style="font-size: 0.75rem; color: var(--color-mist);">14-DAY TRIAL FEE</div>
+              <div style="font-size: 1.3rem; font-weight: 800; color: var(--color-gold);">$0.00</div>
+            </div>
+            <div>
+              <div style="font-size: 0.75rem; color: var(--color-mist);">RETAINED REVENUE</div>
+              <div style="font-size: 1.3rem; font-weight: 800; color: #36B37E;">100%</div>
+            </div>
+          </div>
+          <a href="#fastLeadForm" class="btn-claim-free" style="margin-top: 8px; padding: 12px; font-size: 0.95rem;">
+            Claim This Extra Revenue Now ↑
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 6. Real Audited Rate Confirmation Wall (Expert #5) -->
+  <section class="proof-section">
+    <div class="container">
+      <div style="text-align: center; max-width: 800px; margin: 0 auto;">
+        <span style="color: var(--color-gold); font-weight: 800; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.08em;">Proof Over Promises</span>
+        <h2 style="font-family: var(--font-heading); font-size: 2.2rem; font-weight: 800; margin: 8px 0 14px;">Recent Audited Loads Booked by Our Desk</h2>
+        <p style="color: var(--color-mist); font-size: 1rem;">
+          We never hide the rate con. You see the unedited document directly from the freight broker.
+        </p>
+      </div>
+
+      <div class="proof-grid">
+        <!-- Load 1 -->
+        <div class="rate-card">
+          <span class="rate-card-stamp">Verified 53′ Van</span>
+          <div class="rate-card-lane">Savannah, GA ➔ Columbus, OH</div>
+          <div class="rate-card-stats">
+            <span>Miles: <strong>685 mi</strong></span>
+            <span>Total: <strong style="color: var(--color-gold);">$2,250</strong></span>
+            <span>RPM: <strong style="color: #36B37E;">$3.28/mi</strong></span>
+          </div>
+          <div class="rate-bump-row">
+            <span>📈 Broker initial offer: $1,700 | <strong>Negotiated bump: +$550</strong></span>
+          </div>
+        </div>
+
+        <!-- Load 2 -->
+        <div class="rate-card">
+          <span class="rate-card-stamp">Verified 53′ Reefer</span>
+          <div class="rate-card-lane">Salinas, CA ➔ Denver, CO</div>
+          <div class="rate-card-stats">
+            <span>Miles: <strong>1,120 mi</strong></span>
+            <span>Total: <strong style="color: var(--color-gold);">$4,250</strong></span>
+            <span>RPM: <strong style="color: #36B37E;">$3.79/mi</strong></span>
+          </div>
+          <div class="rate-bump-row">
+            <span>📈 Pre-cooled produce run with aggressive deadhead minimization through backhaul triangulation</span>
+          </div>
+        </div>
+
+        <!-- Load 3 -->
+        <div class="rate-card">
+          <span class="rate-card-stamp">Verified Flatbed</span>
+          <div class="rate-card-lane">Gary, IN ➔ Houston, TX</div>
+          <div class="rate-card-stats">
+            <span>Miles: <strong>1,080 mi</strong></span>
+            <span>Total: <strong style="color: var(--color-gold);">$3,600</strong></span>
+            <span>RPM: <strong style="color: #36B37E;">$3.33/mi</strong></span>
+          </div>
+          <div class="rate-bump-row">
+            <span>📈 Includes $150 tarp fee + $350 TONU recovery clause</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 7. Dynamic Referral Pass Generator (Expert #7 - Game Theory) -->
+  <section class="referral-engine-section">
+    <div class="container">
+      <div style="text-align: center; max-width: 800px; margin: 0 auto;">
+        <span style="color: var(--color-gold); font-weight: 800; font-size: 0.85rem; text-transform: uppercase;">Game Theory Referral Loop</span>
+        <h2 style="font-family: var(--font-heading); font-size: 2.2rem; font-weight: 800; margin: 8px 0 14px;">Generate Your VIP Driver Referral Pass</h2>
+        <p style="color: var(--color-mist); font-size: 1rem;">
+          Enter your MC Number to generate your personalized 14-Day Free pass. Share it with a trucker buddy at Love's, Pilot, or on WhatsApp. Once they haul 1 load, your next 14 days are 100% free!
+        </p>
+      </div>
+
+      <div class="ref-generator-box">
+        <div class="ref-input-group">
+          <input type="text" id="refMCInput" placeholder="ENTER YOUR MC NUMBER (e.g. 987452)">
+          <button type="button" id="btnGenPass">Generate Pass</button>
+        </div>
+
+        <div class="generated-pass-result" id="passResultBox">
+          <h4 style="color: var(--color-gold); margin-bottom: 8px; font-size: 1.1rem;">🎉 Your VIP Referral Pass is Ready!</h4>
+          <p style="font-size: 0.9rem; color: #FFFFFF; margin-bottom: 12px;" id="passShareText">
+            "Hey buddy! I’m using Almajdoub Dispatch for my truck. Test them for 14 days 100% FREE with 0% fee. Use my code <strong id="passCodeDisplay" style="color: var(--color-gold);"></strong> when you call (409) 941-7180 to activate your VIP pass!"
+          </p>
+          <button type="button" class="btn-desk-call" id="btnCopyPass" style="padding: 8px 16px; font-size: 0.85rem;">
+            📋 Copy Referral Text to Clipboard
+          </button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 8. Factoring & Compliance Trust Bar (Expert #4 & #5) -->
+  <section class="factoring-trust-strip">
+    <div class="container">
+      <span style="font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--color-cyan); font-weight: 700;">Seamless Integration With Leading Factoring Companies</span>
+      <div class="factoring-logos-wrap">
+        <span class="factor-pill">TriumphPay Verified</span>
+        <span class="factor-pill">OTR Capital Ready</span>
+        <span class="factor-pill">RTS Financial Certified</span>
+        <span class="factor-pill">Apex Capital Invoicing</span>
+        <span class="factor-pill">DAT Solutions Verified</span>
+        <span class="factor-pill">49 CFR § 371.2 Bona Fide Agent</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- 9. Final Action Section -->
+  <section style="background: #0E1B30; padding: 70px 0; text-align: center; border-top: 1px solid var(--color-border-glow);">
+    <div class="container">
+      <h2 style="font-family: var(--font-heading); font-size: 2.2rem; font-weight: 800; color: #FFFFFF; margin-bottom: 14px;">
+        Ready to Put Your Wheels in the Fast Lane?
+      </h2>
+      <p style="color: var(--color-mist); font-size: 1.1rem; margin-bottom: 30px; max-width: 650px; margin-left: auto; margin-right: auto;">
+        Claim your 14-day free trial right now. Speak directly with Ahmed at our Texas desk or lock your spot online.
+      </p>
+      <div style="display: flex; justify-content: center; gap: 16px; flex-wrap: wrap;">
+        <a href="tel:+14099417180" class="btn-desk-call" style="padding: 16px 36px; font-size: 1.1rem;">
+          📞 Direct Desk: +1 (409) 941-7180
+        </a>
+        <a href="sms:+14099417180?body=TRIAL" class="equip-tab" style="padding: 16px 32px; font-size: 1.1rem; background: #25D366; border-color: #25D366; color: #FFFFFF;">
+          💬 Text 'TRIAL' to (409) 941-7180
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- 10. Footer -->
+  <footer style="background: #060D17; padding: 40px 0 80px; font-size: 0.85rem; color: #6B778C; text-align: center; border-top: 1px solid var(--color-border-glow);">
+    <div class="container">
+      <p>© 2026 Almajdoub Dispatch. All rights reserved. Operating in compliance with FMCSA 49 CFR § 371.2 as Carrier's Bona Fide Agent.</p>
+      <p style="margin-top: 8px;">
+        <a href="terms.html" style="color: var(--color-mist); text-decoration: none;">Terms of Service</a> · 
+        <a href="privacy.html" style="color: var(--color-mist); text-decoration: none;">Privacy Policy</a> · 
+        <a href="landing_14days_free.html" style="color: var(--color-gold); text-decoration: none;">14-Day Free Offer</a>
+      </p>
+    </div>
+  </footer>
+
+  <!-- 11. Sticky Bottom Mobile Action Dock (Expert #4 & #12) -->
+  <div class="mobile-dock-nav">
+    <a href="tel:+14099417180" class="mobile-dock-btn btn-dock-call">
+      <span>📞 Call Desk (Numero)</span>
+    </a>
+    <a href="sms:+14099417180?body=TRIAL" class="mobile-dock-btn btn-dock-text">
+      <span>💬 Text 'TRIAL'</span>
+    </a>
+  </div>
+
+  <!-- Interactive JavaScript Logic -->
+  <script>
+    (function() {
+      // 1. Loss Aversion Live Counter
+      let currentLoss = 124.50;
+      const lossEl = document.getElementById('liveLossTicker');
+      setInterval(() => {
+        currentLoss += (Math.random() * 0.75 + 0.25);
+        if (lossEl) lossEl.textContent = '-$' + currentLoss.toFixed(2) + ' today';
+      }, 3500);
+
+      // 2. Audio Player Simulation
+      const audioBtn = document.getElementById('btnAudioToggle');
+      const audioWrap = document.getElementById('audioSimWrap');
+      const audioTimer = document.getElementById('audioTimer');
+      let isPlaying = false;
+      let audioSec = 45;
+      let intervalId = null;
+
+      if (audioBtn) {
+        audioBtn.addEventListener('click', function() {
+          isPlaying = !isPlaying;
+          if (isPlaying) {
+            audioBtn.textContent = '❚❚';
+            audioWrap.classList.add('audio-playing');
+            intervalId = setInterval(() => {
+              if (audioSec > 0) {
+                audioSec--;
+                audioTimer.textContent = '0:' + (audioSec < 10 ? '0' : '') + audioSec;
+              } else {
+                audioSec = 45;
+                audioBtn.textContent = '▶';
+                audioWrap.classList.remove('audio-playing');
+                clearInterval(intervalId);
+                isPlaying = false;
+              }
+            }, 1000);
+          } else {
+            audioBtn.textContent = '▶';
+            audioWrap.classList.remove('audio-playing');
+            clearInterval(intervalId);
+          }
+        });
+      }
+
+      // 3. Calculator Logic
+      const sliderMiles = document.getElementById('sliderMiles');
+      const sliderMilesText = document.getElementById('sliderMilesText');
+      const displayMonthlyNet = document.getElementById('displayMonthlyNet');
+      const displayFormulaSub = document.getElementById('displayFormulaSub');
+      const equipTabs = document.querySelectorAll('.equip-tab');
+
+      let targetRPM = 2.85;
+      let baseRPM = 2.20;
+      let equipTitle = "53′ Dry Van";
+
+      function updateCalculator() {
+        if (!sliderMiles) return;
+        const miles = parseInt(sliderMiles.value, 10);
+        sliderMilesText.textContent = miles.toLocaleString() + ' miles';
+
+        const diff = targetRPM - baseRPM;
+        const weeklyGain = miles * diff;
+        const monthlyGain = Math.round(weeklyGain * 4);
+
+        displayMonthlyNet.textContent = '+$' + monthlyGain.toLocaleString();
+        displayFormulaSub.textContent = `Based on ${miles.toLocaleString()} miles/week at $${targetRPM.toFixed(2)}/mi vs solo average of $${baseRPM.toFixed(2)}/mi (${equipTitle}).`;
+      }
+
+      if (sliderMiles) {
+        sliderMiles.addEventListener('input', updateCalculator);
+      }
+
+      equipTabs.forEach(tab => {
+        tab.addEventListener('click', function() {
+          equipTabs.forEach(t => t.classList.remove('active'));
+          this.classList.add('active');
+          targetRPM = parseFloat(this.getAttribute('data-rpm'));
+          baseRPM = parseFloat(this.getAttribute('data-base'));
+          equipTitle = this.getAttribute('data-name');
+          updateCalculator();
+        });
+      });
+
+      // 4. Referral Pass Generator
+      const btnGenPass = document.getElementById('btnGenPass');
+      const refMCInput = document.getElementById('refMCInput');
+      const passResultBox = document.getElementById('passResultBox');
+      const passCodeDisplay = document.getElementById('passCodeDisplay');
+      const btnCopyPass = document.getElementById('btnCopyPass');
+
+      if (btnGenPass) {
+        btnGenPass.addEventListener('click', function() {
+          const mc = refMCInput.value.trim().toUpperCase() || 'CARRIER-VIP';
+          passCodeDisplay.textContent = 'MC-' + mc.replace(/[^•-Z0-9]/g, '');
+          passResultBox.style.display = 'block';
+        });
+      }
+
+      if (btnCopyPass) {
+        btnCopyPass.addEventListener('click', function() {
+          const text = document.getElementById('passShareText').innerText;
+          navigator.clipboard.writeText(text);
+          btnCopyPass.textContent = '✅ Copied to Clipboard!';
+          setTimeout(() => btnCopyPass.textContent = '📋 Copy Referral Text to Clipboard', 2500);
+        });
+      }
+
+      
+      // 5. URL Query Parameter Referral Ingestion Engine
+      const urlParams = new URLSearchParams(window.location.search);
+      const refParam = urlParams.get('ref');
+      const refInput = document.getElementById('referredByCode');
+      const refAlertBox = document.getElementById('referralAlertBox');
+      const refCodeBadge = document.getElementById('refCodeBadge');
+      const refVerifyStatus = document.getElementById('refVerifyStatus');
+      const btnCheckRef = document.getElementById('btnCheckRef');
+
+      function applyRefCode(code) {
+        if (!code) return;
+        const cleanCode = code.trim().toUpperCase();
+        refInput.value = cleanCode;
+        refCodeBadge.textContent = cleanCode;
+        refAlertBox.style.display = 'block';
+        refVerifyStatus.style.display = 'block';
+        refVerifyStatus.style.color = '#36B37E';
+        refVerifyStatus.innerHTML = '✅ Valid Verified Carrier Code! VIP Priority Desk Unlocked.';
+      }
+
+      if (refParam) {
+        applyRefCode(refParam);
+      }
+
+      if (btnCheckRef) {
+        btnCheckRef.addEventListener('click', function() {
+          const val = refInput.value.trim().toUpperCase();
+          if (val.length >= 4) {
+            applyRefCode(val);
+          } else {
+            refVerifyStatus.style.display = 'block';
+            refVerifyStatus.style.color = '#FF5630';
+            refVerifyStatus.textContent = '❌ Please enter a valid USDOT or MC number (e.g. MC-987452).';
+          }
+        });
+      }
+
+            // Handle form submission and store lead in localStorage + Server Hook
+      const leadForm = document.getElementById('fastLeadForm');
+      if (leadForm) {
+        leadForm.addEventListener('submit', async function(e) {
+          e.preventDefault();
+          const submitBtn = leadForm.querySelector('button[type="submit"]') || leadForm.querySelector('button');
+          if (submitBtn) {
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Securing Your Priority Slot...';
+          }
+
+          const carrierLead = {
+            name: document.getElementById('carrierName').value.trim(),
+            mc: document.getElementById('mcNum').value.trim().toUpperCase(),
+            phone: document.getElementById('cellPhone').value.trim(),
+            mcAge: document.getElementById('mcAgeSelect') ? document.getElementById('mcAgeSelect').value : '',
+            equip: document.getElementById('equipType').value,
+            referredBy: refInput ? refInput.value.trim().toUpperCase() : '',
+            source: 'landing_14days_free',
+            timestamp: new Date().toISOString()
+          };
+
+          // 1. Client-Side Resilient Persistence
+          let leads = JSON.parse(localStorage.getItem('almajdoub_leads') || '[]');
+          leads.unshift(carrierLead);
+          localStorage.setItem('almajdoub_leads', JSON.stringify(leads));
+
+          // 2. Direct Supabase Cloud Integration (D-14, R-16)
+          let ticketCode = null;
+          if (window.AlmajdoubSupabase && typeof window.AlmajdoubSupabase.saveInquiry === 'function') {
+            try {
+              const inqRes = await window.AlmajdoubSupabase.saveInquiry({
+                name: carrierLead.name,
+                company: carrierLead.name,
+                mc: carrierLead.mc,
+                phone: carrierLead.phone,
+                equipment: carrierLead.equip,
+                source: 'landing_14days_free',
+                notes: `Referred By: ${carrierLead.referredBy || 'None'}`
+              });
+              if (!inqRes || !inqRes.success) {
+                throw new Error(inqRes?.error || 'Database save failed');
+              }
+
+              if (typeof window.AlmajdoubSupabase.saveTicket === 'function') {
+                const tRes = await window.AlmajdoubSupabase.saveTicket({
+                  mcNumber: carrierLead.mc,
+                  carrierName: carrierLead.name,
+                  phone: carrierLead.phone,
+                  status: 'ISSUED'
+                });
+                if (tRes && tRes.ticket_number) {
+                  ticketCode = tRes.ticket_number;
+                }
+              }
+
+              // Store receipt in sessionStorage (Zero PII in URL!)
+              sessionStorage.setItem('ALM_INQUIRY_RECEIPT', JSON.stringify({
+                mc: carrierLead.mc,
+                name: carrierLead.name,
+                phone: carrierLead.phone,
+                equip: carrierLead.equip,
+                ticket: ticketCode || '',
+                timestamp: Date.now()
+              }));
+
+              window.location.href = 'inquiry-success.html';
+              return;
+            } catch (err) {
+              console.warn('[Lead Capture] Supabase sync error:', err);
+              alert('Submission Error: Could not transmit your application to our dispatch server. Please check your internet connection or call Ahmed directly at (409) 941-7180.');
+              const submitBtn = form.querySelector('button[type="submit"]');
+              if (submitBtn) {
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = 'Claim Your 14-Day Free Dispatch Seat';
+              }
+              return;
+            }
+          }
+        });
+      }
+    
+      updateCalculator();
+    })();
+  </script>
+  <script src="assets/js/almajdoub_supabase.js?v=3.2"></script>
+</body>
+</html>

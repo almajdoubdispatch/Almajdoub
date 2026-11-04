@@ -1,0 +1,1106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Almajdoub Dispatch | Dedicated Back-Office Dispatch Support for Independent Carriers</title>
+  <meta name="description" content="Dedicated remote back-office dispatch support for 53' Dry Van and Reefer owner-operators. You retain 100% load decision authority. Verified rates, broker vetting, and zero forced dispatch.">
+  <link rel="icon" type="image/svg+xml" href="assets/img/logo-mark.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Manrope:wght@700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/style.css">
+  <meta name="theme-color" content="#172B4D">
+
+  <style>
+    /* Landing Page Specific Enhancements adhering to v6 Design System */
+    .hero-landing {
+      background: linear-gradient(180deg, var(--color-navy) 0%, var(--color-navy-dark) 100%);
+      color: var(--color-white);
+      padding: var(--space-8) 0 var(--space-9) 0;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero-landing-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: var(--space-6);
+      align-items: center;
+    }
+    @media (min-width: 992px) {
+      .hero-landing-grid {
+        grid-template-columns: 1.15fr 0.85fr;
+        gap: var(--space-8);
+      }
+    }
+    .hero-photo-wrapper {
+      position: relative;
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      box-shadow: var(--shadow-lg);
+      border: 1px solid var(--color-border-dark);
+      background-color: var(--color-navy-surface);
+    }
+    .hero-photo-img {
+      width: 100%;
+      height: 380px;
+      object-fit: cover;
+      display: block;
+      transition: transform 0.4s ease;
+    }
+    .hero-photo-wrapper:hover .hero-photo-img {
+      transform: scale(1.02);
+    }
+    .hero-photo-overlay {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: linear-gradient(180deg, transparent 0%, rgba(14, 27, 48, 0.92) 100%);
+      padding: var(--space-4);
+      color: var(--color-white);
+    }
+    .hero-photo-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(40, 125, 142, 0.9);
+      color: var(--color-white);
+      font-size: 0.75rem;
+      font-weight: 700;
+      padding: 4px 10px;
+      border-radius: var(--radius-sm);
+      margin-bottom: 6px;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    /* Calculator Styles */
+    .calc-card {
+      background: var(--color-white);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-lg);
+      padding: var(--space-6);
+      box-shadow: var(--shadow-md);
+    }
+    .calc-slider-group {
+      margin-bottom: var(--space-5);
+    }
+    .calc-slider-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: var(--space-2);
+      font-size: 0.875rem;
+      font-weight: 700;
+      color: var(--color-navy);
+    }
+    .calc-slider-val {
+      font-family: var(--font-mono);
+      font-size: 1.125rem;
+      color: var(--color-teal);
+    }
+    .calc-range {
+      width: 100%;
+      height: 8px;
+      border-radius: 4px;
+      background: var(--color-mist);
+      outline: none;
+      -webkit-appearance: none;
+      cursor: pointer;
+    }
+    .calc-range::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      background: var(--color-teal);
+      border: 3px solid var(--color-white);
+      box-shadow: 0 2px 6px rgba(0,0,0,0.25);
+      cursor: pointer;
+      transition: background 0.2s, transform 0.1s;
+    }
+    .calc-range::-webkit-slider-thumb:hover {
+      background: var(--color-teal-hover);
+      transform: scale(1.1);
+    }
+    .calc-scale-labels {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.75rem;
+      color: var(--color-text-muted);
+      margin-top: 4px;
+      font-family: var(--font-mono);
+    }
+    .calc-output-card {
+      background: var(--color-navy);
+      color: var(--color-white);
+      border-radius: var(--radius-md);
+      padding: var(--space-5);
+      text-align: center;
+      border: 1px solid var(--color-border-dark);
+      box-shadow: var(--shadow-sm);
+    }
+    .calc-output-stat {
+      margin-bottom: var(--space-4);
+    }
+    .calc-output-label {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: #9AAEC0;
+      margin-bottom: 4px;
+      font-weight: 700;
+    }
+    .calc-output-num-main {
+      font-family: var(--font-mono);
+      font-size: 2.75rem;
+      font-weight: 800;
+      color: var(--color-teal-light);
+      line-height: 1.1;
+    }
+    .calc-output-num-sub {
+      font-family: var(--font-mono);
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--color-white);
+      line-height: 1.2;
+    }
+    .calc-atri-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 12px;
+      border-radius: var(--radius-sm);
+      font-size: 0.8125rem;
+      font-weight: 700;
+      margin-top: var(--space-3);
+    }
+    .calc-atri-pass {
+      background: rgba(54, 179, 126, 0.2);
+      color: #36B37E;
+      border: 1px solid rgba(54, 179, 126, 0.4);
+    }
+    .calc-atri-warn {
+      background: rgba(255, 171, 0, 0.2);
+      color: #FFAB00;
+      border: 1px solid rgba(255, 171, 0, 0.4);
+    }
+
+    /* Equipment Showcase Cards */
+    .equipment-card {
+      background: var(--color-white);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      box-shadow: var(--shadow-sm);
+      transition: var(--transition);
+      display: flex;
+      flex-direction: column;
+    }
+    .equipment-card:hover {
+      box-shadow: var(--shadow-md);
+      transform: translateY(-2px);
+    }
+    .equipment-img {
+      width: 100%;
+      height: 220px;
+      object-fit: cover;
+      display: block;
+    }
+    .equipment-body {
+      padding: var(--space-5);
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Pay-to-Play Badge */
+    .pay-to-play-banner {
+      background: var(--color-mist-light);
+      border-left: 4px solid var(--color-teal);
+      border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+      padding: var(--space-4);
+      margin-top: var(--space-5);
+    }
+
+    /* Interactive Form */
+    .inquiry-form-card {
+      background: var(--color-white);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-lg);
+      padding: var(--space-6);
+      box-shadow: var(--shadow-lg);
+    }
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: var(--space-4);
+      margin-bottom: var(--space-4);
+    }
+    @media (min-width: 600px) {
+      .form-row-2 {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .form-label {
+      font-size: 0.8125rem;
+      font-weight: 700;
+      color: var(--color-navy);
+    }
+    .form-input, .form-select {
+      padding: 10px 14px;
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-sm);
+      font-family: var(--font-body);
+      font-size: 0.9375rem;
+      color: var(--color-text-main);
+      background: var(--color-white);
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+    .form-input:focus, .form-select:focus {
+      outline: none;
+      border-color: var(--color-teal);
+      box-shadow: 0 0 0 3px var(--color-teal-subtle);
+    }
+    .radio-card-group {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: var(--space-3);
+    }
+    .radio-card {
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-sm);
+      padding: var(--space-3);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background: var(--color-mist-light);
+      transition: var(--transition);
+    }
+    .radio-card:hover, .radio-card.active {
+      border-color: var(--color-teal);
+      background: var(--color-teal-subtle);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Skip to Main Content for Accessibility -->
+  <a href="#main-content" class="skip-link">Skip to main content</a>
+
+  <!-- Top Informational Bar -->
+  <div class="top-bar">
+    <div class="container top-bar-inner">
+      <div class="top-bar-notice">
+        <span class="status-dot" aria-hidden="true"></span>
+        <span>Independent Dispatch Support · Strictly 53′ Dry Van & Reefer · Carrier Retains 100% Load Authority</span>
+      </div>
+      <div class="top-bar-contact">
+        <span>Direct Operations Line: <a href="tel:+14099417180">+1 (409) 941-7180</a></span>
+        <span>·</span>
+        <span><a href="mailto:dispatch@almajdoub.com">dispatch@almajdoub.com</a></span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main Site Header -->
+  <header class="site-header">
+    <div class="container header-main">
+      <a href="index.html" class="brand-link" aria-label="Almajdoub Dispatch Home">
+        <img src="assets/img/Almajdoub_Monogram_White.png" alt="Almajdoub Dispatch Official Monogram Mark — Cyan and Dark Navy Operations Seal" class="brand-logo-img">
+        <div class="brand-text-lockup">
+          <span class="brand-name">ALMAJDOUB DISPATCH</span>
+          <span class="brand-tagline">Your truck. Your call.</span>
+        </div>
+      </a>
+
+      <!-- Desktop Navigation -->
+      <nav aria-label="Primary Navigation">
+        <ul class="nav-menu">
+          <li><a href="index.html" class="nav-link">Main Site</a></li>
+          <li><a href="#how-it-works" class="nav-link">How We Work</a></li>
+          <li><a href="#calculator" class="nav-link">RPM Calculator</a></li>
+          <li><a href="#services" class="nav-link">Services</a></li>
+          <li><a href="#pricing" class="nav-link">Pricing</a></li>
+          <li><a href="#inquiry" class="nav-cta">Check Availability</a></li>
+        </ul>
+      </nav>
+
+      <!-- Mobile Nav Toggle -->
+      <button type="button" class="mobile-nav-toggle" aria-expanded="false" aria-controls="mobileDrawer">
+        ☰ Menu
+      </button>
+    </div>
+
+    <!-- Mobile Nav Drawer -->
+    <div class="mobile-nav-drawer" id="mobileDrawer">
+      <div class="container">
+        <ul class="mobile-nav-list">
+          <li><a href="index.html">Main Site</a></li>
+          <li><a href="#how-it-works">How We Work</a></li>
+          <li><a href="#calculator">Rate & Deadhead Calculator</a></li>
+          <li><a href="#services">Services</a></li>
+          <li><a href="#pricing">Pricing & Terms</a></li>
+          <li><a href="#inquiry" style="color: var(--color-teal-light); font-weight: 700;">Inquire for Availability →</a></li>
+        </ul>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Content Area -->
+  <main id="main-content">
+
+    <!-- High-Impact Hero Section with Authentic Truck Photography -->
+    <section class="hero-landing">
+      <div class="container">
+        <div class="hero-landing-grid">
+          
+          <!-- Hero Text Block -->
+          <div>
+            <div class="hero-badge" style="background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); color: var(--color-teal-light);">
+              <span>DEDICATED CARRIER BACK-DESK</span>
+              <span>·</span>
+              <span>STRICTLY CAPPED AT 7 TRUCKS</span>
+            </div>
+            
+            <h1 style="color: #FFFFFF; font-size: clamp(2.2rem, 3.8vw + 1rem, 3.5rem); margin-bottom: var(--space-4); line-height: 1.15;">
+              Dedicated Back-Office Dispatch Support for Independent 53′ Carriers
+            </h1>
+
+            <p style="font-size: 1.125rem; color: var(--color-mist); margin-bottom: var(--space-5); line-height: 1.6; max-width: 620px;">
+              You keep <strong>100% final load approval</strong> on every single run. We handle relentless load board scanning, broker rate negotiations, credit checks, packet setups, and detention tracking—so you can stay focused on driving safely.
+            </p>
+
+            <div class="hero-actions" style="margin-bottom: var(--space-6);">
+              <a href="#inquiry" class="btn btn-primary" style="font-size: 1rem; padding: 12px 28px;">
+                Check Desk Availability →
+              </a>
+              <a href="#calculator" class="btn btn-outline" style="border-color: rgba(255,255,255,0.4); color: var(--color-white);">
+                Calculate Trip RPM
+              </a>
+            </div>
+
+            <!-- Value Trust Pillars -->
+            <div class="hero-trust-bar" style="border-top-color: rgba(255,255,255,0.15); padding-top: var(--space-4);">
+              <div class="hero-trust-item" style="color: var(--color-white);">
+                <span style="color: var(--color-teal-light); font-weight: bold;">✓</span>
+                <span>You Approve Every Load</span>
+              </div>
+              <div class="hero-trust-item" style="color: var(--color-white);">
+                <span style="color: var(--color-teal-light); font-weight: bold;">✓</span>
+                <span>Zero Freight Handling</span>
+              </div>
+              <div class="hero-trust-item" style="color: var(--color-white);">
+                <span style="color: var(--color-teal-light); font-weight: bold;">✓</span>
+                <span>14-Day Free Operational Trial</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Hero Authentic Photo Showcase -->
+          <div>
+            <div class="hero-photo-wrapper">
+              <img src="assets/img/truck-dry-van-highway.jpg" alt="Class 8 Freightliner Cascadia semi-truck pulling 53-foot Dry Van trailer on open US interstate highway at sunset" class="hero-photo-img">
+              <div class="hero-photo-overlay">
+                <div class="hero-photo-badge">
+                  <span>Authentic Interstate Freight</span>
+                </div>
+                <div style="font-size: 0.9375rem; font-weight: 700; color: var(--color-white);">
+                  Reliable Operations on Primary US Freight Corridors
+                </div>
+                <div style="font-size: 0.75rem; color: #B0C3D4; margin-top: 2px;">
+                  Real Class 8 equipment. Strategic lane planning. Direct broker representation.
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- Operational Reality / Pain Points Section -->
+    <section class="section section-alt">
+      <div class="container">
+        <div class="section-header">
+          <span class="section-kicker">Operational Reality</span>
+          <h2 class="section-title">Where Independent Owner-Operators Lose Money</h2>
+          <p class="section-subtitle">
+            According to the American Transportation Research Institute (ATRI), the average truck operational cost in the U.S. reached <strong>$2.336 per mile</strong>. A rate that looks solid on paper can quickly turn unprofitable without disciplined back-office evaluation.
+          </p>
+        </div>
+
+        <!-- Behavioral Economics: Loss Aversion & Driver Empathy Safeguard -->
+        <div style="background: linear-gradient(135deg, #172B4D 0%, #1e3a68 100%); border-left: 4px solid #F59E0B; border-radius: var(--radius-md); padding: var(--space-4) var(--space-5); margin-bottom: var(--space-5); color: var(--color-white); box-shadow: 0 4px 12px rgba(0,0,0,0.08);">
+          <div style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--space-3);">
+            <div style="max-width: 680px;">
+              <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 6px;">
+                <span style="background: #F59E0B; color: #000; font-size: 0.7rem; font-weight: 800; padding: 2px 8px; border-radius: 4px; text-transform: uppercase;">Loss Aversion Safeguard</span>
+                <span style="color: var(--color-teal-light); font-weight: 700; font-size: 0.875rem;">Stop Bleeding Cash on Empty Return Miles & Free Shipper Waiting</span>
+              </div>
+              <p style="font-size: 0.875rem; color: #D1D5DB; margin: 0; line-height: 1.5;">
+                Every unbilled deadhead mile costs an average of <strong>$1.85</strong> in direct diesel and truck wear. Driving 11 hours shouldn't be followed by 3 hours of unpaid dock detention. We auto-clock your arrival timestamps at minute 120 and demand your contractual <strong>$65/hr detention fee</strong> immediately.
+              </p>
+            </div>
+            <div>
+              <a href="#inquiry" class="btn btn-primary" style="font-size: 0.8125rem; padding: 8px 18px; white-space: nowrap;">
+                Protect My Truck →
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <div class="grid-3">
+          
+          <div class="card card-hover">
+            <div style="font-size: 1.75rem; margin-bottom: 8px;">⏳</div>
+            <span class="card-kicker">Unbilled Detention Trap</span>
+            <h3 class="card-title">42.5% Spot Detention Rate</h3>
+            <p class="card-body">
+              ATRI research reveals that drivers experience over 2 hours of facility detention on 42.5% of spot market stops. Without immediate check-in timestamps and broker notifications, accessorial pay is lost forever.
+            </p>
+          </div>
+
+          <div class="card card-hover">
+            <div style="font-size: 1.75rem; margin-bottom: 8px;">📍</div>
+            <span class="card-kicker">Deadhead Dilution</span>
+            <h3 class="card-title">Uncalculated Repositioning</h3>
+            <p class="card-body">
+              A $3.00/mile load over 500 loaded miles drops to $2.30/mile if you deadhead 150 miles to pickup and deliver into a dead freight market with no immediate reload. We calculate <em>Loaded + Deadhead RPM</em> before presenting any load.
+            </p>
+          </div>
+
+          <div class="card card-hover card-highlight">
+            <div style="font-size: 1.75rem; margin-bottom: 8px;">🛡️</div>
+            <span class="card-kicker">Fraud & Double Brokering</span>
+            <h3 class="card-title">Broker Credit & Authority Vetting</h3>
+            <p class="card-body">
+              Identity theft and double brokering cost carriers millions in unpaid freight. We verify broker MC authority, active surety bonds, and days-to-pay credit histories through industry clearinghouses before you commit equipment.
+            </p>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- Interactive Rate & Deadhead RPM Calculator -->
+    <section id="calculator" class="section">
+      <div class="container">
+        
+        <div class="section-header">
+          <span class="section-kicker">Interactive Trip Evaluation</span>
+          <h2 class="section-title">Linehaul Revenue Per All Miles Calculator</h2>
+          <p class="section-subtitle">
+            Test any load offer. See exactly how deadhead miles to pickup and empty transit dilute your real gross earnings against the national operating benchmark.
+          </p>
+        </div>
+
+        <div class="calc-card" style="max-width: 1000px; margin: 0 auto;">
+          <div class="grid-2" style="align-items: center; gap: var(--space-6);">
+            
+            <!-- Controls (Left) -->
+            <div>
+              <!-- Slider 1: Gross Linehaul -->
+              <div class="calc-slider-group">
+                <div class="calc-slider-header">
+                  <span>Gross Linehaul Offer:</span>
+                  <span id="calcLinehaulVal" class="calc-slider-val">$2,800</span>
+                </div>
+                <input type="range" id="calcLinehaul" class="calc-range" min="800" max="6000" step="50" value="2800">
+                <div class="calc-scale-labels">
+                  <span>$800</span>
+                  <span>$3,400</span>
+                  <span>$6,000</span>
+                </div>
+              </div>
+
+              <!-- Slider 2: Loaded Miles -->
+              <div class="calc-slider-group">
+                <div class="calc-slider-header">
+                  <span>Loaded Miles (Shipper to Receiver):</span>
+                  <span id="calcLoadedVal" class="calc-slider-val" style="color: var(--color-navy);">950 mi</span>
+                </div>
+                <input type="range" id="calcLoaded" class="calc-range" min="100" max="2500" step="25" value="950">
+                <div class="calc-scale-labels">
+                  <span>100 mi</span>
+                  <span>1,300 mi</span>
+                  <span>2,500 mi</span>
+                </div>
+              </div>
+
+              <!-- Slider 3: Deadhead Miles -->
+              <div class="calc-slider-group">
+                <div class="calc-slider-header">
+                  <span>Deadhead Miles (To Pickup + Expected Reload):</span>
+                  <span id="calcDeadheadVal" class="calc-slider-val" style="color: #D97706;">180 mi</span>
+                </div>
+                <input type="range" id="calcDeadhead" class="calc-range" min="0" max="500" step="10" value="180">
+                <div class="calc-scale-labels">
+                  <span>0 mi</span>
+                  <span>250 mi</span>
+                  <span>500 mi</span>
+                </div>
+              </div>
+
+              <div style="background: var(--color-mist-light); padding: var(--space-3) var(--space-4); border-radius: var(--radius-sm); border: 1px solid var(--color-border); font-size: 0.8125rem; color: var(--color-text-muted); line-height: 1.5;">
+                <strong style="color: var(--color-navy);">Note:</strong> This tool calculates gross revenue divided by all required miles. Net profitability requires deducting fuel, equipment payments, maintenance, and commercial insurance.
+              </div>
+            </div>
+
+            <!-- Output Display (Right) -->
+            <div>
+              <div class="calc-output-card">
+                
+                <div class="calc-output-stat">
+                  <div class="calc-output-label">Loaded Miles Basis</div>
+                  <div id="calcLoadedRpm" class="calc-output-num-sub">
+                    $2.95 <span style="font-size: 0.875rem; color: #9AAEC0; font-weight: normal;">/ loaded mi</span>
+                  </div>
+                </div>
+
+                <div style="height: 1px; background: rgba(255,255,255,0.15); margin: var(--space-3) 0;"></div>
+
+                <div class="calc-output-stat">
+                  <div class="calc-output-label" style="color: var(--color-teal-light);">Revenue Per All Miles (Total Trip)</div>
+                  <div id="calcAllMilesRpm" class="calc-output-num-main">
+                    $2.48
+                  </div>
+                  <div style="font-size: 0.875rem; color: #9AAEC0; margin-top: 2px;">
+                    effective revenue / all trip miles
+                  </div>
+                </div>
+
+                <div style="background: rgba(0,0,0,0.25); border-radius: var(--radius-sm); padding: var(--space-3); margin-top: var(--space-4); font-size: 0.8125rem; text-align: left; line-height: 1.6;">
+                  <div style="display: flex; justify-content: space-between;">
+                    <span style="color: #9AAEC0;">Total Trip Miles:</span>
+                    <strong id="calcTotalMiles" style="color: var(--color-white); font-family: var(--font-mono);">1,130 mi</strong>
+                  </div>
+                  <div style="display: flex; justify-content: space-between;">
+                    <span style="color: #9AAEC0;">Deadhead Rate Dilution:</span>
+                    <strong id="calcDilution" style="color: #FBBF24; font-family: var(--font-mono);">-$0.47 / mi</strong>
+                  </div>
+                </div>
+
+                <!-- ATRI Benchmark Indicator -->
+                <div id="calcAtriIndicator" class="calc-atri-badge calc-atri-pass">
+                  ✓ Above ATRI National Operational Cost ($2.336/mi)
+                </div>
+
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- Equipment & Lane Strategy (With Truck Photography) -->
+    <section class="section section-alt">
+      <div class="container">
+        
+        <div class="section-header">
+          <span class="section-kicker">Operational Focus</span>
+          <h2 class="section-title">Strict Specialization: 53′ Dry Van & Reefer</h2>
+          <p class="section-subtitle">
+            We keep a strict focus on the approved enclosed-freight equipment scope. Specializing in primary enclosed freight allows faster booking, stronger broker relationships, and deeper lane expertise.
+          </p>
+        </div>
+
+        <div class="grid-2" style="max-width: 960px; margin: 0 auto; gap: var(--space-6);">
+          
+          <!-- Equipment 1: 53' Dry Van -->
+          <div class="equipment-card">
+            <img src="assets/img/truck-dry-van-highway.jpg" alt="Class 8 Freightliner Cascadia semi-truck pulling 53-foot Dry Van trailer on open US interstate highway at sunset" class="equipment-img">
+            <div class="equipment-body">
+              <span class="badge badge-navy" style="margin-bottom: var(--space-2); align-self: flex-start;">Primary Fleet Focus</span>
+              <h3 style="font-size: 1.25rem; margin-bottom: var(--space-2); color: var(--color-navy);">53′ Dry Van Equipment</h3>
+              <p style="font-size: 0.875rem; color: var(--color-text-muted); line-height: 1.6; margin-bottom: var(--space-4);">
+                Air-ride suspension, swing doors, food-grade and general dry freight. We target high-density industrial and retail corridors across the Midwest, Southeast, and Texas triangles with minimal unbilled wait times.
+              </p>
+              <div style="font-size: 0.8125rem; font-weight: 700; color: var(--color-teal); margin-top: auto;">
+                Commission Rate: 7.0% of Linehaul (53′ Dry Van) / 8.0% (53′ Reefer)
+              </div>
+            </div>
+          </div>
+
+          <!-- Equipment 2: Loading & Facility Operations -->
+          <div class="equipment-card">
+            <img src="assets/img/dry-van-dock-facility.jpg" alt="53-foot Dry Van commercial semi-truck docked at modern logistics warehouse distribution bay Door 42" class="equipment-img">
+            <div class="equipment-body">
+              <span class="badge badge-teal" style="margin-bottom: var(--space-2); align-self: flex-start;">Facility Coordination</span>
+              <h3 style="font-size: 1.25rem; margin-bottom: var(--space-2); color: var(--color-navy);">Dock & Detention Management</h3>
+              <p style="font-size: 0.875rem; color: var(--color-text-muted); line-height: 1.6; margin-bottom: var(--space-4);">
+                Smooth shipper check-in appointments, receiver delivery windows, and rigorous timestamp documentation to ensure detention compensation ($50–$75/hr) is recognized and collected when docks run late.
+              </p>
+              <div style="font-size: 0.8125rem; font-weight: 700; color: var(--color-teal); margin-top: auto;">
+                Standard Free Time: 2 Hours Max
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+    </section>
+
+    <!-- How We Work (5-Step Sequence) -->
+    <section id="how-it-works" class="section">
+      <div class="container">
+        
+        <div class="section-header">
+          <span class="section-kicker">Operating Boundaries</span>
+          <h2 class="section-title">The 5-Step Workflow: You Maintain 100% Control</h2>
+          <p class="section-subtitle">
+            We act strictly as your remote back-desk under service agreement. All contracts are in your carrier name, and brokers pay you directly.
+          </p>
+        </div>
+
+        <div class="step-container">
+          <div class="step-card">
+            <div class="step-number">1</div>
+            <h3 style="font-size: 1.05rem; margin-bottom: 6px;">Profile & Targets</h3>
+            <p style="font-size: 0.875rem; color: var(--color-text-muted);">
+              You define preferred running regions, minimum rate per mile ($/mi), and home-time requirements.
+            </p>
+          </div>
+
+          <div class="step-card">
+            <div class="step-number">2</div>
+            <h3 style="font-size: 1.05rem; margin-bottom: 6px;">Board Scanning</h3>
+            <p style="font-size: 0.875rem; color: var(--color-text-muted);">
+              We monitor DAT One & Truckstop, evaluate destination reload markets, and vet broker credit ratings.
+            </p>
+          </div>
+
+          <div class="step-card" style="border-color: var(--color-teal); background-color: rgba(40,125,142,0.03);">
+            <div class="step-number" style="background-color: var(--color-teal);">3</div>
+            <h3 style="font-size: 1.05rem; margin-bottom: 6px; color: var(--color-teal);">Carrier Decision</h3>
+            <p style="font-size: 0.875rem; color: var(--color-navy); font-weight: 600;">
+              You have the final say. We never sign or accept any rate confirmation without your explicit written approval.
+            </p>
+          </div>
+
+          <div class="step-card">
+            <div class="step-number">4</div>
+            <h3 style="font-size: 1.05rem; margin-bottom: 6px;">Packets & Tracking</h3>
+            <p style="font-size: 0.875rem; color: var(--color-text-muted);">
+              We complete broker onboarding packets, request COIs, and handle check calls while you focus on driving.
+            </p>
+          </div>
+
+          <div class="step-card">
+            <div class="step-number">5</div>
+            <h3 style="font-size: 1.05rem; margin-bottom: 6px;">POD & Billing</h3>
+            <p style="font-size: 0.875rem; color: var(--color-text-muted);">
+              You deliver and snap a photo of the signed BOL/POD. We compile the invoice package directly for your factoring house.
+            </p>
+          </div>
+        </div>
+
+        <div class="grid-2" style="max-width: 900px; margin: var(--space-6) auto 0 auto; gap: var(--space-4);">
+          <div style="border-radius: var(--radius-md); overflow: hidden; border: 1px solid var(--color-border); box-shadow: var(--shadow-sm); background: var(--color-white);">
+            <img src="assets/img/driver-cab-carrier-control.jpg" alt="Independent owner-operator reviewing dispatch rate confirmation on smartphone safely parked inside truck sleeper cab" style="width: 100%; height: 220px; object-fit: cover; display: block;">
+            <div style="padding: 10px 14px; font-size: 0.8125rem; font-weight: 600; color: var(--color-navy); display: flex; justify-content: space-between; align-items: center;">
+              <span>Step 3: Carrier Green-Light</span>
+              <span style="color: var(--color-teal); font-weight: 700;">Zero Forced Dispatch</span>
+            </div>
+          </div>
+          <div style="border-radius: var(--radius-md); overflow: hidden; border: 1px solid var(--color-border); box-shadow: var(--shadow-sm); background: var(--color-white);">
+            <img src="assets/img/rate-confirmation-review.jpg" alt="Almajdoub Dispatch Carrier Load Gateway rate confirmation audit sheet with spot-market calculations and calculator" style="width: 100%; height: 220px; object-fit: cover; display: block;">
+            <div style="padding: 10px 14px; font-size: 0.8125rem; font-weight: 600; color: var(--color-navy); display: flex; justify-content: space-between; align-items: center;">
+              <span>Step 5: Direct Paperwork & Billing</span>
+              <span style="color: var(--color-teal); font-weight: 700;">100% Direct Payout</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- Transparent Pricing & Financial Discipline -->
+    <section id="pricing" class="section section-alt">
+      <div class="container">
+        
+        <div class="section-header">
+          <span class="section-kicker">Honest Compensation</span>
+          <h2 class="section-title">Transparent Service Pricing & Payment Terms</h2>
+          <p class="section-subtitle">
+            Zero hidden fees, zero long-term contracts, and no kickbacks. Clear financial terms confirmed in writing.
+          </p>
+        </div>
+
+        <div class="grid-2" style="max-width: 900px; margin: 0 auto; gap: var(--space-6);">
+          
+          <!-- Plan A: Flat Retainer -->
+          <div class="card" style="border-top: 4px solid var(--color-navy); display: flex; flex-direction: column; justify-content: space-between;">
+            <div>
+              <span class="badge badge-navy" style="margin-bottom: var(--space-3);">Fixed Overhead Model</span>
+              <h3 style="font-size: 1.5rem; color: var(--color-navy); margin-bottom: var(--space-2);">Flat Weekly Retainer</h3>
+              <p style="color: var(--color-text-muted); font-size: 0.9375rem; margin-bottom: var(--space-4);">
+                Ideal for high-mileage carriers running high weekly gross who prefer predictable back-desk costs.
+              </p>
+
+              <div style="display: flex; align-items: baseline; gap: 8px; margin-bottom: var(--space-4);">
+                <span style="font-size: 2.75rem; font-weight: 800; font-family: var(--font-mono); color: var(--color-navy);">7.0%</span>
+                <span style="font-size: 0.875rem; color: var(--color-text-muted);">Dry Van Linehaul (8.0% Reefer)</span>
+              </div>
+
+              <div style="background: var(--color-mist-light); padding: var(--space-4); border-radius: var(--radius-sm); margin-bottom: var(--space-4);">
+                <div style="font-size: 0.75rem; font-weight: 700; text-transform: uppercase; color: var(--color-navy); margin-bottom: var(--space-2);">Payment Policy:</div>
+                <ul style="list-style: none; padding: 0; margin: 0; font-size: 0.8125rem; color: var(--color-text-muted); display: flex; flex-direction: column; gap: 6px;">
+                  <li>✓ <strong>Prepaid in advance each Monday</strong> prior to load searching.</li>
+                  <li>✓ Applies only when truck is actively operating.</li>
+                  <li>✓ Zero fee when your truck is parked or in scheduled maintenance.</li>
+                  <li>✓ Unlimited broker calls, load negotiations, and setup packets.</li>
+                </ul>
+              </div>
+            </div>
+
+            <a href="#inquiry" class="btn btn-secondary" style="width: 100%; text-align: center;">Inquire About Flat Retainer</a>
+          </div>
+
+          <!-- Plan B: Percentage Model -->
+          <div class="card" style="border-top: 4px solid var(--color-teal); display: flex; flex-direction: column; justify-content: space-between;">
+            <div>
+              <span class="badge badge-teal" style="margin-bottom: var(--space-3);">Aligned Revenue Model</span>
+              <h3 style="font-size: 1.5rem; color: var(--color-navy); margin-bottom: var(--space-2);">Percentage of Linehaul</h3>
+              <p style="color: var(--color-text-muted); font-size: 0.9375rem; margin-bottom: var(--space-4);">
+                Our compensation grows only when we negotiate top-dollar rates for your equipment.
+              </p>
+
+              <div style="display: flex; flex-direction: column; gap: 8px; margin-bottom: var(--space-4);">
+                <div style="display: flex; justify-content: space-between; align-items: center; background: var(--color-mist-light); padding: 8px 12px; border-radius: var(--radius-sm);">
+                  <strong style="font-size: 0.9375rem; color: var(--color-navy);">53′ Dry Van:</strong>
+                  <span style="font-size: 1.25rem; font-weight: 800; font-family: var(--font-mono); color: var(--color-teal);">7.0% of Linehaul</span>
+                </div>
+                <div style="display: flex; justify-content: space-between; align-items: center; background: var(--color-mist-light); padding: 8px 12px; border-radius: var(--radius-sm);">
+                  <strong style="font-size: 0.9375rem; color: var(--color-navy);">53′ Reefer:</strong>
+                  <span style="font-size: 1.25rem; font-weight: 800; font-family: var(--font-mono); color: var(--color-teal);">8.0% of Linehaul</span>
+                </div>
+              </div>
+
+              <div style="background: var(--color-mist-light); padding: var(--space-4); border-radius: var(--radius-sm); margin-bottom: var(--space-4);">
+                <div style="font-size: 0.75rem; font-weight: 700; text-transform: uppercase; color: var(--color-navy); margin-bottom: var(--space-2);">Payment Policy & Settlement:</div>
+                <ul style="list-style: none; padding: 0; margin: 0; font-size: 0.8125rem; color: var(--color-text-muted); display: flex; flex-direction: column; gap: 6px;">
+                  <li>✓ Invoiced weekly on <strong>Friday afternoon</strong>.</li>
+                  <li>✓ <strong>Due Friday Evening (Same-day EOD)</strong>.</li>
+                  <li>✓ Calculated solely on gross linehaul (0.0% on fuel, detention, or TONU).</li>
+                  <li>✓ Zero fee on loads you decline or source independently.</li>
+                </ul>
+              </div>
+            </div>
+
+            <a href="#inquiry" class="btn btn-primary" style="width: 100%; text-align: center;">Inquire About Percentage Plan</a>
+          </div>
+
+        </div>
+
+        <!-- Strict Pay-to-Play Continuity Banner -->
+        <div class="pay-to-play-banner" style="max-width: 900px; margin: var(--space-6) auto 0 auto;">
+          <div style="display: flex; align-items: flex-start; gap: 12px;">
+            <div style="font-size: 1.5rem; line-height: 1;">⚖️</div>
+            <div>
+              <strong style="color: var(--color-navy); font-size: 0.9375rem; display: block; margin-bottom: 4px;">
+                Financial Discipline & "Pay-to-Play" Operational Rule:
+              </strong>
+              <p style="font-size: 0.8125rem; color: var(--color-text-muted); margin: 0; line-height: 1.5;">
+                To protect cash-flow integrity and prevent debt accumulation, our operations desk operates strictly on current settlements. For percentage plans, Friday's invoice must be settled on Friday evening to renew dispatch coverage for the following week. No dispatch service commences Monday without settled accounts.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- 14-Day Free Trial Callout (Cialdini 100% Risk Reversal) -->
+        <div style="background: var(--color-navy); color: var(--color-white); border-radius: var(--radius-md); padding: var(--space-5); max-width: 900px; margin: var(--space-5) auto 0 auto; text-align: center; border-left: 4px solid var(--color-teal);">
+          <span class="badge badge-teal" style="margin-bottom: var(--space-2);">100% Risk-Free Carrier Onboarding</span>
+          <h3 style="font-size: 1.35rem; color: var(--color-white); margin-bottom: var(--space-2);">
+            Start with a 14-Day Operational Trial (Zero Dispatch Fees)
+          </h3>
+          <p style="font-size: 0.875rem; color: var(--color-mist); max-width: 700px; margin: 0 auto; line-height: 1.6;">
+            Give us one truck. We establish your lane criteria and rate floors together. We coordinate your loads for 14 full days with zero dispatch fees. You review our speed, rate negotiation, and paperwork quality firsthand before committing. Plus, stack additional free weeks with the <strong>Rolling 14 Referral Engine</strong>.
+          </p>
+          <div style="margin-top: var(--space-3); font-size: 0.8125rem; color: var(--color-teal-light); font-weight: 700;">
+            🛡️ Zero Upfront Credit Card Required · Zero Contract Lock-in · Walk Away Anytime
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- Carrier Intake / Availability Verification Form -->
+    <section id="inquiry" class="section">
+      <div class="container">
+        
+        <div class="section-header">
+          <span class="section-kicker">Carrier Intake Desk</span>
+          <h2 class="section-title">Check Operations Desk Availability</h2>
+          <div style="display:inline-flex; align-items:center; gap:8px; background:rgba(40,125,142,0.12); border:1px solid var(--color-teal); border-radius:20px; padding:6px 16px; margin:12px auto; font-size:0.8125rem; font-weight:700; color:var(--color-teal-dark);">
+            <span style="display:inline-block; width:9px; height:9px; background:#10B981; border-radius:50%; box-shadow:0 0 6px #10B981;"></span>
+            DESK CAPACITY: STRICTLY 7 TRUCKS MAX (5/7 ACTIVE SLOTS COMMITTED — EXACTLY 2 SLOTS OPEN FOR Q4)
+          </div>
+          <p class="section-subtitle">
+            Our desk capacity is strictly limited to 7 active trucks to guarantee personal, dedicated coordination. Submit your details below to review authority and lane availability.
+          </p>
+        </div>
+
+        <div class="inquiry-form-card" style="max-width: 740px; margin: 0 auto;">
+          
+          <div style="background: var(--color-mist-light); border: 1px solid var(--color-border); border-radius: var(--radius-sm); padding: var(--space-3) var(--space-4); margin-bottom: var(--space-5); font-size: 0.8125rem; color: var(--color-text-muted); line-height: 1.5;">
+            <strong style="color: var(--color-navy); display: block; margin-bottom: 2px;">💬 Direct WhatsApp Routing Notice:</strong>
+            Submitting this form does not charge your card or create an unverified contract. It pre-populates a structured WhatsApp message draft to Ahmed Almajdoub. You can review the exact text before hitting send.
+          </div>
+
+          <form id="inquiryForm">
+            
+            <div class="form-row form-row-2">
+              <div class="form-group">
+                <label for="carrierName" class="form-label">Full Name *</label>
+                <input type="text" id="carrierName" class="form-input" required placeholder="e.g. John Doe">
+              </div>
+              <div class="form-group">
+                <label for="carrierPhone" class="form-label">Direct Phone / Cell *</label>
+                <input type="tel" id="carrierPhone" class="form-input" required placeholder="e.g. (555) 123-4567">
+              </div>
+            </div>
+
+            <div class="form-row form-row-2">
+              <div class="form-group">
+                <label for="carrierCompany" class="form-label">Company Legal Name / DBA</label>
+                <input type="text" id="carrierCompany" class="form-input" placeholder="e.g. Blue Ridge Freight LLC">
+              </div>
+              <div class="form-group">
+                <label for="carrierMC" class="form-label">USDOT# or MC# *</label>
+                <input type="text" id="carrierMC" class="form-input" required placeholder="e.g. MC 1234567 or DOT 987654">
+              </div>
+            </div>
+
+            <!-- Equipment Selection -->
+            <div class="form-group" style="margin-bottom: var(--space-4);">
+              <label class="form-label">Equipment Type *</label>
+              <div class="radio-card-group">
+                <label class="radio-card" id="equipVanLabel">
+                  <input type="radio" name="equipmentType" value="53 Dry Van" checked>
+                  <div>
+                    <strong style="font-size: 0.875rem; color: var(--color-navy); display: block;">53′ Dry Van</strong>
+                    <span style="font-size: 0.75rem; color: var(--color-text-muted);">Air-ride / Swing doors</span>
+                  </div>
+                </label>
+                <label class="radio-card" id="equipReeferLabel">
+                  <input type="radio" name="equipmentType" value="53 Reefer">
+                  <div>
+                    <strong style="font-size: 0.875rem; color: var(--color-navy); display: block;">53′ Reefer</strong>
+                    <span style="font-size: 0.75rem; color: var(--color-text-muted);">Temperature-controlled</span>
+                  </div>
+                </label>
+              </div>
+            </div>
+
+            <div class="form-row form-row-2">
+              <div class="form-group">
+                <label for="carrierHome" class="form-label">Home Base / Current City, State *</label>
+                <input type="text" id="carrierHome" class="form-input" required placeholder="e.g. Dallas, TX or Atlanta, GA">
+              </div>
+              <div class="form-group">
+                <label for="carrierLanes" class="form-label">Preferred Lanes / Minimum $/mi</label>
+                <input type="text" id="carrierLanes" class="form-input" placeholder="e.g. Midwest to Southeast · $2.60/mi min">
+              </div>
+            </div>
+
+            <div class="form-group" style="margin-top: var(--space-5);">
+              <button type="submit" class="btn btn-primary" style="width: 100%; font-size: 1rem; padding: 14px; display: flex; align-items: center; justify-content: center; gap: 8px;">
+                <span>Review & Open in WhatsApp</span>
+                <span>→</span>
+              </button>
+            </div>
+
+          </form>
+
+          <!-- Alternative Direct Contact -->
+          <div style="border-top: 1px solid var(--color-border); margin-top: var(--space-5); padding-top: var(--space-4); text-align: center; font-size: 0.8125rem; color: var(--color-text-muted);">
+            <span>Prefer to call directly? Operations desk line:</span>
+            <div style="margin-top: 4px; font-weight: 700; color: var(--color-navy);">
+              <a href="tel:+14099417180" style="color: var(--color-teal); font-size: 0.9375rem;">+1 (409) 941-7180</a>
+              <span style="margin: 0 8px; color: var(--color-border);">·</span>
+              <a href="mailto:dispatch@almajdoub.com" style="color: var(--color-navy);">dispatch@almajdoub.com</a>
+            </div>
+            <div style="font-size: 0.75rem; color: var(--color-text-muted); margin-top: 4px;">
+              Hours: 08:00 AM – 05:00 PM EST (Monday – Friday)
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Global Footer -->
+  <footer class="site-footer">
+    <div class="container">
+      <!-- Legal Notice & Regulatory Boundary -->
+      <div class="footer-legal-notice">
+        <strong>REGULATORY STATUS & OPERATIONAL BOUNDARIES:</strong><br>
+        Almajdoub Dispatch is an independent carrier back-office support service operated by Ahmed Almajdoub, serving US-based interstate motor carriers. Almajdoub Dispatch is not an FMCSA-registered freight broker and does not operate as a motor carrier fleet. We work exclusively under a written Dispatch Authorization Agreement with the motor carrier. All freight transportation agreements (Rate Confirmations) are issued in the carrier’s legal name, and all shipper/broker payments are made directly to the carrier’s account or designated factoring company. The motor carrier retains 100% final authority on all load acceptance decisions.
+      </div>
+
+      <div class="footer-grid">
+        <div>
+          <div style="display: flex; align-items: center; gap: 10px; margin-bottom: var(--space-3);">
+            <img src="assets/img/Almajdoub_Logo_White.png" alt="Almajdoub Dispatch Official Brand Logo — White Vector Edition" style="height: 36px; width: auto;">
+            <span style="font-family: var(--font-heading); font-weight: 800; font-size: 1.125rem; color: var(--color-white);">ALMAJDOUB DISPATCH</span>
+          </div>
+          <p style="font-size: 0.8125rem; color: #9AAEC0; line-height: 1.6; margin-bottom: var(--space-3);">
+            “Your truck. Your call.”<br>
+            Dedicated back-office support, load search coordination, rate confirmation review, and paperwork assistance for American owner-operators.
+          </p>
+          <div style="font-size: 0.8125rem; color: var(--color-text-light);">
+            Direct Desk: +1 (409) 941-7180<br>
+            Email: dispatch@almajdoub.com<br>
+            Hours: 08:00 AM – 05:00 PM EST (Mon – Fri)
+          </div>
+        </div>
+
+        <div>
+          <h3 class="footer-title">Navigation</h3>
+          <ul class="footer-links">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="services.html">Services & Scope</a></li>
+            <li><a href="how-it-works.html">How We Work</a></li>
+            <li><a href="pricing.html">Pricing Structure</a></li>
+            <li><a href="about.html">About the Desk</a></li>
+            <li><a href="faq.html">FAQ</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <h3 class="footer-title">Policies</h3>
+          <ul class="footer-links">
+            <li><a href="privacy.html">Privacy Notice</a></li>
+            <li><a href="terms.html">Terms of Service</a></li>
+            <li><a href="accessibility.html">Accessibility Statement</a></li>
+            <li><a href="contact.html">Inquiry Form</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <h3 class="footer-title">Direct Desk Contact</h3>
+          <p style="font-size: 0.8125rem; color: #9AAEC0; margin-bottom: var(--space-3);">
+            Speak directly with Ahmed Almajdoub regarding current onboarding capacity.
+          </p>
+          <ul class="footer-links" style="font-size: 0.875rem;">
+            <li><strong>Phone:</strong> <a href="tel:+14099417180">+1 (409) 941-7180</a></li>
+            <li><strong>Email:</strong> <a href="mailto:dispatch@almajdoub.com">dispatch@almajdoub.com</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <div>
+          © 2026 Almajdoub Dispatch. All rights reserved.
+        </div>
+        <div>
+          Strictly 53′ Dry Van & Reefer · Zero forced dispatch
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Interactive JavaScript Engine -->
+  <script src="assets/js/cloud_config.js"></script>
+  <script src="assets/js/supabase_client.js"></script>
+  <script src="assets/js/main.js"></script>
+  <script>
+    // Rate & Deadhead RPM Calculator Logic
+    const linehaulInput = document.getElementById('calcLinehaul');
+    const loadedInput = document.getElementById('calcLoaded');
+    const deadheadInput = document.getElementById('calcDeadhead');
+
+    const linehaulVal = document.getElementById('calcLinehaulVal');
+    const loadedVal = document.getElementById('calcLoadedVal');
+    const deadheadVal = document.getElementById('calcDeadheadVal');
+
+    const loadedRpmOut = document.getElementById('calcLoadedRpm');
+    const allMilesRpmOut = document.getElementById('calcAllMilesRpm');
+    const totalMilesOut = document.getElementById('calcTotalMiles');
+    const dilutionOut = document.getElementById('calcDilution');
+    const atriIndicator = document.getElementById('calcAtriIndicator');
+
+    const ATRI_BENCHMARK = 2.336; // ATRI 2025/2026 average cost per mile
+
+    function updateCalculator() {
+      const linehaul = parseFloat(linehaulInput.value) || 0;
+      const loaded = parseFloat(loadedInput.value) || 0;
+      const deadhead = parseFloat(deadheadInput.value) || 0;
+
+      const totalMiles = loaded + deadhead;
+      const loadedRpm = loaded > 0 ? (linehaul / loaded) : 0;
+      const allMilesRpm = totalMiles > 0 ? (linehaul / totalMiles) : 0;
+      const dilution = loadedRpm - allMilesRpm;
+
+      linehaulVal.textContent = `$${linehaul.toLocaleString()}`;
+      loadedVal.textContent = `${loaded.toLocaleString()} mi`;
+      deadheadVal.textContent = `${deadhead.toLocaleString()} mi`;
+
+      loadedRpmOut.innerHTML = `$${loadedRpm.toFixed(2)} <span style="font-size: 0.875rem; color: #9AAEC0; font-weight: normal;">/ loaded mi</span>`;
+      allMilesRpmOut.textContent = `$${allMilesRpm.toFixed(2)}`;
+      totalMilesOut.textContent = `${totalMiles.toLocaleString()} mi`;
+      dilutionOut.textContent = `-$${dilution.toFixed(2)} / mi`;
+
+      // Dynamic ATRI Comparison
+      if (allMilesRpm >= ATRI_BENCHMARK) {
+        atriIndicator.className = 'calc-atri-badge calc-atri-pass';
+        atriIndicator.innerHTML = `✓ Above ATRI National Operational Cost ($${ATRI_BENCHMARK.toFixed(3)}/mi)`;
+      } else {
+        atriIndicator.className = 'calc-atri-badge calc-atri-warn';
+        atriIndicator.innerHTML = `⚠️ Below ATRI Average Cost ($${ATRI_BENCHMARK.toFixed(3)}/mi) — Unprofitable Run!`;
+      }
+    }
+
+    linehaulInput.addEventListener('input', updateCalculator);
+    loadedInput.addEventListener('input', updateCalculator);
+    deadheadInput.addEventListener('input', updateCalculator);
+    updateCalculator();
+
+    // Form Submission: Pre-filled WhatsApp Routing
+    const landingForm = document.getElementById('inquiryForm');
+    landingForm.addEventListener('submit', function(e) {
+      e.preventDefault();
+
+      const name = document.getElementById('carrierName').value.trim();
+      const phone = document.getElementById('carrierPhone').value.trim();
+      const company = document.getElementById('carrierCompany').value.trim() || 'Independent Carrier';
+      const mc = document.getElementById('carrierMC').value.trim();
+      const equip = document.querySelector('input[name="equipmentType"]:checked').value;
+      const home = document.getElementById('carrierHome').value.trim();
+      const lanes = document.getElementById('carrierLanes').value.trim() || 'Flexible';
+
+      // Sync to Supabase Cloud Database
+      if (window.SupabaseClient) {
+        window.SupabaseClient.submitInquiry({
+          name: name,
+          company: company,
+          phone: phone,
+          mc: mc,
+          equipment: equip,
+          lanes: lanes,
+          source: 'Landing Page WhatsApp Form'
+        });
+      }
+
+      const text = `Hello Ahmed! I would like to inquire about dispatch desk availability with Almajdoub Dispatch.%0A%0A*Carrier:* ${encodeURIComponent(company)} (${encodeURIComponent(name)})%0A*Phone:* ${encodeURIComponent(phone)}%0A*USDOT/MC:* ${encodeURIComponent(mc)}%0A*Equipment:* ${encodeURIComponent(equip)}%0A*Home Base:* ${encodeURIComponent(home)}%0A*Target Lanes/RPM:* ${encodeURIComponent(lanes)}`;
+
+      const url = `https://wa.me/14099417180?text=${text}`;
+      window.open(url, '_blank');
+    });
+  </script>
+</body>
+</html>

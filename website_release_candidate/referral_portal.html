@@ -1,0 +1,539 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Carrier Referral & Free Runway Portal | Almajdoub Dispatch</title>
+  <meta name="description" content="Manage your free dispatch days, track driver referrals, and generate your VIP referral link. Almajdoub Dispatch - Your truck. Your call.">
+  <link rel="icon" type="image/svg+xml" href="assets/img/logo-mark.svg">
+  <link rel="stylesheet" href="assets/css/style.css">
+  <style>
+    :root {
+      --color-gold: #FFD000;
+      --color-gold-hover: #E6BC00;
+      --color-navy-dark: #060D17;
+      --color-card-bg: #0E1B30;
+      --color-cyan: #76D2E0;
+      --color-success: #36B37E;
+    }
+    body {
+      background-color: var(--color-navy-dark);
+      color: #FFFFFF;
+      font-family: var(--font-body);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+    .portal-nav {
+      background: rgba(14, 27, 48, 0.95);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      padding: 14px 0;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    .portal-nav-inner {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .portal-container {
+      max-width: 1100px;
+      margin: 40px auto 60px;
+      padding: 0 20px;
+      flex: 1;
+      width: 100%;
+    }
+    .portal-header {
+      text-align: center;
+      margin-bottom: 36px;
+    }
+    .portal-title {
+      font-family: var(--font-heading);
+      font-size: 2.4rem;
+      font-weight: 800;
+      color: #FFFFFF;
+      margin-bottom: 8px;
+    }
+    .portal-title span {
+      color: var(--color-gold);
+    }
+    .portal-sub {
+      color: var(--color-mist);
+      font-size: 1rem;
+      max-width: 650px;
+      margin: 0 auto;
+    }
+    
+    /* Login / MC Selector Box */
+    .mc-selector-card {
+      background: var(--color-card-bg);
+      border: 1px solid rgba(255, 208, 0, 0.3);
+      border-radius: var(--radius-md);
+      padding: 24px 30px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+      flex-wrap: wrap;
+      margin-bottom: 32px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+    }
+    .mc-input-wrap {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+      flex: 1;
+      min-width: 280px;
+    }
+    .mc-input-wrap input {
+      background: #060D17;
+      border: 1.5px solid rgba(255, 255, 255, 0.2);
+      color: #FFFFFF;
+      padding: 10px 16px;
+      border-radius: 6px;
+      font-family: var(--font-mono);
+      font-size: 1rem;
+      flex: 1;
+      text-transform: uppercase;
+    }
+    .btn-portal-gold {
+      background: var(--color-gold);
+      color: #0E1B30;
+      font-weight: 800;
+      border: none;
+      padding: 11px 22px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 0.95rem;
+      transition: all 0.2s;
+    }
+    .btn-portal-gold:hover {
+      background: var(--color-gold-hover);
+      transform: translateY(-1px);
+    }
+
+    /* Dashboard Grid */
+    .dash-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 28px;
+      margin-bottom: 32px;
+    }
+    @media (max-width: 860px) {
+      .dash-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* Stash Meter Card */
+    .stash-card {
+      background: var(--color-card-bg);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: var(--radius-lg);
+      padding: 32px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      position: relative;
+      overflow: hidden;
+    }
+    .stash-card::before {
+      content: "";
+      position: absolute;
+      top: -50px;
+      right: -50px;
+      width: 140px;
+      height: 140px;
+      background: rgba(255, 208, 0, 0.08);
+      border-radius: 50%;
+    }
+    .stash-label {
+      font-size: 0.85rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--color-cyan);
+      font-weight: 700;
+      margin-bottom: 8px;
+      display: block;
+    }
+    .stash-number-row {
+      display: flex;
+      align-items: baseline;
+      gap: 12px;
+      margin: 12px 0;
+    }
+    .stash-days-big {
+      font-family: var(--font-heading);
+      font-size: 3.8rem;
+      font-weight: 900;
+      color: var(--color-gold);
+      line-height: 1;
+    }
+    .stash-days-unit {
+      font-size: 1.25rem;
+      color: var(--color-mist);
+      font-weight: 700;
+    }
+    .stash-breakdown {
+      display: flex;
+      justify-content: space-between;
+      background: rgba(0, 0, 0, 0.35);
+      border-radius: 6px;
+      padding: 12px 16px;
+      margin-top: 20px;
+      font-size: 0.85rem;
+    }
+    .stash-pill {
+      font-weight: 800;
+      color: var(--color-cyan);
+    }
+
+    /* Share Tool Card */
+    .share-card {
+      background: var(--color-card-bg);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: var(--radius-lg);
+      padding: 32px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+    .share-link-box {
+      background: #060D17;
+      border: 1px dashed rgba(255, 255, 255, 0.25);
+      border-radius: 6px;
+      padding: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      margin: 16px 0;
+    }
+    .share-link-text {
+      font-family: var(--font-mono);
+      font-size: 0.85rem;
+      color: #FFFFFF;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    .share-actions-row {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    .btn-share-social {
+      flex: 1;
+      padding: 12px;
+      border-radius: 6px;
+      font-weight: 700;
+      font-size: 0.85rem;
+      text-align: center;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      border: none;
+      cursor: pointer;
+    }
+    .btn-wa { background: #25D366; color: #FFFFFF; }
+    .btn-sms { background: #0084FF; color: #FFFFFF; }
+    .btn-copy { background: rgba(255, 255, 255, 0.12); color: #FFFFFF; }
+
+    /* Referred Buddies Table */
+    .buddies-card {
+      background: var(--color-card-bg);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: var(--radius-lg);
+      padding: 30px;
+    }
+    .buddies-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      padding-bottom: 14px;
+    }
+    .buddies-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.9rem;
+    }
+    .buddies-table th {
+      text-align: left;
+      padding: 10px 14px;
+      color: var(--color-cyan);
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    .buddies-table td {
+      padding: 14px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+      color: var(--color-mist);
+    }
+    .status-badge-active {
+      background: rgba(54, 179, 126, 0.15);
+      color: var(--color-success);
+      padding: 4px 10px;
+      border-radius: 4px;
+      font-size: 0.75rem;
+      font-weight: 700;
+    }
+    .status-badge-pending {
+      background: rgba(255, 208, 0, 0.15);
+      color: var(--color-gold);
+      padding: 4px 10px;
+      border-radius: 4px;
+      font-size: 0.75rem;
+      font-weight: 700;
+    }
+
+    /* VIP Tier Status */
+    .tier-card {
+      background: linear-gradient(90deg, #0B1B30 0%, #162C4C 100%);
+      border: 1px solid var(--color-gold);
+      border-radius: var(--radius-md);
+      padding: 20px 24px;
+      margin-top: 28px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+    .tier-info h4 {
+      color: var(--color-gold);
+      font-size: 1.15rem;
+      margin-bottom: 4px;
+    }
+    .tier-info p {
+      color: var(--color-mist);
+      font-size: 0.85rem;
+      margin: 0;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Top Navigation -->
+  <nav class="portal-nav">
+    <div class="container portal-nav-inner">
+      <a href="index.html" class="brand-link" style="color: #FFFFFF; text-decoration: none; display: flex; align-items: center; gap: 10px;">
+        <img src="assets/img/Almajdoub_Monogram_White.png" alt="Almajdoub Dispatch Official Monogram Mark — Cyan and Dark Navy Operations Seal" style="height: 34px;">
+        <strong style="font-size: 1rem; letter-spacing: 0.06em;">ALMAJDOUB DISPATCH</strong>
+      </a>
+      <div>
+        <a href="landing_14days_free.html" style="color: var(--color-gold); font-size: 0.85rem; font-weight: 700; text-decoration: none; margin-right: 18px;">
+          ← 14-Day Free Landing Page
+        </a>
+        <a href="tel:+14099417180" style="color: #FFFFFF; font-size: 0.85rem; font-weight: 700; text-decoration: none;">
+          📞 Desk: +1 (409) 941-7180
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <div class="portal-container">
+
+    <div class="portal-header">
+      <h1 class="portal-title">Driver Referral & <span>Free Days Portal</span></h1>
+      <p class="portal-sub">
+        Track your accumulated free dispatch runway, generate personal referral links, and stack up +14 free days for every trucker buddy who hauls with us, with no cap on earned days.
+      </p>
+    </div>
+
+    <!-- MC Number Selector -->
+    <div class="mc-selector-card">
+      <div class="mc-input-wrap">
+        <label for="carrierMCInput" style="font-weight: 700; font-size: 0.9rem; color: var(--color-gold);">Carrier MC#:</label>
+        <input type="text" id="carrierMCInput" value="MC-987452" placeholder="e.g. MC-987452">
+        <button type="button" class="btn-portal-gold" id="btnLoadCarrier">Load Profile</button>
+      </div>
+      <div style="font-size: 0.85rem; color: var(--color-mist);">
+        Carrier: <strong id="carrierNameDisplay" style="color: #FFFFFF;">Miller Express Hauling LLC</strong> (Active)
+      </div>
+    </div>
+
+    <!-- Main Dashboard Grid -->
+    <div class="dash-grid">
+
+      <!-- Stash Card -->
+      <div class="stash-card">
+        <div>
+          <span class="stash-label">Active Free Runway Balance</span>
+          <div class="stash-number-row">
+            <span class="stash-days-big" id="freeDaysTotal">42</span>
+            <span class="stash-days-unit">Days Free Left</span>
+          </div>
+          <p style="color: var(--color-mist); font-size: 0.9rem; line-height: 1.5;">
+            You are currently operating with <strong>0% dispatch fees</strong>. Your runway is automatically extended whenever a referred buddy finishes their first load.
+          </p>
+        </div>
+
+        <div class="stash-breakdown">
+          <div>Initial Trial: <span class="stash-pill">14 Days</span></div>
+          <div>Referrals: <span class="stash-pill" id="referralEarnedPill">+28 Days (2 Drivers)</span></div>
+          <div>Fee Status: <span style="color: var(--color-gold); font-weight: 800;">$0.00 Due</span></div>
+        </div>
+      </div>
+
+      <!-- Referral Link & Share Card -->
+      <div class="share-card">
+        <div>
+          <span class="stash-label">Your Unique Referral Invite Link</span>
+          <p style="color: var(--color-mist); font-size: 0.85rem; margin-top: 4px;">
+            Send this link to owner-operators or small fleets. When they click, your MC code is automatically applied for instant priority onboarding:
+          </p>
+
+          <div class="share-link-box">
+            <span class="share-link-text" id="refLinkDisplay">https://almajdoub.com/landing_14days_free.html?ref=MC-987452</span>
+            <button class="btn-portal-gold" style="padding: 6px 12px; font-size: 0.8rem;" id="btnCopyLink">Copy</button>
+          </div>
+        </div>
+
+        <div>
+          <div style="font-size: 0.8rem; color: var(--color-cyan); margin-bottom: 8px; font-weight: 700;">
+            1-Click Share to Trucker Friends:
+          </div>
+          <div class="share-actions-row">
+            <a href="#" id="shareWhatsAppBtn" target="_blank" class="btn-share-social btn-wa">
+              <span>💬 WhatsApp</span>
+            </a>
+            <a href="#" id="shareSMSBtn" class="btn-share-social btn-sms">
+              <span>📱 Text / SMS</span>
+            </a>
+            <button type="button" class="btn-share-social btn-copy" id="btnSharePassQR">
+              <span>💳 Show VIP Pass</span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Referred Buddies Tracker -->
+    <div class="buddies-card">
+      <div class="buddies-header">
+        <h3 style="font-size: 1.25rem; font-weight: 800; color: #FFFFFF;">
+          Your Referred Carrier Network (<span id="referredCountText">2 Active</span>)
+        </h3>
+        <span style="font-size: 0.85rem; color: var(--color-gold); font-weight: 700;">
+          +14 Days Credited per Verified Paid Load
+        </span>
+      </div>
+
+      <div style="overflow-x: auto;">
+        <table class="buddies-table">
+          <thead>
+            <tr>
+              <th>Carrier Name & MC</th>
+              <th>Equipment</th>
+              <th>Date Joined</th>
+              <th>First Load Status</th>
+              <th>Bonus Free Days</th>
+            </tr>
+          </thead>
+          <tbody id="buddiesTableBody">
+            <tr>
+              <td><strong>Bobby Hayes</strong><br><span style="font-size:0.75rem; color:#A5B2C6;">MC-112345 · Hayes Freight</span></td>
+              <td>53′ Reefer</td>
+              <td>Oct 20, 2026</td>
+              <td><span class="status-badge-active">✅ First Load Delivered</span></td>
+              <td><strong style="color: var(--color-gold);">+14 Days Added</strong></td>
+            </tr>
+            <tr>
+              <td><strong>Tony Ramirez</strong><br><span style="font-size:0.75rem; color:#A5B2C6;">MC-884321 · Ramirez Transport</span></td>
+              <td>53′ Dry Van</td>
+              <td>Oct 21, 2026</td>
+              <td><span class="status-badge-active">✅ First Load Delivered</span></td>
+              <td><strong style="color: var(--color-gold);">+14 Days Added</strong></td>
+            </tr>
+            <tr>
+              <td><strong>Samir Jackson</strong><br><span style="font-size:0.75rem; color:#A5B2C6;">MC-765432 · SJ Logistics</span></td>
+              <td>53′ Dry Van</td>
+              <td>Oct 22, 2026</td>
+              <td><span class="status-badge-pending">⏳ Trial Active (In Transit)</span></td>
+              <td><span style="color: var(--color-mist);">Pending POD</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Tier Status Progress -->
+    <div class="tier-card">
+      <div class="tier-info">
+        <h4>Current Status: Silver Fleet-Mate (2/5 Referrals)</h4>
+        <p>Refer 3 more drivers to unlock <strong>Gold Partner Status</strong> (84 Days Free + Free Unlimited Broker Credit Audits).</p>
+      </div>
+      <div>
+        <a href="landing_14days_free.html" class="btn-portal-gold" style="font-size: 0.85rem; padding: 10px 18px;">
+          + Invite Another Driver Buddy
+        </a>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Footer -->
+  <footer style="background: #040910; border-top: 1px solid rgba(255,255,255,0.08); padding: 24px 0; text-align: center; font-size: 0.85rem; color: #6B778C;">
+    <div class="container">
+      <p>© 2026 Almajdoub Dispatch Operations. Powered by The Rolling 14 Engine. 49 CFR § 371.2 Compliance.</p>
+    </div>
+  </footer>
+
+  <!-- Script for Dynamic Referral Calculation & Sharing -->
+  <script>
+    (function() {
+      const carrierMCInput = document.getElementById('carrierMCInput');
+      const btnLoadCarrier = document.getElementById('btnLoadCarrier');
+      const carrierNameDisplay = document.getElementById('carrierNameDisplay');
+      const refLinkDisplay = document.getElementById('refLinkDisplay');
+      const btnCopyLink = document.getElementById('btnCopyLink');
+      const shareWhatsAppBtn = document.getElementById('shareWhatsAppBtn');
+      const shareSMSBtn = document.getElementById('shareSMSBtn');
+      const btnSharePassQR = document.getElementById('btnSharePassQR');
+
+      function updateReferralLink() {
+        const mc = carrierMCInput.value.trim().toUpperCase() || 'MC-987452';
+        const formattedMC = mc.startsWith('MC-') ? mc : ('MC-' + mc.replace(/[^0-9A-Z]/g, ''));
+        const baseUrl = window.location.origin + window.location.pathname.replace('referral_portal.html', 'landing_14days_free.html');
+        const fullLink = `${baseUrl}?ref=${formattedMC}`;
+        
+        refLinkDisplay.textContent = fullLink;
+
+        // Message text tailored for American truckers
+        const shareMsg = `Hey buddy! I’m running my truck with Almajdoub Dispatch. They’re giving 14 days 100% FREE dispatching (0% fees, no contracts). Use my referral link to get VIP rate priority: ${fullLink}`;
+        
+        shareWhatsAppBtn.href = `https://wa.me/?text=${encodeURIComponent(shareMsg)}`;
+        shareSMSBtn.href = `sms:?&body=${encodeURIComponent(shareMsg)}`;
+      }
+
+      btnLoadCarrier.addEventListener('click', function() {
+        updateReferralLink();
+        btnLoadCarrier.textContent = 'Loaded!';
+        setTimeout(() => btnLoadCarrier.textContent = 'Load Profile', 1500);
+      });
+
+      carrierMCInput.addEventListener('input', updateReferralLink);
+
+      btnCopyLink.addEventListener('click', function() {
+        navigator.clipboard.writeText(refLinkDisplay.textContent);
+        btnCopyLink.textContent = 'Copied!';
+        setTimeout(() => btnCopyLink.textContent = 'Copy', 2000);
+      });
+
+      btnSharePassQR.addEventListener('click', function() {
+        window.location.href = '05_Agreement_Finance/Driver_Referral_Share_Card.html';
+      });
+
+      updateReferralLink();
+    })();
+  </script>
+</body>
+</html>
