@@ -10,4 +10,4 @@ Required Pages environment variables:
 - `SUPABASE_PUBLISHABLE_KEY` (publishable key)
 - `INTAKE_PROXY_SECRET` (secret text)
 
-The Pages project builds only this website directory. Test fixtures, local databases, environment files, certificates, spreadsheets, and dependency directories are excluded by `.gitignore` and the Pages path filters.
+The Pages project builds only this website directory. Test fixtures, local databases, environment files, certificates, spreadsheets, and dependency directories are excluded by `.gitignore` and the Pages path filters. The path filter includes repository changes and excludes the named sensitive/test patterns so the website-directory root build is not skipped.
