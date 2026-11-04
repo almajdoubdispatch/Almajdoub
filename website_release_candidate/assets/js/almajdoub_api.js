@@ -87,7 +87,8 @@
     headers.set('Accept', 'application/json');
     headers.set('Cache-Control', 'no-store');
     headers.set('Pragma', 'no-cache');
-    if (opts.body !== undefined && !headers.has('Content-Type')) headers.set('Content-Type', 'application/json');
+    const isFormData = typeof FormData !== 'undefined' && opts.body instanceof FormData;
+    if (opts.body !== undefined && !isFormData && !headers.has('Content-Type')) headers.set('Content-Type', 'application/json');
     if (token) headers.set('Authorization', 'Bearer ' + token);
     if (opts.idempotencyKey) headers.set('Idempotency-Key', opts.idempotencyKey);
 
@@ -96,7 +97,7 @@
       response = await fetch(baseUrl + (path.charAt(0) === '/' ? path : '/' + path), {
         method: opts.method || 'GET',
         headers,
-        body: opts.body === undefined ? undefined : JSON.stringify(opts.body),
+        body: opts.body === undefined ? undefined : (isFormData ? opts.body : JSON.stringify(opts.body)),
         cache: 'no-store',
         credentials: 'omit'
       });
@@ -136,8 +137,12 @@
         body: Object.assign({}, extra || {}, { decision, expected_version: expectedVersion, mutation_id: mutationId })
       });
     },
-    submitOnboarding: function (payload, mutationId) {
-      return request('/onboarding', { method: 'POST', idempotencyKey: mutationId || newId(), body: payload });
+    submitOnboarding: function (payload, files, signature, mutationId) {
+      const form = new FormData();
+      form.append('payload', JSON.stringify(payload));
+      if (signature) form.append('signature', signature, 'signature.png');
+      (files || []).forEach(function (file) { form.append('documents', file, file.name); });
+      return api.publicRequest('/onboarding', { method: 'POST', idempotencyKey: mutationId || newId(), body: form });
     },
     submitInquiry: function (payload, mutationId) {
       return api.publicRequest('/inquiries', { method: 'POST', idempotencyKey: mutationId || newId(), body: payload });

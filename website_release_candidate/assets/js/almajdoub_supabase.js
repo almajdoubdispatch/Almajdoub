@@ -19,12 +19,12 @@
     };
   }
   const facade = {
-    saveInquiry: async function (data) { try { await api().submitInquiry(mapInquiry(data)); return { success: true }; } catch (e) { return { success: false, code: e.code || 'API_ERROR', status: e.status, error: e.message }; } },
+    saveInquiry: async function (data) { try { return Object.assign({ success: true }, await api().submitInquiry(mapInquiry(data))); } catch (e) { return { success: false, code: e.code || 'API_ERROR', status: e.status, error: e.message }; } },
     saveTicket: async function (data) { try { const result = await api().publicRequest('/tickets', { method: 'POST', body: data }); return { success: true, data: result }; } catch (e) { return { success: false, code: e.code || 'API_ERROR', status: e.status, error: e.message }; } },
     checkWaitlistStatus: async function () { try { return await api().publicRequest('/waitlist/status', { method: 'GET' }); } catch (e) { return { success: false, code: e.code || 'API_ERROR', error: e.message }; } },
     getPublicPlans: async function () { try { return { success: true, plans: await api().publicRequest('/plans', { method: 'GET' }) }; } catch (e) { return { success: false, plans: [], code: e.code || 'API_ERROR', error: e.message }; } },
     validateReferralCode: async function (code) { if (!code || !code.trim()) return { valid: false, skips_waitlist: false, grants_trial: false }; try { return await api().publicRequest('/referrals/validate', { method: 'POST', body: { code: code.trim() } }); } catch (e) { return { valid: false, code: e.code || 'API_ERROR', error: e.message }; } },
-    registerCarrier: async function (data) { try { return await api().submitOnboarding(data); } catch (e) { return { success: false, code: e.code || 'API_ERROR', status: e.status, error: e.message }; } },
+    registerCarrier: async function (data, files, signature) { try { return await api().submitOnboarding(data, files, signature); } catch (e) { return { success: false, code: e.code || 'API_ERROR', status: e.status, error: e.message }; } },
     saveCarrier: async function (data) { return this.registerCarrier(data); },
     logTraffic: async function () { return { success: false, code: 'ANALYTICS_DISABLED_UNTIL_API_CONFIGURED' }; }
   };

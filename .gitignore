@@ -1,0 +1,23 @@
+# Credentials and local environment files
+.env
+.env.*
+!.env.example
+*.pem
+*.pfx
+*.key
+secrets/
+private/
+
+# Local test data and build artifacts
+work/
+test-db/
+**/test-db/
+**/tests/
+**/test/
+**/node_modules/
+**/dist/
+**/coverage/
+*.xlsx
+*.xls
+*.log
+

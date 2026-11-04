@@ -347,7 +347,9 @@
     </div>
   </footer>
 
-  <script src="assets/js/almajdoub_supabase.js?v=3.2"></script>
+  <script src="assets/js/cloud_config.js"></script>
+  <script src="assets/js/almajdoub_api.js"></script>
+  <script src="assets/js/almajdoub_supabase.js?v=3.3"></script>
   <script src="assets/js/main.js"></script>
   <script>
     document.addEventListener('DOMContentLoaded', function() {
@@ -368,12 +370,11 @@
           };
 
           const tcpaCheckbox = document.getElementById('tcpaConsent');
-          data.tcpaConsent = tcpaCheckbox ? tcpaCheckbox.checked : true;
-
-          // Save locally
-          let leads = JSON.parse(localStorage.getItem('almajdoub_intake_leads') || '[]');
-          leads.push(Object.assign({ timestamp: new Date().toISOString() }, data));
-          localStorage.setItem('almajdoub_intake_leads', JSON.stringify(leads));
+          data.tcpaConsent = tcpaCheckbox ? tcpaCheckbox.checked : false;
+          if (!data.tcpaConsent) {
+            alert('Please confirm the required communications consent before submitting.');
+            return;
+          }
 
           let ticketCode = null;
           let inquirySaved = false;
@@ -384,23 +385,9 @@
               const inqRes = await window.AlmajdoubSupabase.saveInquiry(data);
               if (inqRes && inqRes.success) {
                 inquirySaved = true;
-                // Generate official sequential ticket
-                if (typeof window.AlmajdoubSupabase.saveTicket === 'function') {
-                  const tRes = await window.AlmajdoubSupabase.saveTicket({
-                    mcNumber: data.mcNumber,
-                    carrierName: data.companyName,
-                    phone: data.phone,
-                    status: 'ISSUED'
-                  });
-                  if (tRes && tRes.ticket_number) {
-                    ticketCode = tRes.ticket_number;
-                  }
-                }
-                // Store receipt safely in sessionStorage (Zero PII in URL!)
+                // Keep only a non-sensitive receipt reference in this browser session.
                 sessionStorage.setItem('ALM_INQUIRY_RECEIPT', JSON.stringify({
-                  mc: data.mcNumber,
-                  name: data.contactName,
-                  ticket: ticketCode || '',
+                  reference_id: inqRes.reference_id || '',
                   timestamp: Date.now()
                 }));
                 window.location.href = 'inquiry-success.html';

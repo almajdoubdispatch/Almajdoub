@@ -717,7 +717,7 @@
             <span>✍️</span> Step 4: Dispatch Authorization & Digital E-Signature
           </div>
           <p class="form-section-desc">
-            Review the governing legal terms and electronically sign to activate your desk immediately.
+            Review the governing legal terms and electronically sign to submit your carrier application for review.
           </p>
 
           <!-- Rate Selection Cards -->
@@ -834,13 +834,14 @@
   </footer>
 
   <!-- Scripts: Almajdoub DB & Multi-Step Wizard Engine -->
+  <script src="assets/js/cloud_config.js"></script>
   <script src="assets/js/almajdoub_api.js"></script>
-  <script src="assets/js/almajdoub_supabase.js?v=3.2"></script>
+  <script src="assets/js/almajdoub_supabase.js?v=3.3"></script>
   <script src="assets/js/pricing_catalog.js"></script>
   <script src="assets/js/almajdoub_db.js"></script>
   <script>
     let currentStep = 1;
-    let canvas, ctx, isDrawing = false;
+    let canvas, ctx, isDrawing = false, signatureDrawn = false;
     let refDebounce = null;
 
     window.addEventListener('DOMContentLoaded', () => {
@@ -907,6 +908,7 @@
 
     function startDraw(e) {
       isDrawing = true;
+      signatureDrawn = true;
       const rect = canvas.getBoundingClientRect();
       ctx.beginPath();
       ctx.moveTo(e.clientX - rect.left, e.clientY - rect.top);
@@ -926,6 +928,7 @@
     function clearSignature() {
       if (!ctx || !canvas) return;
       ctx.clearRect(0, 0, canvas.width, canvas.height);
+      signatureDrawn = false;
     }
 
     function goToStep(step) {
@@ -1090,6 +1093,13 @@
 
       const sigCanvas = document.getElementById('signatureCanvas');
       const sigImage = (sigCanvas && typeof sigCanvas.toDataURL === 'function') ? sigCanvas.toDataURL('image/png') : null;
+      const signatureHasInk = signatureDrawn;
+      const tcpaConsent = document.getElementById('legalAckTcpa')?.checked === true;
+      if (!signatureHasInk || !tcpaConsent) {
+        alert('Please draw your signature and confirm the communications consent before submitting.');
+        if (submitBtn) submitBtn.disabled = false;
+        return;
+      }
 
       let auditHash = '';
       try {
@@ -1098,13 +1108,15 @@
         const msgBuffer = new TextEncoder().encode(auditPayload);
         const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer);
         const hashArray = Array.from(new Uint8Array(hashBuffer));
-        auditHash = 'ESIGN-SHA256-' + hashArray.map(b => b.toString(16).padStart(2, '0')).join('').substring(0, 32).toUpperCase();
+        auditHash = hashArray.map(b => b.toString(16).padStart(2, '0')).join('').toUpperCase();
       } catch (err) {
-        auditHash = 'ESIGN-SHA256-' + Date.now().toString(16) + Math.random().toString(16).substring(2, 10).toUpperCase();
+        alert('The signature could not be securely verified. Please reload the page and try again.');
+        if (submitBtn) submitBtn.disabled = false;
+        return;
       }
 
       const isReferredOrDirect = Boolean(refCode || rateTier === 'standard_direct' || rateTier === 'fleet_retainer');
-      const autoReferralCode = 'REF-' + mc.replace(/[^•-Za-z0-9]/gi, '');
+      const autoReferralCode = 'REF-' + mc.replace(/[^A-Za-z0-9]/gi, '');
 
       const newCarrierPayload = {
         mc: mc,
@@ -1128,15 +1140,18 @@
         referral_code_used: refCode || null,
         referralCode: autoReferralCode,
         referredBy: refCode || null,
-        signedDate: new Date().toISOString().split('T')[0],
+        signedDate: new Date().toISOString(),
         signerName: signerName,
+        signerTitle: document.getElementById('signerTitle').value.trim(),
         contractSigned: true,
         auditHash: auditHash,
         signature_hash: auditHash,
-        signatureImage: sigImage,
-        signature_image: sigImage,
-        tcpaConsent: true,
-        tcpa_consent: true,
+        tcpaConsent: tcpaConsent,
+        tcpa_consent: tcpaConsent,
+        legalAckLpoa: document.getElementById('legalAckLpoa')?.checked === true,
+        legalAckLoadboard: document.getElementById('legalAckLoadboardSubSeat')?.checked === true,
+        legalAckUniversalAssignment: document.getElementById('legalAckUniversalAssignment')?.checked === true,
+        legalAckDirectPay: document.getElementById('legalAckDirectPay')?.checked === true,
         notes: `Signed by: ${signerName} | Plan: ${planCode} | Factoring: ${document.getElementById('factoringCompany') ? document.getElementById('factoringCompany').value : 'triumph'} | Base: ${homeBase} | Floor: ${rpmFloor}`,
         joinedDate: new Date().toISOString().split('T')[0]
       };
@@ -1145,7 +1160,9 @@
       let regResult = null;
       try {
         if (window.AlmajdoubSupabase && typeof window.AlmajdoubSupabase.registerCarrier === 'function') {
-          regResult = await window.AlmajdoubSupabase.registerCarrier(newCarrierPayload);
+          const signatureBlob = await (await fetch(sigImage)).blob();
+          const documentFiles = Array.from(document.getElementById('carrierDocsFile')?.files || []);
+          regResult = await window.AlmajdoubSupabase.registerCarrier(newCarrierPayload, documentFiles, signatureBlob);
         }
       } catch (err) {
         console.warn('[Supabase Onboarding] Cloud capture network error:', err);
@@ -1156,7 +1173,7 @@
         alert('Notice: MC Number ' + mc + ' is already registered in our active dispatch system.\n\nIf you need to update your equipment profile, change active lanes, or view your load board, please contact Ahmed Al-Majdoub directly at (409) 941-7180 or dispatch@almajdoub.com.');
         if (submitBtn) {
           submitBtn.disabled = false;
-          submitBtn.innerHTML = '<span>🚀 Execute Agreement & Activate Desk</span>';
+          submitBtn.innerHTML = '<span>🚀 Submit Signed Application</span>';
         }
         return;
       }
@@ -1166,27 +1183,21 @@
         alert('Submission Notice: We were unable to securely register your agreement on the cloud dispatch server.\n\nReason: ' + ((regResult && regResult.error) || 'Network timeout or database unreachable') + '\n\nPlease retry or reach Ahmed Al-Majdoub directly at (409) 941-7180 or via WhatsApp.');
         if (submitBtn) {
           submitBtn.disabled = false;
-          submitBtn.innerHTML = '<span>🚀 Execute Agreement & Activate Desk</span>';
+          submitBtn.innerHTML = '<span>🚀 Submit Signed Application</span>';
         }
         return;
       }
 
-      const assignedTicket = regResult.ticket_number || '';
-      const assignedStatus = regResult.status || newCarrierPayload.status;
+      const assignedTicket = regResult.reference_id || '';
+      const assignedStatus = regResult.status || 'PENDING_REVIEW';
       const assignedPlan = regResult.plan_code || planCode;
 
-      newCarrierPayload.ticket = assignedTicket;
       newCarrierPayload.status = assignedStatus;
 
       // 2. Transmit submission receipt in sessionStorage (Zero PII in URL or LocalStorage!)
       sessionStorage.setItem('ALM_ONBOARDING_RECEIPT', JSON.stringify({
-        mc: mc,
-        company: company,
-        name: contactName,
-        phone: phone,
         tier: rateTier,
-        hash: auditHash,
-        ticket: assignedTicket,
+        reference_id: assignedTicket,
         plan: assignedPlan,
         status: assignedStatus,
         timestamp: Date.now()

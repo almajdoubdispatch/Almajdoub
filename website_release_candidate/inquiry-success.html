@@ -94,13 +94,13 @@
           <div style="display:flex; justify-content:space-between; align-items:center; border-bottom: 1px solid rgba(255,208,0,0.3); padding-bottom: 14px; margin-bottom: 18px; flex-wrap:wrap; gap:10px;">
             <div>
               <span style="font-size:0.75rem; text-transform:uppercase; letter-spacing:0.08em; color:#76D2E0; font-weight:700;">Official Pass Code</span>
-              <div style="font-family:monospace; font-size:1.6rem; font-weight:800; color:#FFD000;" id="waitlistTicketDisplay">#WL-CARRIER-2026</div>
+          <div style="font-family:monospace; font-size:1.6rem; font-weight:800; color:#FFD000;" id="waitlistTicketDisplay">Received</div>
             </div>
             <div style="text-align:right;">
               <span style="background:rgba(54,179,126,0.2); color:#36B37E; border:1px solid #36B37E; font-size:0.75rem; font-weight:800; padding:4px 10px; border-radius:12px; text-transform:uppercase;">
-                ● Active Waitlist Enrolled
+                ● Received — Pending Review
               </span>
-              <div style="font-size:0.75rem; color:#A3E6CD; margin-top:4px;">Grandfathered Founding Rate: 5.0% Van / 5.5% Reefer</div>
+              <div style="font-size:0.75rem; color:#A3E6CD; margin-top:4px;">Any rate terms will be confirmed before service begins.</div>
             </div>
           </div>
 
@@ -112,21 +112,21 @@
             </div>
             <div style="display:flex; gap:10px; align-items:flex-start;">
               <span style="background:#FFD000; color:#060D17; font-weight:800; font-size:0.75rem; width:22px; height:22px; border-radius:50%; display:inline-flex; align-items:center; justify-content:center; flex-shrink:0;">2</span>
-              <span><strong>You Are in Line:</strong> Your spot in the Founding Waitlist is secured. As desk capacity opens, our system automatically triggers your <strong>Private Activation Dispatch via SMS and Email</strong>.</span>
+              <span><strong>Manual review:</strong> The team will review your eligibility and current service capacity before confirming next steps.</span>
             </div>
             <div style="display:flex; gap:10px; align-items:flex-start;">
               <span style="background:#FFD000; color:#060D17; font-weight:800; font-size:0.75rem; width:22px; height:22px; border-radius:50%; display:inline-flex; align-items:center; justify-content:center; flex-shrink:0;">3</span>
-              <span><strong>Direct Private Link:</strong> Your notification will include a direct private link to upload your Certificate of Insurance (COI) and start your <strong>14 Days 100% Free Trial</strong> without any phone sales pitch.</span>
+              <span><strong>Documents:</strong> If more documents are needed, the team will contact you using the details you provided.</span>
             </div>
             <div style="display:flex; gap:10px; align-items:flex-start;">
               <span style="background:#FFD000; color:#060D17; font-weight:800; font-size:0.75rem; width:22px; height:22px; border-radius:50%; display:inline-flex; align-items:center; justify-content:center; flex-shrink:0;">4</span>
-              <span><strong>24-Hour Confirmation Window:</strong> Keep your phone handy; priority slots expire after 24 hours if unconfirmed so the next carrier in line can roll.</span>
+              <span><strong>Service start:</strong> No dispatch or trial period begins until the team confirms eligibility, capacity, and written service terms.</span>
             </div>
           </div>
         </div>
 
         <!-- Dynamic Referral Kickoff Card (Council Recommendation) -->
-        <div class="card" style="text-align: left; background: #0E1B30; color: #FFFFFF; border: 2px solid #FFD000; margin-bottom: var(--space-8); border-radius: 8px; padding: 24px;">
+        <div class="card" style="display:none;">
           <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px; flex-wrap:wrap; gap:10px;">
             <span style="background:#FFD000; color:#0E1B30; font-weight:800; font-size:0.75rem; padding:3px 10px; border-radius:4px; text-transform:uppercase;">14-Day Free Runway Active</span>
             <span style="color:#76D2E0; font-size:0.85rem; font-weight:700;">The Rolling 14 Engine</span>
@@ -257,57 +257,19 @@
     </div>
   </footer>
 
-  <script src="assets/js/almajdoub_supabase.js?v=3.2"></script>
+  <script src="assets/js/cloud_config.js"></script>
+  <script src="assets/js/almajdoub_api.js"></script>
+  <script src="assets/js/almajdoub_supabase.js?v=3.3"></script>
   <script src="assets/js/main.js"></script>
   <script>
-    (async function() {
+    (function() {
       let receipt = null;
       try {
         const rStr = sessionStorage.getItem('ALM_INQUIRY_RECEIPT');
         if (rStr) receipt = JSON.parse(rStr);
       } catch (e) {}
-      const urlParams = new URLSearchParams(window.location.search);
-      const mc = (receipt && receipt.mc) || urlParams.get('mc') || urlParams.get('mcNum') || 'CARRIER';
-      const cleanMC = mc.replace(/[^A-Z0-9]/gi, '').toUpperCase();
-      
-      // Real Ticket from sessionStorage or fallback
-      const officialTicket = (receipt && receipt.ticket) || urlParams.get('ticket') || urlParams.get('ticketId');
       const ticketDisplay = document.getElementById('waitlistTicketDisplay');
-      if (ticketDisplay) {
-        if (officialTicket) {
-          ticketDisplay.textContent = officialTicket;
-        } else {
-          ticketDisplay.textContent = '#WL-' + cleanMC + '-2026';
-        }
-      }
-
-      // Check Waitlist Status (R-19: Closes upon 5 paid carriers)
-      let isClosed = urlParams.get('waitlist_closed') === 'true';
-      if (!isClosed && window.AlmajdoubSupabase && typeof window.AlmajdoubSupabase.checkWaitlistStatus === 'function') {
-        try {
-          const statusRes = await window.AlmajdoubSupabase.checkWaitlistStatus();
-          if (statusRes && statusRes.is_closed) {
-            isClosed = true;
-          }
-        } catch (e) {
-          console.warn('[Waitlist Check] Cloud status check fallback:', e);
-        }
-      }
-
-      if (isClosed) {
-        const ticketCard = document.querySelector('div[style*="linear-gradient(135deg, #0A192F 0%, #162B4D 100%)"]');
-        if (ticketCard) {
-          ticketCard.innerHTML = `
-            <div style="background: rgba(220, 38, 38, 0.15); border: 2px solid #EF4444; border-radius: 10px; padding: 24px; text-align: center;">
-              <span style="background: #EF4444; color: #FFFFFF; font-size: 0.8rem; font-weight: 800; padding: 4px 12px; border-radius: 20px; text-transform: uppercase;">● Waitlist Closed</span>
-              <h2 style="color: #FFFFFF; font-size: 1.5rem; margin: 14px 0 8px;">Founding Partner Waitlist Cap Reached (5/5 Carriers Active)</h2>
-              <p style="color: #FCA5A5; font-size: 0.95rem; line-height: 1.6; margin: 0 auto; max-width: 540px;">
-                All 5 Founding Carrier Partner slots are fully subscribed and rolling. New applications are queued on our Standard Operations waitlist for our next desk expansion. Contact dispatch directly for urgent lane requests.
-              </p>
-            </div>
-          `;
-        }
-      }
+      if (ticketDisplay && receipt && receipt.reference_id) ticketDisplay.textContent = receipt.reference_id;
     })();
   </script>
 </body>

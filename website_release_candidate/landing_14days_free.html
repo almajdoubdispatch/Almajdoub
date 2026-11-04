@@ -811,7 +811,7 @@
               • Explicit written approval required on Day 14 before any billing.
             </div>
 
-            <form action="#" method="POST" id="fastLeadForm" onsubmit="handleFastLeadSubmit(event); return false;">
+            <form action="#" method="POST" id="fastLeadForm">
               <div class="input-row">
                 <label for="carrierName">Full Name & Carrier Company</label>
                 <input type="text" id="carrierName" name="carrierName" placeholder="e.g. Marcus Vance / Vance Hauling LLC" required>
@@ -826,6 +826,11 @@
                 <label for="cellPhone">Mobile Phone (Numero / WhatsApp)</label>
                 <input type="tel" id="cellPhone" name="cellPhone" placeholder="e.g. (409) 000-0000" required>
               </div>
+
+              <label style="display:flex; align-items:flex-start; gap:8px; margin:12px 0 16px; color:#FFFFFF; font-size:0.78rem; line-height:1.45;">
+                <input type="checkbox" id="fastLeadTcpa" required style="width:16px; height:16px; margin-top:2px; accent-color:#FFD000;">
+                <span>I agree to receive operational dispatch texts and calls from Almajdoub Dispatch at the number provided. Message and data rates may apply. Reply STOP to opt out.</span>
+              </label>
 
               <!-- Strict Qualification Selectors -->
               <div class="input-row">
@@ -1227,7 +1232,7 @@
       if (btnGenPass) {
         btnGenPass.addEventListener('click', function() {
           const mc = refMCInput.value.trim().toUpperCase() || 'CARRIER-VIP';
-          passCodeDisplay.textContent = 'MC-' + mc.replace(/[^•-Z0-9]/g, '');
+          passCodeDisplay.textContent = 'MC-' + mc.replace(/[^A-Za-z0-9]/g, '');
           passResultBox.style.display = 'block';
         });
       }
@@ -1279,7 +1284,7 @@
         });
       }
 
-            // Handle form submission and store lead in localStorage + Server Hook
+            // Handle form submission through the protected intake API.
       const leadForm = document.getElementById('fastLeadForm');
       if (leadForm) {
         leadForm.addEventListener('submit', async function(e) {
@@ -1294,6 +1299,7 @@
             name: document.getElementById('carrierName').value.trim(),
             mc: document.getElementById('mcNum').value.trim().toUpperCase(),
             phone: document.getElementById('cellPhone').value.trim(),
+            tcpaConsent: document.getElementById('fastLeadTcpa')?.checked === true,
             mcAge: document.getElementById('mcAgeSelect') ? document.getElementById('mcAgeSelect').value : '',
             equip: document.getElementById('equipType').value,
             referredBy: refInput ? refInput.value.trim().toUpperCase() : '',
@@ -1302,11 +1308,7 @@
           };
 
           // 1. Client-Side Resilient Persistence
-          let leads = JSON.parse(localStorage.getItem('almajdoub_leads') || '[]');
-          leads.unshift(carrierLead);
-          localStorage.setItem('almajdoub_leads', JSON.stringify(leads));
-
-          // 2. Direct Supabase Cloud Integration (D-14, R-16)
+          // Send the lead directly to the protected intake API; do not persist PII in local storage.
           let ticketCode = null;
           if (window.AlmajdoubSupabase && typeof window.AlmajdoubSupabase.saveInquiry === 'function') {
             try {
@@ -1316,6 +1318,7 @@
                 mc: carrierLead.mc,
                 phone: carrierLead.phone,
                 equipment: carrierLead.equip,
+                tcpaConsent: carrierLead.tcpaConsent,
                 source: 'landing_14days_free',
                 notes: `Referred By: ${carrierLead.referredBy || 'None'}`
               });
@@ -1323,25 +1326,9 @@
                 throw new Error(inqRes?.error || 'Database save failed');
               }
 
-              if (typeof window.AlmajdoubSupabase.saveTicket === 'function') {
-                const tRes = await window.AlmajdoubSupabase.saveTicket({
-                  mcNumber: carrierLead.mc,
-                  carrierName: carrierLead.name,
-                  phone: carrierLead.phone,
-                  status: 'ISSUED'
-                });
-                if (tRes && tRes.ticket_number) {
-                  ticketCode = tRes.ticket_number;
-                }
-              }
-
               // Store receipt in sessionStorage (Zero PII in URL!)
               sessionStorage.setItem('ALM_INQUIRY_RECEIPT', JSON.stringify({
-                mc: carrierLead.mc,
-                name: carrierLead.name,
-                phone: carrierLead.phone,
-                equip: carrierLead.equip,
-                ticket: ticketCode || '',
+                reference_id: inqRes.reference_id || '',
                 timestamp: Date.now()
               }));
 
@@ -1364,6 +1351,8 @@
       updateCalculator();
     })();
   </script>
-  <script src="assets/js/almajdoub_supabase.js?v=3.2"></script>
+  <script src="assets/js/cloud_config.js"></script>
+  <script src="assets/js/almajdoub_api.js"></script>
+  <script src="assets/js/almajdoub_supabase.js?v=3.3"></script>
 </body>
 </html>
