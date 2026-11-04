@@ -1,9 +1,9 @@
 User-agent: *
 Allow: /
-Disallow: /Ahmed_Dispatch_Cockpit.html
 Disallow: /carrier_app.html
 Disallow: /referral_portal.html
 Disallow: /inquiry-success.html
 Disallow: /onboarding-success.html
 
 Sitemap: https://almajdoubdispatch.com/sitemap.xml
+
